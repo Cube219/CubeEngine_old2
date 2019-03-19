@@ -2,7 +2,8 @@
 
 #include "../CubeEngineHeader.h"
 
-#include "EngineCore/Resource/BaseResource.h"
+#include "EngineCore/Resource/Resource.h"
+#include "EngineCore/Resource/ResourceImporter.h"
 #include "RenderAPI/Interface/Device.h"
 
 namespace cube
@@ -16,7 +17,7 @@ namespace cube
 			mName = CUBE_T("TextureImporter");
 		}
 
-		Resource* Import(SPtr<platform::File>& file, Json info) final override;
+		Resource* Import(SPtr<platform::File>& file, const rapidjson::Value& info) final override;
 
 	private:
 		SPtr<TextureData> GetTextureData(void* pData, Uint32 width, Uint32 height, Uint32 depth);

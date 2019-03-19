@@ -2,6 +2,7 @@
 
 #include "../EngineCoreHeader.h"
 
+#include "ResourceImporter.h"
 #include "../Thread/MutexLock.h"
 
 namespace cube

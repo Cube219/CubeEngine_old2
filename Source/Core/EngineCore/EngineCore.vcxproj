@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(SolutionDir)Dependencies\rapidjson\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(SolutionDir)Dependencies\rapidjson\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
     <LibraryPath>$(LibraryPath)</LibraryPath>
   </PropertyGroup>
@@ -168,7 +168,8 @@
     <ClInclude Include="Renderer\Texture.h" />
     <ClInclude Include="Renderer\TextureData.h" />
     <ClInclude Include="Renderer\Vertex.h" />
-    <ClInclude Include="Resource\BaseResource.h" />
+    <ClInclude Include="Resource\Resource.h" />
+    <ClInclude Include="Resource\ResourceImporter.h" />
     <ClInclude Include="Resource\ResourceManager.h" />
     <ClInclude Include="Resource\ResourcePointer.h" />
     <ClInclude Include="String\ImmutableString.h" />
@@ -210,7 +211,7 @@
     <ClCompile Include="Renderer\RenderObject.cpp" />
     <ClCompile Include="Renderer\Texture.cpp" />
     <ClCompile Include="Renderer\TextureData.cpp" />
-    <ClCompile Include="Resource\BaseResource.cpp" />
+    <ClCompile Include="Resource\Resource.cpp" />
     <ClCompile Include="Resource\ResourceManager.cpp" />
     <ClCompile Include="String\ImmutableString.cpp" />
     <ClCompile Include="String\PathString.cpp" />

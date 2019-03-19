@@ -69,9 +69,6 @@
     <ClInclude Include="Renderer\Light\SpotLight.h">
       <Filter>Renderer\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\BaseResource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\ResourceManager.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -117,6 +114,12 @@
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Handler.h" />
+    <ClInclude Include="Resource\ResourceImporter.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EngineCore.cpp" />
@@ -179,9 +182,6 @@
     <ClCompile Include="Renderer\Light\SpotLight.cpp">
       <Filter>Renderer\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\BaseResource.cpp">
-      <Filter>Resource</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\ResourceManager.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
@@ -219,6 +219,9 @@
     </ClCompile>
     <ClCompile Include="Renderer\TextureData.cpp">
       <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\Resource.cpp">
+      <Filter>Resource</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,8 @@
 #include "ResourceManager.h"
 
+#include <rapidjson/document.h>
 #include "../Assertion.h"
-#include "BaseResource.h"
+#include "Resource.h"
 #include "FileSystem.h"
 
 namespace cube
@@ -53,10 +54,11 @@ namespace cube
 		metaFile->Read(metaString, size, readSize);
 		metaString[size] = '\0';
 
-		Json metaJson = Json::parse(metaString);
+		rapidjson::Document metaJson;
+		metaJson.Parse(metaString);
 		free(metaString);
 			
-		U8String importerNameU8 = metaJson["importer_name"];
+		U8String importerNameU8 = metaJson["importer_name"].GetString();
 		String importerName = ToString(importerNameU8);
 
 		Resource* loadedRes = nullptr;
@@ -65,7 +67,7 @@ namespace cube
 		for(auto& importer : mImporters) {
 			if(importer->GetName() == importerName) {
 				SPtr<File> resFile = platform::FileSystem::OpenFile(path.GetString(), FileAccessModeFlag::Read);
-				Json info = metaJson["info"];
+				const rapidjson::Value& info = metaJson["info"];
 
 				loadedRes = importer->Import(resFile, info);
 				isFindImporter = true;

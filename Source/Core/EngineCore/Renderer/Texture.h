@@ -2,7 +2,7 @@
 
 #include "../EngineCoreHeader.h"
 
-#include "../Resource/BaseResource.h"
+#include "../Resource/Resource.h"
 #include "RenderObject.h"
 #include "RenderAPI/Interface/Texture.h"
 #include "RenderAPI/Interface/TextureView.h"

@@ -2,12 +2,12 @@
 
 #include <iostream>
 
-#include "BaseResource.h"
+#include "Resource.h"
 
 namespace cube
 {
 	class ResourceManager;
-	class ResourceImporter;
+	//class ResourceImporter;
 
 	template <typename T>
 	class ResourcePointer
@@ -71,7 +71,7 @@ namespace cube
 	private:
 		friend class ResourceManager;
 		friend class BaseMeshGenerator;
-		friend class ResourceImporter;
+		//friend class ResourceImporter;
 		template <typename T2>
 		friend class ResourcePointer;
 

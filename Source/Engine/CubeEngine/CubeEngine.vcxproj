@@ -71,12 +71,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(SolutionDir)Dependencies\stb\include;$(SolutionDir)Dependencies\assimp\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(SolutionDir)Dependencies\stb\include;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\rapidjson\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\assimp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(SolutionDir)Dependencies\stb\include;$(SolutionDir)Dependencies\assimp\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(SolutionDir)Dependencies\stb\include;$(SolutionDir)Dependencies\assimp\include;$(SolutionDir)Dependencies\rapidjson\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\assimp\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
