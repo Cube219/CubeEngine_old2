@@ -12,7 +12,6 @@
     <ClInclude Include="Vector\VectorArray.h">
       <Filter>Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Json.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Matrix.h" />
@@ -35,6 +34,7 @@
     <ClCompile Include="format.cc" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="String.cpp" />
+    <ClCompile Include="EASTLOverloadOperator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Vector">

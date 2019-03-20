@@ -71,11 +71,13 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Dependencies\json\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\json\include;$(SolutionDir)Dependencies\EASTL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\EASTL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Dependencies\json\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\json\include;$(SolutionDir)Dependencies\EASTL\include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SolutionDir)Dependencies\EASTL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -83,6 +85,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -124,7 +127,6 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="Flags.h" />
     <ClInclude Include="format.h" />
-    <ClInclude Include="Json.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="Math.h" />
     <ClInclude Include="Matrix.h" />
@@ -139,6 +141,7 @@
     <ClInclude Include="Vector\VectorSSE.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="EASTLOverloadOperator.cpp" />
     <ClCompile Include="format.cc" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="String.cpp" />

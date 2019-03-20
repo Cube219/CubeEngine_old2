@@ -5,11 +5,11 @@
 namespace cube
 {
 	/////////////////
-	// std::string //
+	// eastl::string //
 	/////////////////
-	std::string ToASCIIString(const U8String& str)
+	eastl::string ToASCIIString(const U8String& str)
 	{
-		std::string res;
+		eastl::string res;
 		res.reserve(str.size());
 
 		auto u8Iter = str.cbegin();
@@ -26,29 +26,9 @@ namespace cube
 
 		return res;
 	}
-
-	std::string ToASCIIString(const UCS2String& str)
+	eastl::string ToASCIIString(const U16String& str)
 	{
-		std::string res;
-		res.reserve(str.size());
-
-		auto ucs2Iter = str.cbegin();
-		while(ucs2Iter != str.cend()) {
-#ifdef _DEBUG
-			if((*ucs2Iter & 0xFF80) != 0) {
-				std::wcout << L"String: The character exceeds in ASCII (" << *ucs2Iter << ")." << std::endl;
-			}
-#endif // _DEBUG
-
-			res.push_back(static_cast<char>(*ucs2Iter));
-			ucs2Iter++;
-		}
-
-		return res;
-	}
-	std::string ToASCIIString(const U16String& str)
-	{
-		std::string res;
+		eastl::string res;
 		res.reserve(str.size());
 
 		auto u16Iter = str.cbegin();
@@ -65,9 +45,9 @@ namespace cube
 
 		return res;
 	}
-	std::string ToASCIIString(const U32String& str)
+	eastl::string ToASCIIString(const U32String& str)
 	{
-		std::string res;
+		eastl::string res;
 		res.reserve(str.size());
 
 		auto u32Iter = str.cbegin();
@@ -88,24 +68,9 @@ namespace cube
 	//////////////
 	// U8String //
 	//////////////
-	U8String ToU8StringFromASCII(const std::string& str)
+	U8String ToU8StringFromASCII(const eastl::string& str)
 	{
 		U8String u8Str(str);
-		return u8Str;
-	}
-	U8String ToU8String(const UCS2String& str)
-	{
-		int u8StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			u8StrLength += internal::GetUTF8RequiredCharSize(*iter);
-		}
-
-		U8String u8Str;
-		u8Str.reserve(u8StrLength);
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			internal::InsertCharInUTF8(u8Str, *iter);
-		}
-
 		return u8Str;
 	}
 	U8String ToU8String(const U16String& str)
@@ -143,100 +108,10 @@ namespace cube
 		return u8Str;
 	}
 
-	////////////////
-	// UCS2String //
-	////////////////
-	UCS2String ToUCS2StringFromASCII(const std::string& str)
-	{
-		UCS2String ucs2Str;
-		ucs2Str.reserve(str.size());
-
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			ucs2Str.push_back(*iter);
-		}
-
-		return ucs2Str;
-	}
-	UCS2String ToUCS2String(const U8String& str)
-	{
-		int ucs2Length = 0;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
-			ucs2Length++;
-
-			int chSize = internal::GetUTF8CharSize(iter);
-			iter += chSize;
-		}
-
-		UCS2String ucs2Str;
-		ucs2Str.reserve(ucs2Length);
-		for(auto iter = str.cbegin(); iter != str.cend();) {
-#ifdef _DEBUG
-			int chSize = internal::GetUTF8CharSize(iter);
-#endif // _DEBUG
-			char32_t ch = internal::GetUTF8CharAndMove(iter);
-
-			ucs2Str.push_back((unsigned short)ch);
-
-#ifdef _DEBUG
-			if(chSize >= 4) {
-				std::wcout << L"String: The character exceeds in UCS2 (" << (int)ch << ")." << std::endl;
-			}
-#endif // _DEBUG
-		}
-
-		return ucs2Str;
-	}
-	UCS2String ToUCS2String(const U16String& str)
-	{
-		int ucs2Length = 0;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
-			ucs2Length++;
-
-			int chSize = internal::GetUTF16CharSize(iter);
-			iter += chSize;
-		}
-
-		UCS2String ucs2Str;
-		ucs2Str.reserve(ucs2Length);
-		for(auto iter = str.cbegin(); iter != str.cend();) {
-#ifdef _DEBUG
-			int chSize = internal::GetUTF16CharSize(iter);
-#endif // _DEBUG
-			char32_t ch = internal::GetUTF16CharAndMove(iter);
-
-			ucs2Str.push_back((char16_t)ch);
-
-#ifdef _DEBUG
-			if(chSize >= 2) {
-				std::wcout << L"String: The character exceeds in UCS2 (" << (int)ch << ")." << std::endl;
-			}
-#endif // _DEBUG
-		}
-
-		return ucs2Str;
-	}
-	UCS2String ToUCS2String(const U32String& str)
-	{
-		UCS2String ucs2Str;
-		ucs2Str.reserve(str.size());
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			char32_t ch = *iter;
-#ifdef _DEBUG
-			if((ch & 0xFFFF0000) != 0) {
-				std::wcout << L"String: The character exceeds in UCS2 (" << (int)ch << ")." << std::endl;
-			}
-#endif // _DEBUG
-
-			ucs2Str.push_back((char16_t)ch);
-		}
-
-		return ucs2Str;
-	}
-
 	///////////////
 	// U16String //
 	///////////////
-	U16String ToU16StringFromASCII(const std::string& str)
+	U16String ToU16StringFromASCII(const eastl::string& str)
 	{
 		U16String u16Str;
 		u16Str.reserve(str.size());
@@ -269,16 +144,6 @@ namespace cube
 
 		return u16Str;
 	}
-	U16String ToU16String(const UCS2String& str)
-	{
-		U16String u16Str;
-		u16Str.reserve(str.size());
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			u16Str.push_back(*iter);
-		}
-
-		return u16Str;
-	}
 	U16String ToU16String(const U32String& str)
 	{
 		int u16StrLength = 0;
@@ -297,7 +162,7 @@ namespace cube
 	///////////////
 	// U32String //
 	///////////////
-	U32String ToU32StringFromASCII(const std::string& str)
+	U32String ToU32StringFromASCII(const eastl::string& str)
 	{
 		U32String u32Str;
 		u32Str.reserve(str.size());
@@ -321,16 +186,6 @@ namespace cube
 		for(auto iter = str.cbegin(); iter != str.cend();) {
 			char32_t ch = internal::GetUTF8CharAndMove(iter);
 			u32Str.push_back(ch);
-		}
-
-		return u32Str;
-	}
-	U32String ToU32String(const UCS2String& str)
-	{
-		U32String u32Str;
-		u32Str.reserve(str.size());
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			u32Str.push_back(*iter);
 		}
 
 		return u32Str;

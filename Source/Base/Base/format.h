@@ -36,8 +36,10 @@
 #include <limits>
 #include <memory>
 #include <stdexcept>
-#include <string>
-#include <vector>
+//#include <string>
+#include <EASTL/string.h>
+//#include <vector>
+#include <EASTL/vector.h>
 #include <utility>  // for std::pair
 
 // The fmt library version in the form major * 10000 + minor * 100 + patch.
@@ -502,7 +504,7 @@ class BasicStringRef {
    */
   template <typename Allocator>
   BasicStringRef(
-      const std::basic_string<Char, std::char_traits<Char>, Allocator> &s)
+      const eastl::basic_string<Char, Allocator> &s)
   : data_(s.c_str()), size_(s.size()) {}
 
   /**
@@ -510,8 +512,8 @@ class BasicStringRef {
     Converts a string reference to an ``std::string`` object.
     \endrst
    */
-  std::basic_string<Char> to_string() const {
-    return std::basic_string<Char>(data_, size_);
+  eastl::basic_string<Char> to_string() const {
+    return eastl::basic_string<Char>(data_, size_);
   }
 
   /** Returns a pointer to the string data. */
@@ -593,7 +595,7 @@ class BasicCStringRef {
    */
   template <typename Allocator>
   BasicCStringRef(
-      const std::basic_string<Char, std::char_traits<Char>, Allocator> &s)
+      const eastl::basic_string<Char, Allocator> &s)
   : data_(s.c_str()) {}
 
   /** Returns the pointer to a C string. */
@@ -738,7 +740,7 @@ namespace internal {
 
 // A memory buffer for trivially copyable/constructible types with the first
 // SIZE elements stored in the object itself.
-template <typename T, std::size_t SIZE, typename Allocator = std::allocator<T> >
+template <typename T, std::size_t SIZE, typename Allocator = eastl::allocator >
 class MemoryBuffer : private Allocator, public Buffer<T> {
  private:
   T data_[SIZE];
@@ -798,7 +800,7 @@ void MemoryBuffer<T, SIZE, Allocator>::grow(std::size_t size) {
   std::size_t new_capacity = this->capacity_ + this->capacity_ / 2;
   if (size > new_capacity)
       new_capacity = size;
-  T *new_ptr = this->allocate(new_capacity, FMT_NULL);
+  T *new_ptr = (T*)this->allocate(new_capacity);
   // The following code doesn't throw, so the raw pointer above doesn't leak.
   std::uninitialized_copy(this->ptr_, this->ptr_ + this->size_,
                           make_ptr(new_ptr, new_capacity));
@@ -1114,7 +1116,7 @@ class UTF8ToUTF16 {
   operator WStringRef() const { return WStringRef(&buffer_[0], size()); }
   size_t size() const { return buffer_.size() - 1; }
   const wchar_t *c_str() const { return &buffer_[0]; }
-  std::wstring str() const { return std::wstring(&buffer_[0], size()); }
+  eastl::wstring str() const { return eastl::wstring(&buffer_[0], size()); }
 };
 
 // A converter from UTF-16 to UTF-8.
@@ -1129,7 +1131,7 @@ class UTF16ToUTF8 {
   operator StringRef() const { return StringRef(&buffer_[0], size()); }
   size_t size() const { return buffer_.size() - 1; }
   const char *c_str() const { return &buffer_[0]; }
-  std::string str() const { return std::string(&buffer_[0], size()); }
+  eastl::string str() const { return eastl::string(&buffer_[0], size()); }
 
   // Performs conversion returning a system error code instead of
   // throwing exception on conversion error. This method may still throw
@@ -1347,7 +1349,7 @@ class MakeValue : public Arg {
 #endif
   MakeValue(typename WCharHelper<wchar_t *, Char>::Unsupported);
   MakeValue(typename WCharHelper<const wchar_t *, Char>::Unsupported);
-  MakeValue(typename WCharHelper<const std::wstring &, Char>::Unsupported);
+  MakeValue(typename WCharHelper<const eastl::wstring &, Char>::Unsupported);
   MakeValue(typename WCharHelper<WStringRef, Char>::Unsupported);
 
   void set_string(StringRef str) {
@@ -1434,7 +1436,7 @@ class MakeValue : public Arg {
   FMT_MAKE_VALUE(const signed char *, sstring.value, CSTRING)
   FMT_MAKE_VALUE(unsigned char *, ustring.value, CSTRING)
   FMT_MAKE_VALUE(const unsigned char *, ustring.value, CSTRING)
-  FMT_MAKE_STR_VALUE(const std::string &, STRING)
+  FMT_MAKE_STR_VALUE(const eastl::string &, STRING)
   FMT_MAKE_STR_VALUE(StringRef, STRING)
   FMT_MAKE_VALUE_(CStringRef, string.value, CSTRING, value.c_str())
 
@@ -1446,7 +1448,7 @@ class MakeValue : public Arg {
 
   FMT_MAKE_WSTR_VALUE(wchar_t *, WSTRING)
   FMT_MAKE_WSTR_VALUE(const wchar_t *, WSTRING)
-  FMT_MAKE_WSTR_VALUE(const std::wstring &, WSTRING)
+  FMT_MAKE_WSTR_VALUE(const eastl::wstring &, WSTRING)
   FMT_MAKE_WSTR_VALUE(WStringRef, WSTRING)
 
   FMT_MAKE_VALUE(void *, pointer, POINTER)
@@ -1980,7 +1982,7 @@ namespace internal {
 template <typename Char>
 class ArgMap {
  private:
-  typedef std::vector<
+  typedef eastl::vector<
     std::pair<fmt::BasicStringRef<Char>, internal::Arg> > MapType;
   typedef typename MapType::value_type Pair;
 
@@ -2663,8 +2665,8 @@ class BasicWriter {
     Returns the content of the output buffer as an `std::string`.
     \endrst
    */
-  std::basic_string<Char> str() const {
-    return std::basic_string<Char>(&buffer_[0], buffer_.size());
+  eastl::basic_string<Char> str() const {
+    return eastl::basic_string<Char>(&buffer_[0], buffer_.size());
   }
 
   /**
@@ -3198,7 +3200,7 @@ void BasicWriter<Char>::write_double(T value, const Spec &spec) {
   accessed as a C string with ``out.c_str()``.
   \endrst
  */
-template <typename Char, typename Allocator = std::allocator<Char> >
+template <typename Char, typename Allocator = eastl::allocator>
 class BasicMemoryWriter : public BasicWriter<Char> {
  private:
   internal::MemoryBuffer<Char, internal::INLINE_BUFFER_SIZE, Allocator> buffer_;
@@ -3355,13 +3357,13 @@ FMT_API void print_colored(Color c, CStringRef format, ArgList args);
     std::string message = format("The answer is {}", 42);
   \endrst
 */
-inline std::string format(CStringRef format_str, ArgList args) {
+inline eastl::string format(CStringRef format_str, ArgList args) {
   MemoryWriter w;
   w.write(format_str, args);
   return w.str();
 }
 
-inline std::wstring format(WCStringRef format_str, ArgList args) {
+inline eastl::wstring format(WCStringRef format_str, ArgList args) {
   WMemoryWriter w;
   w.write(format_str, args);
   return w.str();
@@ -3371,21 +3373,21 @@ typedef BasicCStringRef<unsigned short> UCS2CStringRef;
 typedef BasicCStringRef<char16_t> U16CStringRef;
 typedef BasicCStringRef<char32_t> U32CStringRef;
 // Cube219: UCS-2(unsigned short)
-inline std::basic_string<unsigned short> format(UCS2CStringRef format_str, ArgList args)
+inline eastl::basic_string<unsigned short> format(UCS2CStringRef format_str, ArgList args)
 {
 	BasicMemoryWriter<unsigned short> w;
 	w.write(format_str, args);
 	return w.str();
 }
 // Cube219: UTF-16(char16_t)
-inline std::basic_string<char16_t> format(U16CStringRef format_str, ArgList args)
+inline eastl::basic_string<char16_t> format(U16CStringRef format_str, ArgList args)
 {
 	BasicMemoryWriter<char16_t> w;
 	w.write(format_str, args);
 	return w.str();
 }
 // Cube219: UTF-32(char32_t)
-inline std::basic_string<char32_t> format(U32CStringRef format_str, ArgList args)
+inline eastl::basic_string<char32_t> format(U32CStringRef format_str, ArgList args)
 {
 	BasicMemoryWriter<char32_t> w;
 	w.write(format_str, args);
@@ -3490,7 +3492,7 @@ class FormatInt {
     Returns the content of the output buffer as an ``std::string``.
     \endrst
    */
-  std::string str() const { return std::string(str_, size()); }
+  eastl::string str() const { return eastl::string(str_, size()); }
 };
 
 // Formats a decimal integer value writing into buffer and returns
@@ -3684,16 +3686,16 @@ void arg(WStringRef, const internal::NamedArg<Char>&) FMT_DELETED_OR_UNDEFINED;
 #define FMT_CAPTURE_W(...) FMT_FOR_EACH(FMT_CAPTURE_ARG_W_, __VA_ARGS__)
 
 namespace fmt {
-FMT_VARIADIC(std::string, format, CStringRef)
-FMT_VARIADIC_W(std::wstring, format, WCStringRef)
+FMT_VARIADIC(eastl::string, format, CStringRef)
+FMT_VARIADIC_W(eastl::wstring, format, WCStringRef)
 FMT_VARIADIC(void, print, CStringRef)
 FMT_VARIADIC(void, print, std::FILE *, CStringRef)
 FMT_VARIADIC(void, print_colored, Color, CStringRef)
 
 // Cube219: Register variadic functions for unicode
-FMT_VARIADIC_UCS2(std::basic_string<unsigned short>, format, UCS2CStringRef)
-FMT_VARIADIC_U16(std::basic_string<char16_t>, format, U16CStringRef)
-FMT_VARIADIC_U32(std::basic_string<char32_t>, format, U32CStringRef)
+FMT_VARIADIC_UCS2(eastl::basic_string<unsigned short>, format, UCS2CStringRef)
+FMT_VARIADIC_U16(eastl::basic_string<char16_t>, format, U16CStringRef)
+FMT_VARIADIC_U32(eastl::basic_string<char32_t>, format, U32CStringRef)
 
 namespace internal {
 template <typename Char>
@@ -3725,7 +3727,7 @@ unsigned parse_nonnegative_int(const Char *&s) {
 
 inline void require_numeric_argument(const Arg &arg, char spec) {
   if (arg.type > Arg::LAST_NUMERIC_TYPE) {
-    std::string message =
+    eastl::string message =
         fmt::format("format specifier '{}' requires numeric argument", spec);
     FMT_THROW(fmt::FormatError(message));
   }

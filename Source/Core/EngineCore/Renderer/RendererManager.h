@@ -87,7 +87,7 @@ namespace cube
 		{
 			T* pRenderObject = mRenderObjectTable.ReleaseHandler(hRenderObject);
 
-			auto findIter = std::find_if(mRenderObjects.begin(), mRenderObjects.end(), [pRenderObject](auto& element) {
+			auto findIter = eastl::find_if(mRenderObjects.begin(), mRenderObjects.end(), [pRenderObject](auto& element) {
 				return element.get() == pRenderObject;
 			});
 

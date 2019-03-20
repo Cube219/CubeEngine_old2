@@ -23,17 +23,6 @@ namespace cube
 
 		return pStr;
 	}
-	PString ToPString(const UCS2String& str)
-	{
-		PString pStr;
-		pStr.reserve(str.size());
-
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			pStr.push_back((wchar_t)*iter);
-		}
-
-		return pStr;
-	}
 	PString ToPString(const U16String& str)
 	{
 		PString pStr;
@@ -86,23 +75,6 @@ namespace cube
 		PLATFORM_CHECK(res != 0, "Failed to convert WString to UTF8 (Error code: {0})", GetLastError());
 
 		return u8Str;
-	}
-	UCS2String ToUCS2String(const PString& str)
-	{
-		UCS2String ucs2Str;
-		ucs2Str.reserve(str.size());
-
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			if((*iter & 0xFC00) == 0xD800) { // High surrogate
-				PLATFORM_PRINT_LOG("The character placed in high surrogates (0xD800 ~ ). It can't be presented by UCS2.");
-			} else if((*iter & 0xFC00) == 0xDC00) { // Low surrogate
-				PLATFORM_PRINT_LOG("The character placed in low surrogates (0xDC00 ~ ). It can't be presented by UCS2.");
-			}
-
-			ucs2Str.push_back(*iter);
-		}
-
-		return ucs2Str;
 	}
 	U16String ToU16String(const PString& str)
 	{

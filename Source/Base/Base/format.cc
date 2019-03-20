@@ -219,7 +219,7 @@ FMT_FUNC void SystemError::init(
   MemoryWriter w;
   format_system_error(w, err_code, format(format_str, args));
   std::runtime_error &base = *this;
-  base = std::runtime_error(w.str());
+  // base = std::runtime_error(w.str());
 }
 
 template <typename T>
@@ -257,7 +257,7 @@ int internal::CharTraits<unsigned short>::format_float(
 {
 	int length;
 
-	std::string cBuffer;
+	eastl::string cBuffer;
 	cBuffer.resize(size);
 
 	char cFormat[10]; // Max format size = 10
@@ -289,7 +289,7 @@ int internal::CharTraits<char16_t>::format_float(
 {
 	int length;
 
-	std::string cBuffer;
+	eastl::string cBuffer;
 	cBuffer.resize(size);
 
 	char cFormat[10]; // Max format size = 10
@@ -321,7 +321,7 @@ int internal::CharTraits<char32_t>::format_float(
 {
 	int length;
 
-	std::string cBuffer;
+	eastl::string cBuffer;
 	cBuffer.resize(size);
 
 	char cFormat[10]; // Max format size = 10
@@ -440,7 +440,7 @@ FMT_FUNC void WindowsError::init(
   MemoryWriter w;
   internal::format_windows_error(w, err_code, format(format_str, args));
   std::runtime_error &base = *this;
-  base = std::runtime_error(w.str());
+  //base = std::runtime_error(w.str());
 }
 
 FMT_FUNC void internal::format_windows_error(

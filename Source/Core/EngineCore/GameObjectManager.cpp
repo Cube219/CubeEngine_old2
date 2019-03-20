@@ -28,7 +28,7 @@ namespace cube
 	{
 		GameObject* pData = mGameObjectTable.ReleaseHandler(go);
 
-		auto findIter = std::find_if(mGameObjects.cbegin(), mGameObjects.cend(), [pData](auto& element){
+		auto findIter = eastl::find_if(mGameObjects.cbegin(), mGameObjects.cend(), [pData](auto& element){
 			return element.get() == pData;
 		});
 		CHECK(findIter != mGameObjects.end(), "Cannot unregister GameObject. It is not registered.");

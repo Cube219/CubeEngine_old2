@@ -42,7 +42,7 @@ namespace cube
 			PString pStr = ToPString(str.GetString());
 
 			std::unique_lock<std::mutex> lock(printMutex);
-			std::wcout << pStr << std::endl;
+			std::wcout << pStr.c_str() << std::endl;
 		}
 
 		const char* Win32DebugUtility::GetBaseName(const char* absolutePath)
