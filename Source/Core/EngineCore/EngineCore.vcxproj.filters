@@ -70,7 +70,7 @@
       <Filter>Renderer\Light</Filter>
     </ClInclude>
     <ClInclude Include="Resource\ResourceManager.h">
-      <Filter>Resource</Filter>
+      <Filter>Thread\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Renderer\Material\Shader.h">
       <Filter>Renderer\Material</Filter>
@@ -79,7 +79,7 @@
       <Filter>Renderer\Material</Filter>
     </ClInclude>
     <ClInclude Include="Resource\ResourcePointer.h">
-      <Filter>Resource</Filter>
+      <Filter>Thread\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Component\ComponentManager.h">
       <Filter>Component</Filter>
@@ -115,10 +115,16 @@
     </ClInclude>
     <ClInclude Include="Handler.h" />
     <ClInclude Include="Resource\ResourceImporter.h">
-      <Filter>Resource</Filter>
+      <Filter>Thread\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Resource\Resource.h">
-      <Filter>Resource</Filter>
+      <Filter>Thread\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator\FrameAllocator.h">
+      <Filter>Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator\AllocatorUtility.h">
+      <Filter>Allocator</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -183,7 +189,7 @@
       <Filter>Renderer\Light</Filter>
     </ClCompile>
     <ClCompile Include="Resource\ResourceManager.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Thread\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Renderer\Material\Shader.cpp">
       <Filter>Renderer\Material</Filter>
@@ -221,7 +227,10 @@
       <Filter>Renderer</Filter>
     </ClCompile>
     <ClCompile Include="Resource\Resource.cpp">
-      <Filter>Resource</Filter>
+      <Filter>Thread\Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Allocator\FrameAllocator.cpp">
+      <Filter>Allocator</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -243,14 +252,17 @@
     <Filter Include="Renderer\Light">
       <UniqueIdentifier>{97762731-cfe1-4935-9c3c-4e3f3823a867}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{205412c7-7a29-4d60-b436-609eac0e786d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{cd517b62-17a3-465a-9ba5-f3d52f34b794}</UniqueIdentifier>
     </Filter>
     <Filter Include="Module">
       <UniqueIdentifier>{6222080d-35f1-4a24-86c1-2f7c2fac36cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread\Resource">
+      <UniqueIdentifier>{205412c7-7a29-4d60-b436-609eac0e786d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Allocator">
+      <UniqueIdentifier>{5283367d-ac60-481c-87f4-8349eb6d7c27}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

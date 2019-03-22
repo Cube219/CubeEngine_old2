@@ -138,6 +138,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Allocator\AllocatorUtility.h" />
+    <ClInclude Include="Allocator\FrameAllocator.h" />
     <ClInclude Include="Assertion.h" />
     <ClInclude Include="Handler.h" />
     <ClInclude Include="Component\Component.h" />
@@ -185,6 +187,7 @@
     <ClInclude Include="Time\TimeManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Allocator\FrameAllocator.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Component\ComponentManager.cpp" />
     <ClCompile Include="EngineCore.cpp" />
