@@ -4,6 +4,7 @@
 #include "LogWriter.h"
 #include "Assertion.h"
 #include "Renderer/RenderingThread.h"
+#include "Allocator/FrameAllocator.h"
 
 namespace cube
 {
@@ -128,6 +129,8 @@ namespace cube
 
 	void GameThread::PrepareInternal()
 	{
+		GetFrameAllocator().Initialize(10 * 1024 * 1024); // 10 MiB
+
 		mECore->Initialize();
 	}
 
@@ -141,6 +144,8 @@ namespace cube
 
 	void GameThread::SimulateInternal()
 	{
+		GetFrameAllocator().DiscardAllocations();
+
 		mECore->Update();
 	}
 
@@ -153,6 +158,8 @@ namespace cube
 	{
 		mECore->ShutDown();
 		mTaskQueue.Flush();
+
+		GetFrameAllocator().ShutDown();
 
 		mDestroySignal.DispatchCompletion();
 	}

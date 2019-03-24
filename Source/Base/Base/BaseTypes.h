@@ -57,6 +57,7 @@ enum class MouseButtonType
 
 #include "String.h"
 
+// If you add more STL container, you also have to add the container each custom allocators (FrameAllocator)
 #include <EASTL/vector.h>
 template <typename T>
 using Vector = eastl::vector<T>;

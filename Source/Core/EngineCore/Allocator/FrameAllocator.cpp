@@ -5,6 +5,13 @@
 
 namespace cube
 {
+	thread_local FrameAllocator thlFrameAllocator;
+
+	FrameAllocator& GetFrameAllocator()
+	{
+		return thlFrameAllocator;
+	}
+
 	/////////////////////////////////
 	// FrameAllocator::MemoryBlock //
 	/////////////////////////////////
@@ -12,6 +19,11 @@ namespace cube
 	FrameAllocator::MemoryBlock::MemoryBlock(Uint64 size) : 
 		mSize(size)
 	{
+		if(mSize == 0) { // Mot initialized memory block
+			mStartPtr = mCurrentPtr = nullptr;
+			return;
+		}
+
 		mStartPtr = platform::Platform::Allocate(size);
 
 		mCurrentPtr = mStartPtr;
@@ -19,6 +31,9 @@ namespace cube
 
 	FrameAllocator::MemoryBlock::~MemoryBlock()
 	{
+		if(mSize == 0) // Mot initialized memory block
+			return;
+
 		platform::Platform::Free(mStartPtr);
 	}
 
@@ -94,13 +109,26 @@ namespace cube
 	// FrameAllocator //
 	////////////////////
 
-	FrameAllocator::FrameAllocator(Uint64 blockSize) :
-		mBlockSize(blockSize), mMemoryBlock(blockSize)
+	FrameAllocator::FrameAllocator() :
+		mMemoryBlock(0),
+		mRapidJsonAllocator(*this), mEASTLAllocator(*this)
 	{
 	}
 
 	FrameAllocator::~FrameAllocator()
 	{
+	}
+
+	void FrameAllocator::Initialize(Uint64 blockSize)
+	{
+		mBlockSize = blockSize;
+		mMemoryBlock = MemoryBlock(blockSize);
+	}
+
+	void FrameAllocator::ShutDown()
+	{
+		mAdditionalMemBlocks.clear();
+		mMemoryBlock = MemoryBlock(0);
 	}
 
 	void* FrameAllocator::Allocate(Uint64 size)
