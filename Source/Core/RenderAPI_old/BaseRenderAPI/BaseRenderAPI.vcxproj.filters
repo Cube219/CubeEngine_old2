@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="RenderUtility.h" />
+    <ClInclude Include="RenderAPIHeader.h" />
+    <ClInclude Include="RenderAPI.h" />
+    <ClInclude Include="Wrapper\Framebuffer.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\GraphicsPipeline.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Image.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Queue.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\RenderPass.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Sampler.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Semaphore.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Shader.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Swapchain.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\WindowSurface.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Buffer.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\CommandBuffer.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Descriptor.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+    <ClInclude Include="Wrapper\Fence.h">
+      <Filter>Wrapper</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Wrapper">
+      <UniqueIdentifier>{b9246a46-6c1b-4636-836d-ce45b1b723de}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="a.cpp" />
+  </ItemGroup>
+</Project>

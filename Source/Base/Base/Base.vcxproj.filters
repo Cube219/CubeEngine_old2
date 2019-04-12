@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="BaseTypes.h" />
+    <ClInclude Include="KeyCode.h" />
+    <ClInclude Include="Vector.h" />
+    <ClInclude Include="format.h" />
+    <ClInclude Include="Math.h" />
+    <ClInclude Include="Vector\VectorSSE.h">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector\VectorArray.h">
+      <Filter>Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Json.h" />
+    <ClInclude Include="String.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MatrixUtility.h" />
+    <ClInclude Include="Matrix\MatrixSSE.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixArray.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixUtilitySSE.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix\MatrixUtilityArray.h">
+      <Filter>Matrix</Filter>
+    </ClInclude>
+    <ClInclude Include="Flags.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="format.cc" />
+    <ClCompile Include="Math.cpp" />
+    <ClCompile Include="String.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Vector">
+      <UniqueIdentifier>{1376f9b4-f7bf-4a9f-8f90-3ee649a27a9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Matrix">
+      <UniqueIdentifier>{e3d42564-82ea-4bd2-8b7a-51ef9c42d8ff}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

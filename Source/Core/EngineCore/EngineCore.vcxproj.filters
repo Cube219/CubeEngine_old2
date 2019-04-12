@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="EngineCore.h" />
+    <ClInclude Include="EngineCoreHeader.h" />
+    <ClInclude Include="Renderer\CameraRenderer3D.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Renderer3D.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\RendererManager.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Vertex.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="Renderer\Mesh.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Assertion.h" />
+    <ClInclude Include="LogWriter.h" />
+    <ClInclude Include="String\ImmutableString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="String\PathString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="String\StringManager.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="String\BasicString.h">
+      <Filter>String</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\TimeManager.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\GameTime.h">
+      <Filter>Time</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\Thread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\ThreadManager.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\MutexLock.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Material\Material.h">
+      <Filter>Renderer\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Texture.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\BaseMeshGenerator.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Light\BaseLight.h">
+      <Filter>Renderer\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Light\DirectionalLight.h">
+      <Filter>Renderer\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Light\PointLight.h">
+      <Filter>Renderer\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Light\SpotLight.h">
+      <Filter>Renderer\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\BaseResource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourceManager.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Material\Shader.h">
+      <Filter>Renderer\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Material\MaterialInstance.h">
+      <Filter>Renderer\Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\ResourcePointer.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\ComponentManager.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Component\Component.h">
+      <Filter>Component</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="Renderer\RenderObject.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="GameThread.h" />
+    <ClInclude Include="Renderer\RenderingThread.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\Async.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\BaseModule.h">
+      <Filter>Module</Filter>
+    </ClInclude>
+    <ClInclude Include="Module\ModuleManager.h">
+      <Filter>Module</Filter>
+    </ClInclude>
+    <ClInclude Include="Thread\TaskQueue.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\MeshData.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\TextureData.h">
+      <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Handler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="EngineCore.cpp" />
+    <ClCompile Include="Renderer\CameraRenderer3D.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Renderer3D.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\RendererManager.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="Renderer\Mesh.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="LogWriter.cpp" />
+    <ClCompile Include="String\ImmutableString.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="String\PathString.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="String\StringManager.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="String\BasicString.cpp">
+      <Filter>String</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\TimeManager.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Time\GameTime.cpp">
+      <Filter>Time</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\Thread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\ThreadManager.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Material\Material.cpp">
+      <Filter>Renderer\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Texture.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\BaseMeshGenerator.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Light\BaseLight.cpp">
+      <Filter>Renderer\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Light\DirectionalLight.cpp">
+      <Filter>Renderer\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Light\PointLight.cpp">
+      <Filter>Renderer\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Light\SpotLight.cpp">
+      <Filter>Renderer\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\BaseResource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Resource\ResourceManager.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Material\Shader.cpp">
+      <Filter>Renderer\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Material\MaterialInstance.cpp">
+      <Filter>Renderer\Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\ComponentManager.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Component\Component.cpp">
+      <Filter>Component</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="Renderer\RenderObject.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="GameThread.cpp" />
+    <ClCompile Include="Renderer\RenderingThread.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Thread\Async.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\BaseModule.cpp">
+      <Filter>Module</Filter>
+    </ClCompile>
+    <ClCompile Include="Module\ModuleManager.cpp">
+      <Filter>Module</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\MeshData.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\TextureData.cpp">
+      <Filter>Renderer</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Renderer">
+      <UniqueIdentifier>{39d9c1e9-df4e-4de8-ad42-bd041044201b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="String">
+      <UniqueIdentifier>{532e1aba-c0f1-495a-9b14-6a51f9290cec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Time">
+      <UniqueIdentifier>{6af2d34e-6d2b-406a-87fc-e86f00dca2a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{44830ff6-815c-4004-b565-5f41e3d364af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Material">
+      <UniqueIdentifier>{e70c8341-926f-47fb-b385-4b913002f1f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Renderer\Light">
+      <UniqueIdentifier>{97762731-cfe1-4935-9c3c-4e3f3823a867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{205412c7-7a29-4d60-b436-609eac0e786d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Component">
+      <UniqueIdentifier>{cd517b62-17a3-465a-9ba5-f3d52f34b794}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Module">
+      <UniqueIdentifier>{6222080d-35f1-4a24-86c1-2f7c2fac36cb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

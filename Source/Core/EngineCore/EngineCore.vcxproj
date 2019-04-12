@@ -1,0 +1,236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{79CD5EF1-C2FB-432B-A38E-3DB371C00C98}</ProjectGuid>
+    <RootNamespace>EngineCore</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>$(SolutionDir)Dependencies\glm\include;$(IncludePath)</IncludePath>
+    <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
+    <LibraryPath>$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source\Core;$(SolutionDir)Source\Core\RenderAPI;$(SolutionDir)Source\Base;$(SolutionDir)Source\Platform;$(SolutionDir)Source\Modules;$(SolutionDir)Source\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ENGINE_CORE_EXPORTS;GLM_FORCE_RADIANS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>$(SolutionDir)Source\Core;$(SolutionDir)Source\Core\RenderAPI;$(SolutionDir)Source\Base;$(SolutionDir)Source\Platform;$(SolutionDir)Source\Modules;$(SolutionDir)Source\Engine;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>ENGINE_CORE_EXPORTS;GLM_FORCE_RADIANS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>
+      </Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Assertion.h" />
+    <ClInclude Include="Handler.h" />
+    <ClInclude Include="Component\Component.h" />
+    <ClInclude Include="Component\ComponentManager.h" />
+    <ClInclude Include="EngineCore.h" />
+    <ClInclude Include="EngineCoreHeader.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameObjectManager.h" />
+    <ClInclude Include="GameThread.h" />
+    <ClInclude Include="LogWriter.h" />
+    <ClInclude Include="Module\BaseModule.h" />
+    <ClInclude Include="Module\ModuleManager.h" />
+    <ClInclude Include="Renderer\BaseMeshGenerator.h" />
+    <ClInclude Include="Renderer\CameraRenderer3D.h" />
+    <ClInclude Include="Renderer\Light\BaseLight.h" />
+    <ClInclude Include="Renderer\Light\DirectionalLight.h" />
+    <ClInclude Include="Renderer\Light\PointLight.h" />
+    <ClInclude Include="Renderer\Light\SpotLight.h" />
+    <ClInclude Include="Renderer\Material\Material.h" />
+    <ClInclude Include="Renderer\Material\MaterialInstance.h" />
+    <ClInclude Include="Renderer\Material\Shader.h" />
+    <ClInclude Include="Renderer\Mesh.h" />
+    <ClInclude Include="Renderer\MeshData.h" />
+    <ClInclude Include="Renderer\Renderer3D.h" />
+    <ClInclude Include="Renderer\RendererManager.h" />
+    <ClInclude Include="Renderer\RenderingThread.h" />
+    <ClInclude Include="Renderer\RenderObject.h" />
+    <ClInclude Include="Renderer\Texture.h" />
+    <ClInclude Include="Renderer\TextureData.h" />
+    <ClInclude Include="Renderer\Vertex.h" />
+    <ClInclude Include="Resource\BaseResource.h" />
+    <ClInclude Include="Resource\ResourceManager.h" />
+    <ClInclude Include="Resource\ResourcePointer.h" />
+    <ClInclude Include="String\ImmutableString.h" />
+    <ClInclude Include="String\PathString.h" />
+    <ClInclude Include="String\BasicString.h" />
+    <ClInclude Include="String\StringManager.h" />
+    <ClInclude Include="Thread\Async.h" />
+    <ClInclude Include="Thread\MutexLock.h" />
+    <ClInclude Include="Thread\TaskQueue.h" />
+    <ClInclude Include="Thread\Thread.h" />
+    <ClInclude Include="Thread\ThreadManager.h" />
+    <ClInclude Include="Time\GameTime.h" />
+    <ClInclude Include="Time\TimeManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Component\Component.cpp" />
+    <ClCompile Include="Component\ComponentManager.cpp" />
+    <ClCompile Include="EngineCore.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameObjectManager.cpp" />
+    <ClCompile Include="GameThread.cpp" />
+    <ClCompile Include="LogWriter.cpp" />
+    <ClCompile Include="Module\BaseModule.cpp" />
+    <ClCompile Include="Module\ModuleManager.cpp" />
+    <ClCompile Include="Renderer\BaseMeshGenerator.cpp" />
+    <ClCompile Include="Renderer\CameraRenderer3D.cpp" />
+    <ClCompile Include="Renderer\Light\BaseLight.cpp" />
+    <ClCompile Include="Renderer\Light\DirectionalLight.cpp" />
+    <ClCompile Include="Renderer\Light\PointLight.cpp" />
+    <ClCompile Include="Renderer\Light\SpotLight.cpp" />
+    <ClCompile Include="Renderer\Material\Material.cpp" />
+    <ClCompile Include="Renderer\Material\MaterialInstance.cpp" />
+    <ClCompile Include="Renderer\Material\Shader.cpp" />
+    <ClCompile Include="Renderer\Mesh.cpp" />
+    <ClCompile Include="Renderer\MeshData.cpp" />
+    <ClCompile Include="Renderer\Renderer3D.cpp" />
+    <ClCompile Include="Renderer\RendererManager.cpp" />
+    <ClCompile Include="Renderer\RenderingThread.cpp" />
+    <ClCompile Include="Renderer\RenderObject.cpp" />
+    <ClCompile Include="Renderer\Texture.cpp" />
+    <ClCompile Include="Renderer\TextureData.cpp" />
+    <ClCompile Include="Resource\BaseResource.cpp" />
+    <ClCompile Include="Resource\ResourceManager.cpp" />
+    <ClCompile Include="String\ImmutableString.cpp" />
+    <ClCompile Include="String\PathString.cpp" />
+    <ClCompile Include="String\BasicString.cpp" />
+    <ClCompile Include="String\StringManager.cpp" />
+    <ClCompile Include="Thread\Async.cpp" />
+    <ClCompile Include="Thread\Thread.cpp" />
+    <ClCompile Include="Thread\ThreadManager.cpp" />
+    <ClCompile Include="Time\GameTime.cpp" />
+    <ClCompile Include="Time\TimeManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Base\Base\Base.vcxproj">
+      <Project>{84d3a49e-2aef-4370-aa37-3d297a45fc91}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Platform\Platform.vcxproj">
+      <Project>{22a0e1be-e953-4d07-b5a3-b06a0256929b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
