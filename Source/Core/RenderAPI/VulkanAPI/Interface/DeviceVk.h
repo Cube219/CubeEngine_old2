@@ -14,6 +14,7 @@
 #include "../VulkanUploadHeap.h"
 
 #include "EngineCore/Thread/MutexLock.h"
+#include <functional>
 
 namespace cube
 {
