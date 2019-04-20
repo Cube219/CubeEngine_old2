@@ -5,6 +5,7 @@
 #include "MutexLock.h"
 
 #include <thread>
+#include <functional>
 
 namespace cube
 {
