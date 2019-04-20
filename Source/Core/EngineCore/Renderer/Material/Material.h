@@ -5,6 +5,7 @@
 #include "../RenderObject.h"
 #include "../../Handler.h"
 #include "RenderAPI/Interface/ShaderParametersLayout.h"
+#include "../../Allocator/FrameAllocator.h"
 
 namespace cube
 {
@@ -23,8 +24,8 @@ namespace cube
 
 	struct MaterialInitializer
 	{
-		Vector<RPtr<Shader>> shaders;
-		Vector<MaterialParameterInfo> parameters;
+		FrameVector<RPtr<Shader>> shaders;
+		FrameVector<MaterialParameterInfo> parameters;
 	};
 
 	class ENGINE_CORE_EXPORT Material : public RenderObject
@@ -44,7 +45,7 @@ namespace cube
 
 		virtual void Destroy();
 
-		const Vector<MaterialParameterInfo>& GetParameterInfos() const { return mMaterialInit.parameters; }
+		const Vector<MaterialParameterInfo>& GetParameterInfos() const { return mParamInfos; }
 
 	private:
 		friend class RendererManager;
@@ -52,7 +53,8 @@ namespace cube
 
 		Material(const MaterialInitializer& init);
 
-		MaterialInitializer mMaterialInit;
+		Vector<RPtr<Shader>> mShaders;
+		Vector<MaterialParameterInfo> mParamInfos;
 	};
 
 	namespace rt
@@ -64,7 +66,7 @@ namespace cube
 			virtual void Initialize() override;
 			virtual void Destroy() override;
 
-			void SyncMaterial(const MaterialInitializer& init);
+			void SyncMaterial(const Vector<RPtr<Shader>>& shaders, const Vector<MaterialParameterInfo>& paramInfos);
 
 			const Vector<MaterialParameterInfo>& GetParameterInfos() const { return mParamInfos; }
 
@@ -78,7 +80,7 @@ namespace cube
 
 			Material();
 
-			MaterialInitializer mMaterialInit;
+			// MaterialInitializer mMaterialInit;
 
 			int mIndex = -1; // Used in RendererManager
 

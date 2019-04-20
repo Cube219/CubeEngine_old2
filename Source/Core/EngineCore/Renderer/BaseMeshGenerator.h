@@ -2,6 +2,7 @@
 
 #include "../EngineCoreHeader.h"
 
+#include "../Allocator/FrameAllocator.h"
 #include "Mesh.h"
 
 namespace cube
@@ -20,9 +21,9 @@ namespace cube
 		static RPtr<Mesh> GetPlaneMesh();
 
 	private:
-		static void SubDivide(Vector<Vertex>& vertices, Vector<Index>& indices);
+		static void SubDivide(FrameVector<Vertex>& vertices, FrameVector<Index>& indices);
 
-		static void SetNormalVector(Vector<Vertex>& vertices, Vector<Index>& indices);
+		static void SetNormalVector(FrameVector<Vertex>& vertices, FrameVector<Index>& indices);
 
 		static RPtr<Mesh> RegisterToResourceManager(Mesh* mesh);
 

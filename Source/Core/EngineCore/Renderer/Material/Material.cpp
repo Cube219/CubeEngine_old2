@@ -17,9 +17,10 @@ namespace cube
 		return rendererManager.RegisterMaterial(std::move(mat));
 	}
 
-	Material::Material(const MaterialInitializer& init) : 
-		mMaterialInit(init)
+	Material::Material(const MaterialInitializer& init)
 	{
+		mShaders.assign(init.shaders.cbegin(), init.shaders.cend());
+		mParamInfos.assign(init.parameters.cbegin(), init.parameters.cend());
 	} 
 
 	Material::~Material()
@@ -31,7 +32,7 @@ namespace cube
 		SPtr<rt::Material> mat_rt(new rt::Material());
 
 		RenderingThread::QueueSyncTask([this]() {
-			GetRenderObject()->SyncMaterial(mMaterialInit);
+			GetRenderObject()->SyncMaterial(mShaders, mParamInfos);
 		});
 
 		return mat_rt;
@@ -60,9 +61,6 @@ namespace cube
 			SPtr<render::Device> device = ECore().GetRendererManager().GetDevice();
 
 			using namespace render;
-
-			mParamInfos = mMaterialInit.parameters;
-			mShaders = mMaterialInit.shaders;
 
 			ShaderParametersLayoutAttribute attr;
 			attr.paramInfos.resize(mParamInfos.size());
@@ -97,9 +95,10 @@ namespace cube
 			mShaderParamsLayout = nullptr;
 		}
 
-		void Material::SyncMaterial(const MaterialInitializer& init)
+		void Material::SyncMaterial(const Vector<RPtr<Shader>>& shaders, const Vector<MaterialParameterInfo>& paramInfos)
 		{
-			mMaterialInit = init;
+			mShaders = shaders;
+			mParamInfos = paramInfos;
 		}
 	} // namespace rt
 } // namespace cube

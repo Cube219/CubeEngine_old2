@@ -12,7 +12,7 @@ namespace cube
 	MaterialInstance::MaterialInstance(HMaterial mat) :
 		mMaterial(mat)
 	{
-		const Vector<MaterialParameterInfo> paramInfos = mat->GetParameterInfos();
+		const Vector<MaterialParameterInfo>& paramInfos = mat->GetParameterInfos();
 
 		Uint64 paramNum = paramInfos.size();
 		mParameters.resize(paramNum);
