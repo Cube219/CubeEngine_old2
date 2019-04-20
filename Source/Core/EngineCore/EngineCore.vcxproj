@@ -28,26 +28,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v142</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -167,6 +167,8 @@
     <ClInclude Include="Renderer\RendererManager.h" />
     <ClInclude Include="Renderer\RenderingThread.h" />
     <ClInclude Include="Renderer\RenderObject.h" />
+    <ClInclude Include="Renderer\Skybox\Skybox.h" />
+    <ClInclude Include="Renderer\Skybox\SkyboxSystem.h" />
     <ClInclude Include="Renderer\Texture.h" />
     <ClInclude Include="Renderer\TextureData.h" />
     <ClInclude Include="Renderer\Vertex.h" />
@@ -212,6 +214,8 @@
     <ClCompile Include="Renderer\RendererManager.cpp" />
     <ClCompile Include="Renderer\RenderingThread.cpp" />
     <ClCompile Include="Renderer\RenderObject.cpp" />
+    <ClCompile Include="Renderer\Skybox\Skybox.cpp" />
+    <ClCompile Include="Renderer\Skybox\SkyboxSystem.cpp" />
     <ClCompile Include="Renderer\Texture.cpp" />
     <ClCompile Include="Renderer\TextureData.cpp" />
     <ClCompile Include="Resource\Resource.cpp" />

@@ -125,6 +125,11 @@
     </ClInclude>
     <ClInclude Include="Allocator\AllocatorUtility.h">
       <Filter>Allocator</Filter>
+    <ClInclude Include="Renderer\Skybox\SkyboxSystem.h">
+      <Filter>Renderer\Skybox</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer\Skybox\Skybox.h">
+      <Filter>Renderer\Skybox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -231,6 +236,11 @@
     </ClCompile>
     <ClCompile Include="Allocator\FrameAllocator.cpp">
       <Filter>Allocator</Filter>
+    <ClCompile Include="Renderer\Skybox\SkyboxSystem.cpp">
+      <Filter>Renderer\Skybox</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer\Skybox\Skybox.cpp">
+      <Filter>Renderer\Skybox</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -263,6 +273,8 @@
     </Filter>
     <Filter Include="Allocator">
       <UniqueIdentifier>{5283367d-ac60-481c-87f4-8349eb6d7c27}</UniqueIdentifier>
+    <Filter Include="Renderer\Skybox">
+      <UniqueIdentifier>{077f7db9-070e-433c-9406-199f98374c84}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

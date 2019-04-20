@@ -14,6 +14,7 @@
 #include "../VulkanUploadHeap.h"
 
 #include "EngineCore/Thread/MutexLock.h"
+#include <functional>
 
 namespace cube
 {
@@ -22,7 +23,7 @@ namespace cube
 		class DeviceVk final : public Device, public std::enable_shared_from_this<DeviceVk>
 		{
 		public:
-			DeviceVk(VkInstance ins, SPtr<VulkanLogicalDevice>&& device, const char* debugName);
+			DeviceVk(VkInstance ins, SPtr<VulkanLogicalDevice>&& device, const DeviceAttribute& attr);
 			virtual ~DeviceVk();
 
 			virtual SPtr<Buffer> CreateBuffer(const BufferAttribute& attr) override final;
