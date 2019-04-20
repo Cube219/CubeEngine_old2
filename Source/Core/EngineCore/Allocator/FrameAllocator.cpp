@@ -19,7 +19,7 @@ namespace cube
 	FrameAllocator::MemoryBlock::MemoryBlock(Uint64 size) : 
 		mSize(size)
 	{
-		if(mSize == 0) { // Mot initialized memory block
+		if(mSize == 0) { // Not initialized memory block
 			mStartPtr = mCurrentPtr = nullptr;
 			return;
 		}
@@ -31,7 +31,7 @@ namespace cube
 
 	FrameAllocator::MemoryBlock::~MemoryBlock()
 	{
-		if(mSize == 0) // Mot initialized memory block
+		if(mSize == 0) // Not initialized memory block
 			return;
 
 		platform::Platform::Free(mStartPtr);
@@ -119,8 +119,9 @@ namespace cube
 	{
 	}
 
-	void FrameAllocator::Initialize(Uint64 blockSize)
+	void FrameAllocator::Initialize(const char* debugName, Uint64 blockSize)
 	{
+		mDebugName = debugName;
 		mBlockSize = blockSize;
 		mMemoryBlock = MemoryBlock(blockSize);
 	}

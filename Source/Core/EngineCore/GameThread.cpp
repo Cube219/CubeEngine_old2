@@ -129,7 +129,7 @@ namespace cube
 
 	void GameThread::PrepareInternal()
 	{
-		GetFrameAllocator().Initialize(10 * 1024 * 1024); // 10 MiB
+		GetFrameAllocator().Initialize("Game Thread FrameAllocator", 10 * 1024 * 1024); // 10 MiB
 
 		mECore->Initialize();
 	}

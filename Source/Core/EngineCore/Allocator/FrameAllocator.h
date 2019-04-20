@@ -4,9 +4,9 @@
 
 namespace cube
 {
-	FrameAllocator& GetFrameAllocator();
+	ENGINE_CORE_EXPORT FrameAllocator& GetFrameAllocator();
 
-	class FrameAllocator
+	class ENGINE_CORE_EXPORT FrameAllocator
 	{
 	private:
 		class MemoryBlock
@@ -14,6 +14,31 @@ namespace cube
 		public:
 			MemoryBlock(Uint64 size);
 			~MemoryBlock();
+
+			MemoryBlock(const MemoryBlock& other) = delete;
+			MemoryBlock& operator=(const MemoryBlock& rhs) = delete;
+			
+			MemoryBlock(MemoryBlock&& other) : 
+				mSize(other.mSize),
+				mStartPtr(other.mStartPtr),
+				mCurrentPtr(other.mCurrentPtr)
+			{
+				other.mSize = 0;
+				other.mStartPtr = nullptr;
+				other.mCurrentPtr = nullptr;
+			}
+			MemoryBlock& operator=(MemoryBlock&& rhs)
+			{
+				mSize = rhs.mSize;
+				mStartPtr = rhs.mStartPtr;
+				mCurrentPtr = rhs.mCurrentPtr;
+
+				rhs.mSize = 0;
+				rhs.mStartPtr = nullptr;
+				rhs.mCurrentPtr = nullptr;
+
+				return *this;
+			}
 
 			void* Allocate(Uint64 size);
 			void* AllocateAligned(Uint64 size, Uint64 alignment);
@@ -34,7 +59,7 @@ namespace cube
 		FrameAllocator(const FrameAllocator& other) = delete;
 		FrameAllocator& operator=(const FrameAllocator& rhs) = delete;
 
-		void Initialize(Uint64 blockSize = 1 * 1024 * 1024); // 1 MiB
+		void Initialize(const char* debugName, Uint64 blockSize = 1 * 1024 * 1024); // 1 MiB
 		void ShutDown();
 
 		void* Allocate(Uint64 size);
@@ -55,6 +80,7 @@ namespace cube
 
 #ifdef _DEBUG
 		Uint64 mAllocatedSize = 0;
+		const char* mDebugName;
 #endif // _DEBUG
 
 		/////////////////////////
@@ -142,30 +168,30 @@ namespace cube
 		class EASTLAllocator
 		{
 		public:
-			EASTLAllocator() :
-				mAllocator(GetFrameAllocator())
+			EASTLAllocator(const char* pName = nullptr) :
+				mpAllocator(&GetFrameAllocator())
 			{}
 			EASTLAllocator(FrameAllocator& allocator) :
-				mAllocator(allocator)
+				mpAllocator(&allocator)
 			{}
 
 			void* allocate(size_t n, int flags = 0)
 			{
-				return mAllocator.Allocate(n);
+				return mpAllocator->AllocateAligned(n, EASTL_ALLOCATOR_MIN_ALIGNMENT);
 			}
 
 			void* allocate(size_t n, size_t alignment, size_t offset, int flags = 0)
 			{
-				return mAllocator.AllocateAligned(n, alignment);
+				return mpAllocator->AllocateAligned(n, alignment);
 			}
 
 			void deallocate(void* p, size_t n)
 			{
-				mAllocator.Free(p);
+				mpAllocator->FreeAligned(p);
 			}
 
 		private:
-			FrameAllocator& mAllocator;
+			FrameAllocator* mpAllocator;
 		};
 
 	public:
