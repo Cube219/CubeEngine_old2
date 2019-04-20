@@ -19,7 +19,7 @@ namespace cube
 			mName = CUBE_T("ObjImporter");
 		}
 
-		Resource* Import(SPtr<platform::File>& file, const rapidjson::Value& info) final override;
+		Resource* Import(SPtr<platform::File>& file, const FrameJsonValue& info) final override;
 
 	private:
 		SPtr<MeshData> GetMeshData(const aiScene* scene);

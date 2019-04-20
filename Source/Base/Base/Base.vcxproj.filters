@@ -29,6 +29,7 @@
       <Filter>Matrix</Filter>
     </ClInclude>
     <ClInclude Include="Flags.h" />
+    <ClInclude Include="Json.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="format.cc" />

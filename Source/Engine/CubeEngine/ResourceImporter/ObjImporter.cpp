@@ -7,7 +7,7 @@
 
 namespace cube
 {
-	Resource* ObjImporter::Import(SPtr<platform::File>& file, const rapidjson::Value& info)
+	Resource* ObjImporter::Import(SPtr<platform::File>& file, const FrameJsonValue& info)
 	{
 		uint64_t size = file->GetFileSize();
 

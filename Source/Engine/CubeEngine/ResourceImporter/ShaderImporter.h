@@ -24,10 +24,10 @@ namespace cube
 			mName = CUBE_T("ShaderImporter");
 		}
 
-		Resource* Import(SPtr<platform::File>& file, const rapidjson::Value& info) final override;
+		Resource* Import(SPtr<platform::File>& file, const FrameJsonValue& info) final override;
 
 	private:
-		ShaderCompileDesc GetCompileDesc(const rapidjson::Value& info);
+		ShaderCompileDesc GetCompileDesc(const FrameJsonValue& info);
 
 		SPtr<render::Device> mDevice;
 	};

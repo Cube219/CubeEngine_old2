@@ -2,6 +2,8 @@
 
 #include "../EngineCoreHeader.h"
 
+#include "Base/Json.h"
+
 namespace cube
 {
 	ENGINE_CORE_EXPORT FrameAllocator& GetFrameAllocator();
@@ -115,21 +117,23 @@ namespace cube
 
 			void* Realloc(void* originalPtr, size_t originalSize, size_t newSize)
 			{
-				if(originalPtr == nullptr)
-					return Malloc(newSize);
+				if(originalPtr != nullptr)
+					Free(originalPtr);
 
 				if(newSize == 0)
 					return nullptr;
 
-				Free(originalPtr);
 				return Malloc(newSize);
 			}
 
 			static void Free(void *ptr)
 			{
+				if(ptr == nullptr)
+					return;
+
 				Uint8* realPtr = (Uint8*)ptr - sizeof(SizeType*);
 
-				FrameAllocator* allocator = (FrameAllocator*)(realPtr);
+				FrameAllocator* allocator = (FrameAllocator*)(*(SizeType*)realPtr);
 				allocator->Free(realPtr);
 			}
 #else // _DEBUG
@@ -142,9 +146,6 @@ namespace cube
 
 			void* Realloc(void* originalPtr, size_t originalSize, size_t newSize)
 			{
-				if(originalPtr == nullptr)
-					return Malloc(newSize);
-
 				if(newSize == 0)
 					return nullptr;
 
@@ -228,4 +229,8 @@ namespace cube
 
 	template <typename Key, typename Value>
 	using FrameHashMap = eastl::hash_map<Key, Value, eastl::hash<Key>, eastl::equal_to<Key>, FrameAllocator::EASTLAllocator>;
+
+	// Define Json with frame allocator
+	using FrameJson = rapidjson::GenericDocument<rapidjson::UTF8<>, FrameAllocator::RapidJsonAllocator>;
+	using FrameJsonValue = rapidjson::GenericValue<rapidjson::UTF8<>, FrameAllocator::RapidJsonAllocator>;
 } // namespace cube

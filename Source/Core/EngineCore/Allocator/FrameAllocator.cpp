@@ -121,7 +121,9 @@ namespace cube
 
 	void FrameAllocator::Initialize(const char* debugName, Uint64 blockSize)
 	{
+#ifdef _DEBUG
 		mDebugName = debugName;
+#endif // _DEBUG
 		mBlockSize = blockSize;
 		mMemoryBlock = MemoryBlock(blockSize);
 	}
@@ -138,7 +140,7 @@ namespace cube
 
 		if(ptr != nullptr) {
 #ifdef _DEBUG
-			mAllocatedSize += *((Uint8*)ptr - sizeof(Uint64));
+			mAllocatedSize += *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 			return ptr;
 		}
@@ -149,7 +151,7 @@ namespace cube
 
 			if(ptr != nullptr) {
 #ifdef _DEBUG
-				mAllocatedSize += *((Uint8*)ptr - sizeof(Uint64));
+				mAllocatedSize += *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 				return ptr;
 			}
@@ -160,7 +162,7 @@ namespace cube
 		ptr = mAdditionalMemBlocks.back().Allocate(size);
 
 #ifdef _DEBUG
-		mAllocatedSize += *((Uint8*)ptr - sizeof(Uint64));
+		mAllocatedSize += *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 		return ptr;
 	}
@@ -169,7 +171,7 @@ namespace cube
 	{
 		// Do nothing except for debugging
 #ifdef _DEBUG
-		mAllocatedSize -= *((Uint8*)ptr - sizeof(Uint64));
+		mAllocatedSize -= *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 	}
 
@@ -179,7 +181,7 @@ namespace cube
 
 		if(ptr != nullptr) {
 #ifdef _DEBUG
-			mAllocatedSize += *((Uint8*)ptr - sizeof(Uint64));
+			mAllocatedSize += *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 			return ptr;
 		}
@@ -190,7 +192,7 @@ namespace cube
 
 			if(ptr != nullptr) {
 #ifdef _DEBUG
-				mAllocatedSize += *((Uint8*)ptr - sizeof(Uint64));
+				mAllocatedSize += *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 				return ptr;
 			}
@@ -201,7 +203,7 @@ namespace cube
 		ptr = mAdditionalMemBlocks.back().AllocateAligned(size, alignment);
 
 #ifdef _DEBUG
-		mAllocatedSize += *((Uint8*)ptr - sizeof(Uint64));
+		mAllocatedSize += *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 		return ptr;
 	}
@@ -210,7 +212,7 @@ namespace cube
 	{
 		// Do nothing except for debugging
 #ifdef _DEBUG
-		mAllocatedSize -= *((Uint8*)ptr - sizeof(Uint64));
+		mAllocatedSize -= *(Uint64*)((Uint8*)ptr - sizeof(Uint64));
 #endif // _DEBUG
 	}
 

@@ -5,7 +5,7 @@
 
 namespace cube
 {
-	Resource* ShaderImporter::Import(SPtr<platform::File>& file, const rapidjson::Value& info)
+	Resource* ShaderImporter::Import(SPtr<platform::File>& file, const FrameJsonValue& info)
 	{
 		uint64_t size = file->GetFileSize();
 
@@ -30,7 +30,7 @@ namespace cube
 		return shader;
 	}
 
-	ShaderCompileDesc ShaderImporter::GetCompileDesc(const rapidjson::Value& info)
+	ShaderCompileDesc ShaderImporter::GetCompileDesc(const FrameJsonValue& info)
 	{
 		using namespace render;
 
