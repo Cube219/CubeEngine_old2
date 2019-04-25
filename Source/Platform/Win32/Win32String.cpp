@@ -10,35 +10,47 @@
 
 namespace cube
 {
-	PString ToPString(const U8String& str)
+	PString ToPString(const U8Character* str)
 	{
-		int pStrLength = MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), nullptr, 0);
+		int strLength = strnlen_s(str, 1000);
+
+		int pStrLength = MultiByteToWideChar(CP_UTF8, 0, str, strLength, nullptr, 0);
 		PLATFORM_CHECK(pStrLength > 0, "Failed to convert UTF8 to WString (Error code: {0})", GetLastError());
 
 		PString pStr;
 		pStr.resize(pStrLength);
 
-		int res = MultiByteToWideChar(CP_UTF8, 0, str.data(), (int)str.size(), &pStr[0], pStrLength);
+		int res = MultiByteToWideChar(CP_UTF8, 0, str, strLength, &pStr[0], pStrLength);
 		PLATFORM_CHECK(res != 0, "Failed to convert UTF8 to WString (Error code: {0})", GetLastError());
 
 		return pStr;
 	}
-	PString ToPString(const U16String& str)
+	PString ToPString(const U16Character* str)
 	{
-		PString pStr;
-		pStr.reserve(str.size());
+		int strLength = 0;
+		while(str[strLength] != u'\0') {
+			++strLength;
+		}
 
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			pStr.push_back((wchar_t)*iter);
+		PString pStr;
+		pStr.reserve(strLength);
+
+		for(int i = 0; i < strLength; ++i) {
+			pStr.push_back((wchar_t)str[i]);
 		}
 
 		return pStr;
 	}
-	PString ToPString(const U32String& str)
+	PString ToPString(const U32Character* str)
 	{
+		int strLength = 0;
+		while(str[strLength] != U'\0') {
+			++strLength;
+		}
+
 		int pStrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			if((*iter & 0xFFFF0000) == 0) {
+		for(int i = 0; i < strLength; ++i) {
+			if((str[i] & 0xFFFF0000) == 0) {
 				pStrLength += 1;
 			} else {
 				pStrLength += 2;
@@ -48,12 +60,12 @@ namespace cube
 		PString pStr;
 		pStr.reserve(pStrLength);
 
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
-			if((*iter & 0xFFFF0000) == 0) {
-				pStr.push_back((wchar_t)*iter);
+		for(int i = 0; i < strLength; ++i) {
+			if((str[i] & 0xFFFF0000) == 0) {
+				pStr.push_back((wchar_t)str[i]);
 			} else {
-				char32_t high = 0xD800 + ((*iter - 0x10000) >> 10);
-				char32_t low = 0xDC00 + ((*iter - 0x10000) & 0b1111111111);
+				char32_t high = 0xD800 + ((str[i] - 0x10000) >> 10);
+				char32_t low = 0xDC00 + ((str[i] - 0x10000) & 0b1111111111);
 
 				pStr.push_back((wchar_t)high);
 				pStr.push_back((wchar_t)low);
