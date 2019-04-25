@@ -24,10 +24,10 @@ namespace cube
 		mComponents.clear();
 	}
 
-	HComponent ComponentManager::CreateComponent(StringRef name)
+	HComponent ComponentManager::CreateComponent(FrameCStringRef name)
 	{
-		auto findIter = mComponentCreators.find(name.GetString());
-		CHECK(findIter != mComponentCreators.end(), "Failed to create component '{0}'. It hasn't been registered", name.GetString());
+		auto findIter = mComponentCreators.find_as(name.c_str());
+		//CHECK(findIter != mComponentCreators.end(), "Failed to create component '{0}'. It hasn't been registered", name.c_str());
 
 		return findIter->second();
 	}

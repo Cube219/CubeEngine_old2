@@ -4,6 +4,7 @@
 
 #include <functional>
 #include "../Handler.h"
+#include "../Allocator/FrameAllocator.h"
 
 namespace cube
 {
@@ -34,7 +35,7 @@ namespace cube
 			};
 		}
 
-		HComponent CreateComponent(StringRef name);
+		HComponent CreateComponent(FrameCStringRef name);
 
 	private:
 		void CheckIfComponentExisted(StringRef name);
