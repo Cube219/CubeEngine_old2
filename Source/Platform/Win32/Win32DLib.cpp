@@ -32,7 +32,7 @@ namespace cube
 			if(!mDLib)
 				return nullptr;
 
-			std::string aName = ToASCIIString(name.GetString());
+			U8String aName = ToU8String(name.GetString());
 			auto pFunction = GetProcAddress(mDLib, aName.c_str());
 			PLATFORM_CHECK(pFunction, "Failed to get the function({0}). (ErrorCode: {1})", name.GetString(), GetLastError());
 
