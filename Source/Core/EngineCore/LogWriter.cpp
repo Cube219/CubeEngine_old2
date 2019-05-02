@@ -45,7 +45,7 @@ namespace cube
 			break;
 		}
 
-		String res = fmt::format(CUBE_T("{0} / {1}:{2}] : {3}"), prefix, SplitFileName(fileName), lineNum, msg);
+		String res = Format(CUBE_T("{0} / {1}:{2}] : {3}"), prefix, SplitFileName(fileName), lineNum, msg);
 		WriteLogImpl(res);
 	}
 

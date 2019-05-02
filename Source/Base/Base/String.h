@@ -1,7 +1,6 @@
-#pragma once
+﻿#pragma once
 
 #include <string>
-#include "format.h"
 
 #define STR_UTF16
 
@@ -134,14 +133,18 @@ namespace cube
 		iter -= offset;
 	}
 
+	// TODO: 모든 Custom Allocator에 대해서 변환 가능하게 만들기(typename 2개 이용)
+	inline U8String ToU8String(const U8String& str) { return str; }
 	U8String ToU8String(const U16String& str);
 	U8String ToU8String(const U32String& str);
 
 	U16String ToU16String(const U8String& str);
+	inline U16String ToU16String(const U16String& str) { return str; }
 	U16String ToU16String(const U32String& str);
 
 	U32String ToU32String(const U8String& str);
 	U32String ToU32String(const U16String& str);
+	inline U32String ToU32String(const U32String& str) { return str; }
 
 	namespace internal
 	{
@@ -194,48 +197,3 @@ namespace cube
 	#error You must define one of string type
 #endif
 } // namespace cube
-
-// Formatting each strings
-namespace fmt
-{
-	namespace internal
-	{
-		// U8String
-		inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t* format_str, const cube::U8String& s)
-		{
-			f.writer().write(cube::ToU16String(s));
-		}
-		inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t* format_str, const cube::U8String& s)
-		{
-			f.writer().write(cube::ToU32String(s));
-		}
-
-		// U16String
-		inline void format_arg(fmt::BasicFormatter<char>& f, const char* format_str, const cube::U16String& s)
-		{
-			f.writer().write(cube::ToU8String(s));
-		}
-		inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t* format_str, const cube::U16String& s)
-		{
-			f.writer().write(s);
-		}
-		inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t* format_str, const cube::U16String& s)
-		{
-			f.writer().write(cube::ToU32String(s));
-		}
-
-		// U32String
-		inline void format_arg(fmt::BasicFormatter<char>& f, const char* format_str, const cube::U32String& s)
-		{
-			f.writer().write(cube::ToU8String(s));
-		}
-		inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t* format_str, const cube::U32String& s)
-		{
-			f.writer().write(cube::ToU16String(s));
-		}
-		inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t* format_str, const cube::U32String& s)
-		{
-			f.writer().write(s);
-		}
-	} // namespace internal
-} // namespace fmt

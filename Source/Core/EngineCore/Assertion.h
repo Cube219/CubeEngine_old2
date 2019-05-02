@@ -2,14 +2,14 @@
 
 #include "LogWriter.h"
 #include "PlatformDebugUtility.h"
-#include "Base/format.h"
+#include "Base/Format.h"
 
 namespace cube
 {
 	template <typename ...Args>
 	void AssertionFailed(const char* fileName, int lineNum, const String& msg, Args&&... args)
 	{
-		String str = fmt::format(msg, std::forward<Args>(args)...);
+		String str = Format(msg, std::forward<Args>(args)...);
 		LogWriter::WriteLogImpl(LogType::Error, fileName, lineNum, str);
 		platform::PlatformDebugUtility::AssertionFailed(str, nullptr, fileName, lineNum);
 	}
@@ -17,7 +17,7 @@ namespace cube
 	template <typename ...Args>
 	void AssertionFailed(const char* fileName, int lineNum, const Character* msg, Args&&... args)
 	{
-		String str = fmt::format(msg, std::forward<Args>(args)...);
+		String str = Format(msg, std::forward<Args>(args)...);
 		LogWriter::WriteLogImpl(LogType::Error, fileName, lineNum, str);
 		platform::PlatformDebugUtility::AssertionFailed(str, nullptr, fileName, lineNum);
 	}

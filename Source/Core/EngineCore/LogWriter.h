@@ -7,7 +7,7 @@
 #endif // ENGINE_CORE_EXPORTS
 
 #include "Base/BaseTypes.h"
-#include "Base/format.h"
+#include "Base/Format.h"
 
 namespace cube
 {
@@ -23,13 +23,13 @@ namespace cube
 		template <typename ...Args>
 		static void WriteLog(LogType type, const char* fileName, int lineNum, const String& msg, Args&&... args)
 		{
-			WriteLogImpl(type, fileName, lineNum, fmt::format(msg, std::forward<Args>(args)...));
+			WriteLogImpl(type, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
 		}
 
 		template <typename ...Args>
 		static void WriteLog(LogType type, const char* fileName, int lineNum, const Character* msg, Args&&... args)
 		{
-			WriteLogImpl(type, fileName, lineNum, fmt::format(msg, std::forward<Args>(args)...));
+			WriteLogImpl(type, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
 		}
 
 	private:

@@ -134,6 +134,7 @@
     <ClInclude Include="fmt\printf.h" />
     <ClInclude Include="fmt\ranges.h" />
     <ClInclude Include="fmt\time.h" />
+    <ClInclude Include="Format.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="Math.h" />

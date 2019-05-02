@@ -62,6 +62,7 @@
     <ClInclude Include="fmt\time.h">
       <Filter>fmt</Filter>
     </ClInclude>
+    <ClInclude Include="Format.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Math.cpp" />

@@ -3,6 +3,7 @@
 #include <vulkan/vulkan.h>
 
 #include "Base/String.h"
+#include "Base/Format.h"
 
 #ifdef _DEBUG
 
@@ -16,13 +17,13 @@ namespace cube
 		template <typename ...Args>
 		void PrintVkFail(VkResult res, const char* fileName, int lineNum, const String& msg, Args&&... args)
 		{
-			PrintVkFailImpl(res, fileName, lineNum, fmt::format(msg, std::forward<Args>(args)...));
+			PrintVkFailImpl(res, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
 		}
 
 		template <typename ...Args>
 		void PrintVkFail(VkResult res, const char* fileName, int lineNum, const Character* msg, Args&&... args)
 		{
-			PrintVkFailImpl(res, fileName, lineNum, fmt::format(msg, std::forward<Args>(args)...));
+			PrintVkFailImpl(res, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
 		}
 
 		String GetVkResult(VkResult res);

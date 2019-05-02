@@ -179,10 +179,10 @@ namespace cube
 				}
 			}
 
-			String res = fmt::format(CUBE_T("{0} [ / VulkanDebug:{1} / ID: {2}({3})] : {4}"),
+			String res = Format(CUBE_T("{0} [ / VulkanDebug:{1} / ID: {2}({3})] : {4}"),
 				prefix, typeStr, pData->pMessageIdName, pData->messageIdNumber, pData->pMessage);
 
-			res += fmt::format(CUBE_T("\n\tObjects - {0}"), pData->objectCount);
+			res += Format(CUBE_T("\n\tObjects - {0}"), pData->objectCount);
 			for(uint32_t i = 0; i < pData->objectCount; i++) {
 				VkDebugUtilsObjectNameInfoEXT obj = pData->pObjects[i];
 
@@ -190,21 +190,21 @@ namespace cube
 				if(obj.pObjectName != nullptr)
 					objName = obj.pObjectName;
 
-				res += fmt::format(CUBE_T("\n\t\tObject[{0}] - Handle {1}, Name '{2}'"),
+				res += Format(CUBE_T("\n\t\tObject[{0}] - Handle {1}, Name '{2}'"),
 					GetVkObjectTypeStr(obj.objectType), obj.objectHandle, objName);
 			}
 
-			res += fmt::format(CUBE_T("\n\tQueue Labels - {0}"), pData->queueLabelCount);
+			res += Format(CUBE_T("\n\tQueue Labels - {0}"), pData->queueLabelCount);
 			for(uint32_t i = 0; i < pData->queueLabelCount; i++) {
 				VkDebugUtilsLabelEXT label = pData->pQueueLabels[i];
-				res += fmt::format(CUBE_T("\n\t\tLabel[{0}] - {1} ({2}, {3} {4}, {5})"),
+				res += Format(CUBE_T("\n\t\tLabel[{0}] - {1} ({2}, {3} {4}, {5})"),
 					i, label.pLabelName, label.color[0], label.color[1], label.color[2], label.color[3]);
 			}
 
-			res += fmt::format(CUBE_T("\n\tCommand Buffer Labels - {0}"), pData->cmdBufLabelCount);
+			res += Format(CUBE_T("\n\tCommand Buffer Labels - {0}"), pData->cmdBufLabelCount);
 			for(uint32_t i = 0; i < pData->queueLabelCount; i++) {
 				VkDebugUtilsLabelEXT label = pData->pCmdBufLabels[i];
-				res += fmt::format(CUBE_T("\n\t\tLabel[{0}] - {1} ({2}, {3} {4}, {5})"),
+				res += Format(CUBE_T("\n\t\tLabel[{0}] - {1} ({2}, {3} {4}, {5})"),
 					i, label.pLabelName, label.color[0], label.color[1], label.color[2], label.color[3]);
 			}
 

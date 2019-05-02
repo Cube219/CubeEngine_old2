@@ -5,6 +5,7 @@
 #include <signal.h>
 #include <iostream>
 #include "../PlatformString.h"
+#include "Base/Format.h"
 
 namespace cube
 {
@@ -14,7 +15,7 @@ namespace cube
 
 		void Win32DebugUtility::AssertionFailedImpl(StringRef msg, const char* funcName, const char* fileName, int line)
 		{
-			String str = fmt::format(CUBE_T("Assertion failed!\n\n[{0}:{1}] : {2}\n\n(Press Retry to debug the application)"),
+			String str = Format(CUBE_T("Assertion failed!\n\n[{0}:{1}] : {2}\n\n(Press Retry to debug the application)"),
 				GetBaseName(fileName), line, msg.GetString());
 			PString pMsg = ToPString(str);
 
