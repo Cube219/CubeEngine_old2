@@ -49,12 +49,12 @@ namespace cube
 		mIsModelMatirxDirty = true;
 	}
 
-	HComponent GameObject::GetComponent(StringRef name)
+	HComponent GameObject::GetComponent(StringView name)
 	{
 		HComponent componentToGet;
 
 		for(auto& c : mComponents) {
-			if(c->GetName() == name.GetString()) {
+			if(c->GetName() == name) {
 				componentToGet = c;
 				break;
 			}
@@ -63,10 +63,10 @@ namespace cube
 		return componentToGet;
 	}
 
-	HComponent GameObject::AddComponent(StringRef name)
+	HComponent GameObject::AddComponent(StringView name)
 	{
 		for(auto& com : mComponents) {
-			CHECK(com->GetName() != name.GetString(), "Cannot add component '{0}'. The component already exists.", name.GetString());
+			CHECK(com->GetName() != name, "Cannot add component '{0}'. The component already exists.", name);
 		}
 
 		HComponent c = ECore().GetComponentManager().CreateComponent(name);

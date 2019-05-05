@@ -45,7 +45,7 @@ namespace cube
 			Win32FileSystem() = delete;
 			~Win32FileSystem() = delete;
 
-			static SPtr<File> OpenFileImpl(StringRef path, FileAccessModeFlags accessModeFlags, bool createIfNotExist = false);
+			static SPtr<File> OpenFileImpl(StringView path, FileAccessModeFlags accessModeFlags, bool createIfNotExist = false);
 
 		private:
 			static DWORD GetDwDesiredAccess(FileAccessModeFlags accessModeFlags);

@@ -26,7 +26,7 @@ namespace cube
 		mImporters.push_back(std::move(importer));
 	}
 		
-	RPtr<Resource> ResourceManager::LoadResource(StringRef path)
+	RPtr<Resource> ResourceManager::LoadResource(StringView path)
 	{
 		using namespace platform;
 
@@ -34,7 +34,7 @@ namespace cube
 		{
 			Lock lock(mLoadedResourcesMutex);
 
-			auto findIter = mLoadedResources.find(path.GetString()); // TODO: UUID로 바꾸기
+			auto findIter = mLoadedResources.find(path.data()); // TODO: UUID로 바꾸기
 			if(findIter != mLoadedResources.end()) {
 				RPtr<Resource> resPtr(findIter->second);
 				return resPtr;
@@ -42,7 +42,7 @@ namespace cube
 		}
 
 		// Get a metadata
-		String metaPath = path.GetString();
+		String metaPath(path.data(), path.size());
 		metaPath.append(CUBE_T(".cmeta"));
 		SPtr<File> metaFile = platform::FileSystem::OpenFile(metaPath, FileAccessModeFlag::Read);
 
@@ -64,7 +64,7 @@ namespace cube
 		bool isFindImporter = false;
 		for(auto& importer : mImporters) {
 			if(importer->GetName() == importerName) {
-				SPtr<File> resFile = platform::FileSystem::OpenFile(path.GetString(), FileAccessModeFlag::Read);
+				SPtr<File> resFile = platform::FileSystem::OpenFile(path, FileAccessModeFlag::Read);
 				Json info = metaJson["info"];
 
 				loadedRes = importer->Import(resFile, info);
@@ -79,7 +79,7 @@ namespace cube
 		{
 			Lock lock(mLoadedResourcesMutex);
 
-			mLoadedResources[path.GetString()] = loadedRes; // TODO: UUID로 바꾸기
+			mLoadedResources[path.data()] = loadedRes; // TODO: UUID로 바꾸기
 		}
 		return RPtr<Resource>(loadedRes);
 	}

@@ -7,27 +7,27 @@ namespace cube
 	//////////////
 	// U8String //
 	//////////////
-	U8String ToU8String(const U16String& str)
+	U8String ToU8String(U16StringView str)
 	{
 		int u8StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			char32_t codePoint = internal::GetUTF16CharAndMove(iter);
 			u8StrLength += internal::GetUTF8RequiredCharSize(codePoint);
 		}
 
 		U8String u8Str;
 		u8Str.reserve(u8StrLength);
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			char32_t codePoint = internal::GetUTF16CharAndMove(iter);
 			internal::InsertCharInUTF8(u8Str, codePoint);
 		}
 
 		return u8Str;
 	}
-	U8String ToU8String(const U32String& str)
+	U8String ToU8String(U32StringView str)
 	{
 		int u8StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			char32_t ch = *iter;
 
 			u8StrLength += internal::GetUTF8RequiredCharSize(*iter);
@@ -35,7 +35,7 @@ namespace cube
 
 		U8String u8Str;
 		u8Str.reserve(u8StrLength);
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			internal::InsertCharInUTF8(u8Str, *iter);
 		}
 
@@ -45,10 +45,10 @@ namespace cube
 	///////////////
 	// U16String //
 	///////////////
-	U16String ToU16String(const U8String& str)
+	U16String ToU16String(U8StringView str)
 	{
 		int u16StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			int chSize = internal::GetUTF8CharSize(iter);
 			iter += chSize;
 
@@ -60,7 +60,7 @@ namespace cube
 
 		U16String u16Str;
 		u16Str.reserve(u16StrLength);
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			char32_t ch = internal::GetUTF8CharAndMove(iter);
 
 			internal::InsertCharInUTF16(u16Str, ch);
@@ -68,15 +68,15 @@ namespace cube
 
 		return u16Str;
 	}
-	U16String ToU16String(const U32String& str)
+	U16String ToU16String(U32StringView str)
 	{
 		int u16StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			u16StrLength += internal::GetUTF16RequiredCharSize(*iter);
 		}
 
 		U16String u16Str;
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			internal::InsertCharInUTF16(u16Str, *iter);
 		}
 
@@ -86,10 +86,10 @@ namespace cube
 	///////////////
 	// U32String //
 	///////////////
-	U32String ToU32String(const U8String& str)
+	U32String ToU32String(U8StringView str)
 	{
 		int u32StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			u32StrLength++;
 
 			int chSize = internal::GetUTF8CharSize(iter);
@@ -97,17 +97,17 @@ namespace cube
 		}
 
 		U32String u32Str;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			char32_t ch = internal::GetUTF8CharAndMove(iter);
 			u32Str.push_back(ch);
 		}
 
 		return u32Str;
 	}
-	U32String ToU32String(const U16String& str)
+	U32String ToU32String(U16StringView str)
 	{
 		int u32StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			u32StrLength++;
 
 			int chSize = internal::GetUTF16CharSize(iter);
@@ -115,7 +115,7 @@ namespace cube
 		}
 
 		U32String u32Str;
-		for(auto iter = str.cbegin(); iter != str.cend();) {
+		for(auto iter = str.begin(); iter != str.end();) {
 			char32_t ch = internal::GetUTF16CharAndMove(iter);
 			u32Str.push_back(ch);
 		}
@@ -125,7 +125,7 @@ namespace cube
 
 	namespace internal
 	{
-		char32_t GetUTF8CharAndMove(U8String::const_iterator& iter)
+		char32_t GetUTF8CharAndMove(U8StringView::iterator& iter)
 		{
 			char32_t res = 0;
 			char first, second, third, fourth;
@@ -175,7 +175,7 @@ namespace cube
 
 			return res;
 		}
-		int GetUTF8CharSize(U8String::const_iterator iter)
+		int GetUTF8CharSize(U8StringView::iterator iter)
 		{
 			char ch = *iter;
 
@@ -257,7 +257,7 @@ namespace cube
 			}
 		}
 
-		char32_t GetUTF16CharAndMove(U16String::const_iterator& iter)
+		char32_t GetUTF16CharAndMove(U16StringView::iterator& iter)
 		{
 			char32_t res = 0;
 
@@ -282,7 +282,7 @@ namespace cube
 
 			return res;
 		}
-		int GetUTF16CharSize(U16String::const_iterator iter)
+		int GetUTF16CharSize(U16StringView::iterator iter)
 		{
 			char16_t ch = *iter;
 

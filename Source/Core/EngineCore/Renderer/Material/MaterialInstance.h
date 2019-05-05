@@ -32,14 +32,14 @@ namespace cube
 		HMaterial GetMaterial() const { return mMaterial; }
 
 		template <typename T>
-		void SetParameterData(StringRef name, T& data)
+		void SetParameterData(StringView name, T& data)
 		{
 			T& t = data;
 			SetParamData(name, &data, sizeof(T));
 		}
 
 		template <>
-		void SetParameterData(StringRef name, RPtr<Texture>& texture);
+		void SetParameterData(StringView name, RPtr<Texture>& texture);
 
 		void Destroy();
 
@@ -47,7 +47,7 @@ namespace cube
 		friend class Material;
 		MaterialInstance(HMaterial mat);
 
-		void SetParamData(StringRef name, void* pData, Uint64 dataSize);
+		void SetParamData(StringView name, void* pData, Uint64 dataSize);
 
 		HashMap<String, Uint64> mParameterIndexLookupMap;
 		Vector<MaterialParameter> mParameters;

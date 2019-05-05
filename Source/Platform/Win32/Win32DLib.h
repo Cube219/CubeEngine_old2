@@ -15,10 +15,10 @@ namespace cube
 		class PLATFORM_EXPORT Win32DLib : public DLib
 		{
 		public:
-			Win32DLib(StringRef path);
+			Win32DLib(StringView path);
 			virtual ~Win32DLib();
 
-			void* GetFunctionImpl(StringRef name);
+			void* GetFunctionImpl(StringView name);
 
 		private:
 			HMODULE mDLib;

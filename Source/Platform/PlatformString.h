@@ -7,13 +7,14 @@ namespace cube
 #ifdef _WIN32
 	using PCharacter = wchar_t;
 	using PString = std::wstring;
+	using PStringView = BaseStringView<wchar_t>;
 #endif
 
-	PLATFORM_EXPORT PString ToPString(const U8String& str);
-	PLATFORM_EXPORT PString ToPString(const U16String& str);
-	PLATFORM_EXPORT PString ToPString(const U32String& str);
+	PLATFORM_EXPORT PString ToPString(U8StringView str);
+	PLATFORM_EXPORT PString ToPString(U16StringView str);
+	PLATFORM_EXPORT PString ToPString(U32StringView str);
 
-	PLATFORM_EXPORT U8String ToU8String(const PString& str);
-	PLATFORM_EXPORT U16String ToU16String(const PString& str);
-	PLATFORM_EXPORT U32String ToU32String(const PString& str);
+	PLATFORM_EXPORT U8String ToU8String(PStringView str);
+	PLATFORM_EXPORT U16String ToU16String(PStringView str);
+	PLATFORM_EXPORT U32String ToU32String(PStringView str);
 } // namespace cube

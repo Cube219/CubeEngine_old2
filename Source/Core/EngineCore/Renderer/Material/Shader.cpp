@@ -5,7 +5,7 @@
 
 namespace cube
 {
-	RPtr<Shader> Shader::Load(StringRef path)
+	RPtr<Shader> Shader::Load(StringView path)
 	{
 		return ECore().GetResourceManager().LoadResource<Shader>(path);
 	}

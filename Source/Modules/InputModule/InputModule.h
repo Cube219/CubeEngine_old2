@@ -59,9 +59,9 @@ namespace cube
 
 			void Destroy() final override;
 
-			bool IsActionPressed(StringRef name);
+			bool IsActionPressed(StringView name);
 
-			float GetAxisValue(StringRef name);
+			float GetAxisValue(StringView name);
 
 			void LockCursor();
 			void UnlockCursor();

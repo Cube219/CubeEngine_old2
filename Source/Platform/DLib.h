@@ -12,11 +12,11 @@ namespace cube
 			DLib(){ }
 			virtual ~DLib(){ }
 
-			void* GetFunction(StringRef name);
+			void* GetFunction(StringView name);
 		};
 
 #define DLIB_DEFINITION(Child)                                 \
-		inline void* DLib::GetFunction(StringRef name) {   \
+		inline void* DLib::GetFunction(StringView name) {      \
 			return RCast(Child*)(this)->GetFunctionImpl(name); \
 		}
 	} // namespace platform

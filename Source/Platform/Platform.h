@@ -25,7 +25,7 @@ namespace cube
 		public:
 			static void Init();
 
-			static void InitWindow(StringRef title, Uint32 width, Uint32 height);
+			static void InitWindow(StringView title, Uint32 width, Uint32 height);
 			static void ShowWindow();
 
 			static void StartLoop();
@@ -40,7 +40,7 @@ namespace cube
 			static uint32_t GetWindowWidth() { return width; }
 			static uint32_t GetWindowHeight() { return height; }
 
-			static SPtr<DLib> LoadDLib(StringRef path);
+			static SPtr<DLib> LoadDLib(StringView path);
 
 			static auto& GetKeyDownEvent() { return keyDownEvent; }
 			static auto& GetKeyUpEvent() { return keyUpEvent; }
@@ -80,44 +80,44 @@ namespace cube
 			~Platform() = delete;
 		};
 
-#define PLATFORM_DEFINITION(Child)                             \
-		inline void Platform::Init() {                         \
-			Child::InitImpl();                                 \
-		}                                                      \
-		                                                       \
-		inline void Platform::InitWindow                       \
-			(StringRef title, Uint32 width, Uint32 height) {   \
-			Child::InitWindowImpl(title, width, height);       \
-		}                                                      \
-		inline void Platform::ShowWindow() {                   \
-			Child::ShowWindowImpl();                           \
-		}                                                      \
-                                                               \
-		inline void Platform::StartLoop() {                    \
-			Child::StartLoopImpl();                            \
-		}                                                      \
-		inline void Platform::FinishLoop() {                   \
-			Child::FinishLoopImpl();                           \
-		}                                                      \
-		inline void Platform::Sleep(Uint32 time) {             \
-			Child::SleepImpl(time);                            \
-		}                                                      \
-                                                               \
-		inline void Platform::ShowCursor() {                   \
-			Child::ShowCursorImpl();                           \
-		}                                                      \
-		inline void Platform::HideCursor() {                   \
-			Child::HideCursorImpl();                           \
-		}                                                      \
-		inline void Platform::MoveCursor(int x, int y) {       \
-			Child::MoveCursorImpl(x, y);                       \
-		}                                                      \
-		inline void Platform::GetCursorPos(int& x, int& y) {   \
-			Child::GetCursorPosImpl(x, y);                     \
-		}                                                      \
-                                                               \
-		inline SPtr<DLib> Platform::LoadDLib(StringRef path) { \
-			return Child::LoadDLibImpl(path);                  \
+#define PLATFORM_DEFINITION(Child)                              \
+		inline void Platform::Init() {                          \
+			Child::InitImpl();                                  \
+		}                                                       \
+		                                                        \
+		inline void Platform::InitWindow                        \
+			(StringView title, Uint32 width, Uint32 height) {   \
+			Child::InitWindowImpl(title, width, height);        \
+		}                                                       \
+		inline void Platform::ShowWindow() {                    \
+			Child::ShowWindowImpl();                            \
+		}                                                       \
+                                                                \
+		inline void Platform::StartLoop() {                     \
+			Child::StartLoopImpl();                             \
+		}                                                       \
+		inline void Platform::FinishLoop() {                    \
+			Child::FinishLoopImpl();                            \
+		}                                                       \
+		inline void Platform::Sleep(Uint32 time) {              \
+			Child::SleepImpl(time);                             \
+		}                                                       \
+                                                                \
+		inline void Platform::ShowCursor() {                    \
+			Child::ShowCursorImpl();                            \
+		}                                                       \
+		inline void Platform::HideCursor() {                    \
+			Child::HideCursorImpl();                            \
+		}                                                       \
+		inline void Platform::MoveCursor(int x, int y) {        \
+			Child::MoveCursorImpl(x, y);                        \
+		}                                                       \
+		inline void Platform::GetCursorPos(int& x, int& y) {    \
+			Child::GetCursorPosImpl(x, y);                      \
+		}                                                       \
+                                                                \
+		inline SPtr<DLib> Platform::LoadDLib(StringView path) { \
+			return Child::LoadDLibImpl(path);                   \
 		}
 	} // namespace platform
 } // namespace cube

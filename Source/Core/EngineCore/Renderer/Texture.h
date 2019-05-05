@@ -14,7 +14,7 @@ namespace cube
 	class ENGINE_CORE_EXPORT Texture : public Resource, public RenderObject
 	{
 	public:
-		static RPtr<Texture> Load(StringRef path);
+		static RPtr<Texture> Load(StringView path);
 
 	public:
 		Texture();

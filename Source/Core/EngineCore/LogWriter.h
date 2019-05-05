@@ -21,15 +21,9 @@ namespace cube
 	public:
 
 		template <typename ...Args>
-		static void WriteLog(LogType type, const char* fileName, int lineNum, const String& msg, Args&&... args)
+		static void WriteLog(LogType type, const char* fileName, int lineNum, StringView msg, Args&&... args)
 		{
-			WriteLogImpl(type, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
-		}
-
-		template <typename ...Args>
-		static void WriteLog(LogType type, const char* fileName, int lineNum, const Character* msg, Args&&... args)
-		{
-			WriteLogImpl(type, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
+			WriteLogImpl(type, fileName, lineNum, Format(msg.data(), std::forward<Args>(args)...));
 		}
 
 	private:
@@ -40,13 +34,10 @@ namespace cube
 		friend class EngineCore;
 
 		template <typename ...Args>
-		friend void AssertionFailed(const char* fileName, int lineNum, const String* msg, Args&&... args);
-		template <typename ...Args>
-		friend void AssertionFailed(const char* fileName, int lineNum, const Character* msg, Args&&... args);
+		friend void AssertionFailed(const char* fileName, int lineNum, StringView msg, Args&&... args);
 
-		static void WriteLogImpl(LogType type, const char* fileName, int lineNum, const String& msg);
-		static void WriteLogImpl(LogType type, const char* fileName, int lineNum, String&& msg);
-		static void WriteLogImpl(const String& log);
+		static void WriteLogImpl(LogType type, const char* fileName, int lineNum, StringView msg);
+		static void WriteLogImpl(StringView log);
 
 		// Only can access to the friend class (EngineCore)
 		static void Init();

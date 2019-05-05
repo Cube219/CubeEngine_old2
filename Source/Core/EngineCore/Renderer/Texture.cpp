@@ -6,7 +6,7 @@
 
 namespace cube
 {
-	RPtr<Texture> Texture::Load(StringRef path)
+	RPtr<Texture> Texture::Load(StringView path)
 	{
 		auto texture = ECore().GetResourceManager().LoadResource<Texture>(path);
 		texture->Initialize();

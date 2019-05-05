@@ -9,18 +9,18 @@ namespace cube
 		class PLATFORM_EXPORT PlatformDebugUtility
 		{
 		public:
-			static void AssertionFailed(StringRef msg, const char* funcName, const char* fileName, int lineNum);
+			static void AssertionFailed(StringView msg, const char* funcName, const char* fileName, int lineNum);
 
-			static void PrintToConsole(StringRef str);
+			static void PrintToConsole(StringView str);
 		};
 
 #define PLATFORM_DEBUG_UTILITY_DEFINITION(Child)                                           \
 		inline void PlatformDebugUtility::AssertionFailed                                  \
-			(StringRef msg, const char* funcName, const char* fileName, int lineNum) { \
+			(StringView msg, const char* funcName, const char* fileName, int lineNum) {    \
 			Child::AssertionFailedImpl(msg, funcName, fileName, lineNum);                  \
 		}                                                                                  \
                                                                                            \
-		inline void PlatformDebugUtility::PrintToConsole(StringRef str)                \
+		inline void PlatformDebugUtility::PrintToConsole(StringView str)                   \
 		{                                                                                  \
 			Child::PrintToConsoleImpl(str);                                                \
 		}

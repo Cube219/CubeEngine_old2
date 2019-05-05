@@ -10,28 +10,16 @@ namespace cube
 	namespace platform
 	{
 		template <typename ...Args>
-		void AssertionFailed(const char* fileName, int lineNum, const String& msg, Args&&... args)
+		void AssertionFailed(const char* fileName, int lineNum, StringView msg, Args&&... args)
 		{
-			platform::PlatformDebugUtility::AssertionFailed(Format(msg, std::forward<Args>(args)...), nullptr, fileName, lineNum);
-		}
-
-		template <typename ...Args>
-		void AssertionFailed(const char* fileName, int lineNum, const Character* msg, Args&&... args)
-		{
-			platform::PlatformDebugUtility::AssertionFailed(Format(msg, std::forward<Args>(args)...), nullptr, fileName, lineNum);
+			platform::PlatformDebugUtility::AssertionFailed(Format(msg.data(), std::forward<Args>(args)...), nullptr, fileName, lineNum);
 		}
 
 		void PrintConsoleImpl(const char* fileName, int lineNum, String&& msg);
 		template <typename ...Args>
-		void PrintConsole(const char* fileName, int lineNum, const String& msg, Args&&... args)
+		void PrintConsole(const char* fileName, int lineNum, StringView msg, Args&&... args)
 		{
-			PrintConsoleImpl(fileName, lineNum, Format(msg, std::forward<Args>(args)...));
-		}
-
-		template <typename ...Args>
-		void PrintConsole(const char* fileName, int lineNum, const Character* msg, Args&&... args)
-		{
-			PrintConsoleImpl(fileName, lineNum, Format(msg, std::forward<Args>(args)...));
+			PrintConsoleImpl(fileName, lineNum, Format(msg.data(), std::forward<Args>(args)...));
 		}
 	} // namespace core
 } // namespace cube

@@ -11,22 +11,15 @@ namespace cube
 {
 	namespace render
 	{
-		void PrintVkFailImpl(VkResult res, const char* fileName, int lineNum, const String& msg);
-		void PrintVkFailImpl(VkResult res, const char* fileName, int lineNum, String&& msg);
+		void PrintVkFailImpl(VkResult res, const char* fileName, int lineNum, StringView msg);
 
 		template <typename ...Args>
-		void PrintVkFail(VkResult res, const char* fileName, int lineNum, const String& msg, Args&&... args)
+		void PrintVkFail(VkResult res, const char* fileName, int lineNum, StringView msg, Args&&... args)
 		{
-			PrintVkFailImpl(res, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
+			PrintVkFailImpl(res, fileName, lineNum, Format(msg.data(), std::forward<Args>(args)...));
 		}
 
-		template <typename ...Args>
-		void PrintVkFail(VkResult res, const char* fileName, int lineNum, const Character* msg, Args&&... args)
-		{
-			PrintVkFailImpl(res, fileName, lineNum, Format(msg, std::forward<Args>(args)...));
-		}
-
-		String GetVkResult(VkResult res);
+		const Character* GetVkResult(VkResult res);
 	} // namespace render
 } // namespace cube
 

@@ -70,13 +70,13 @@ namespace cube
 			FileSystem() = delete;
 			~FileSystem() = delete;
 
-			static SPtr<File> OpenFile(StringRef path, FileAccessModeFlags accessModeFlags, bool createIfNotExist = false);
+			static SPtr<File> OpenFile(StringView path, FileAccessModeFlags accessModeFlags, bool createIfNotExist = false);
 		};
 
-#define FILE_SYSTEM_DEFINITION(Child)                                                      \
-		inline SPtr<File> FileSystem::OpenFile                                             \
-			(StringRef path, FileAccessModeFlags accessModeFlags, bool createIfNotExist) { \
-			return Child::OpenFileImpl(path, accessModeFlags, createIfNotExist);           \
+#define FILE_SYSTEM_DEFINITION(Child)                                                       \
+		inline SPtr<File> FileSystem::OpenFile                                              \
+			(StringView path, FileAccessModeFlags accessModeFlags, bool createIfNotExist) { \
+			return Child::OpenFileImpl(path, accessModeFlags, createIfNotExist);            \
 		}
 	} // namespace platform
 } // namespace cube

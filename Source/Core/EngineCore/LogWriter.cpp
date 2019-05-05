@@ -24,7 +24,7 @@ namespace cube
 		return fullPath;
 	}
 
-	void LogWriter::WriteLogImpl(LogType type, const char* fileName, int lineNum, const String& msg)
+	void LogWriter::WriteLogImpl(LogType type, const char* fileName, int lineNum, StringView msg)
 	{
 		// INFO [18:22:22.1111 / EngineCore.cpp:152] : 내용
 
@@ -49,12 +49,7 @@ namespace cube
 		WriteLogImpl(res);
 	}
 
-	void LogWriter::WriteLogImpl(LogType type, const char* fileName, int lineNum, String&& msg)
-	{
-		WriteLogImpl(type, fileName, lineNum, msg);
-	}
-
-	void LogWriter::WriteLogImpl(const String& log)
+	void LogWriter::WriteLogImpl(StringView log)
 	{
 		// TODO: File에 쓰는 방식 추가
 		// TODO: 시간 기록

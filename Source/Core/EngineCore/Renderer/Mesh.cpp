@@ -7,7 +7,7 @@
 
 namespace cube
 {
-	RPtr<Mesh> Mesh::Load(StringRef path)
+	RPtr<Mesh> Mesh::Load(StringView path)
 	{
 		auto mesh = ECore().GetResourceManager().LoadResource<Mesh>(path);
 		mesh->Initialize();

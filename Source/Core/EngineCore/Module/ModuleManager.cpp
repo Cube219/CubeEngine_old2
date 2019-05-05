@@ -28,17 +28,17 @@ namespace cube
 		mModules.clear();
 	}
 
-	void ModuleManager::LoadModule(StringRef moduleName)
+	void ModuleManager::LoadModule(StringView moduleName)
 	{
-		auto temp = mModuleLookup.find(moduleName.GetString());
+		auto temp = mModuleLookup.find(moduleName.data());
 		if(temp != mModuleLookup.end()) {
-			CUBE_LOG(LogType::Error, "Already module name '{0}' loaded.", moduleName.GetString());
+			CUBE_LOG(LogType::Error, "Already module name '{0}' loaded.", moduleName);
 			return;
 		}
 
 		ModuleNode node;
 			
-		node.moduleDLib = platform::Platform::LoadDLib(moduleName.GetString());
+		node.moduleDLib = platform::Platform::LoadDLib(moduleName);
 			
 		using CreateModuleFunction = BaseModule* (*)();
 
@@ -46,7 +46,7 @@ namespace cube
 		node.module = SPtr<BaseModule>(createModuleFunction());
 
 		mModules.push_back(node);
-		mModuleLookup[moduleName.GetString()] = node.module;
+		mModuleLookup[moduleName.data()] = node.module;
 	}
 
 	void ModuleManager::InitModules()
@@ -56,10 +56,10 @@ namespace cube
 		}
 	}
 
-	SPtr<BaseModule> ModuleManager::GetModule(StringRef name)
+	SPtr<BaseModule> ModuleManager::GetModule(StringView name)
 	{
-		auto temp = mModuleLookup.find(name.GetString());
-		CHECK(temp != mModuleLookup.end(), "Failed to find module '{0}'.", name.GetString());
+		auto temp = mModuleLookup.find(name.data());
+		CHECK(temp != mModuleLookup.end(), "Failed to find module '{0}'.", name);
 
 		return temp->second;
 	}

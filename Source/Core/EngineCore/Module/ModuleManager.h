@@ -38,14 +38,14 @@ namespace cube
 		void Initialize();
 		void ShutDown();
 
-		void LoadModule(StringRef moduleName);
+		void LoadModule(StringView moduleName);
 
 		void InitModules();
 
-		SPtr<BaseModule> GetModule(StringRef name);
+		SPtr<BaseModule> GetModule(StringView name);
 			
 		template <typename T>
-		SPtr<T> GetModule(StringRef name)
+		SPtr<T> GetModule(StringView name)
 		{
 			return DPCast(T)(GetModule(name));
 		}
