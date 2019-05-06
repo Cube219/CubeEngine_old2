@@ -68,10 +68,10 @@ namespace cube
 		// FileSystem //
 		////////////////
 
-		SPtr<File> Win32FileSystem::OpenFileImpl(StringRef path, FileAccessModeFlags accessModeFlags, bool createIfNotExist)
+		SPtr<File> Win32FileSystem::OpenFileImpl(StringView path, FileAccessModeFlags accessModeFlags, bool createIfNotExist)
 		{
 			DWORD desiredAccess = GetDwDesiredAccess(accessModeFlags);
-			PString pPath = ToPString(path.GetString());
+			PString pPath = ToPString(path);
 
 			HANDLE file = CreateFile(pPath.c_str(), desiredAccess, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
@@ -90,7 +90,7 @@ namespace cube
 				err = GetLastError();
 			}
 
-			PLATFORM_ASSERTION_FAILED("Failed to open a file. ({0}) (ErrorCode: {1})", path.GetString(), err);
+			PLATFORM_ASSERTION_FAILED("Failed to open a file. ({0}) (ErrorCode: {1})", path, err);
 			return nullptr;
 		}
 

@@ -25,7 +25,7 @@ namespace cube
 		public:
 			static void Init();
 
-			static void InitWindow(StringRef title, Uint32 width, Uint32 height);
+			static void InitWindow(StringView title, Uint32 width, Uint32 height);
 			static void ShowWindow();
 
 			static void* Allocate(Uint64 size);
@@ -45,7 +45,7 @@ namespace cube
 			static uint32_t GetWindowWidth() { return width; }
 			static uint32_t GetWindowHeight() { return height; }
 
-			static SPtr<DLib> LoadDLib(StringRef path);
+			static SPtr<DLib> LoadDLib(StringView path);
 
 			static auto& GetKeyDownEvent() { return keyDownEvent; }
 			static auto& GetKeyUpEvent() { return keyUpEvent; }
@@ -91,7 +91,7 @@ namespace cube
 		}                                                                       \
 		                                                                        \
 		inline void Platform::InitWindow                                        \
-			(StringRef title, Uint32 width, Uint32 height) {                    \
+			(StringView title, Uint32 width, Uint32 height) {                   \
 			Child::InitWindowImpl(title, width, height);                        \
 		}                                                                       \
 		inline void Platform::ShowWindow() {                                    \
@@ -134,7 +134,7 @@ namespace cube
 			Child::GetCursorPosImpl(x, y);                                      \
 		}                                                                       \
                                                                                 \
-		inline SPtr<DLib> Platform::LoadDLib(StringRef path) {                  \
+		inline SPtr<DLib> Platform::LoadDLib(StringView path) {                 \
 			return Child::LoadDLibImpl(path);                                   \
 		}
 	} // namespace platform

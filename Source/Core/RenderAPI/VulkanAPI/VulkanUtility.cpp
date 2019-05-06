@@ -8,17 +8,12 @@ namespace cube
 {
 	namespace render
 	{
-		void PrintVkFailImpl(VkResult res, const char* fileName, int lineNum, const String& msg)
+		void PrintVkFailImpl(VkResult res, const char* fileName, int lineNum, StringView msg)
 		{
 			ASSERTION_FAILED("{0} {1}", msg, GetVkResult(res));
 		}
 
-		void PrintVkFailImpl(VkResult res, const char* fileName, int lineNum, String&& msg)
-		{
-			PrintVkFailImpl(res, fileName, lineNum, msg);
-		}
-
-		String GetVkResult(VkResult res)
+		const Character* GetVkResult(VkResult res)
 		{
 			switch(res) {
 			case VK_ERROR_INITIALIZATION_FAILED:

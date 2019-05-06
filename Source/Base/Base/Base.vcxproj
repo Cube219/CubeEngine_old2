@@ -126,7 +126,18 @@
     <ClInclude Include="BaseTypes.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Flags.h" />
-    <ClInclude Include="format.h" />
+    <ClInclude Include="fmt\chrono.h" />
+    <ClInclude Include="fmt\color.h" />
+    <ClInclude Include="fmt\core.h" />
+    <ClInclude Include="fmt\format-inl.h" />
+    <ClInclude Include="fmt\format.h" />
+    <ClInclude Include="fmt\locale.h" />
+    <ClInclude Include="fmt\ostream.h" />
+    <ClInclude Include="fmt\posix.h" />
+    <ClInclude Include="fmt\printf.h" />
+    <ClInclude Include="fmt\ranges.h" />
+    <ClInclude Include="fmt\time.h" />
+    <ClInclude Include="Format.h" />
     <ClInclude Include="Json.h" />
     <ClInclude Include="KeyCode.h" />
     <ClInclude Include="Math.h" />
@@ -143,7 +154,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="EASTLOverloadOperator.cpp" />
-    <ClCompile Include="format.cc" />
+    <ClCompile Include="fmt\format.cc" />
+    <ClCompile Include="fmt\posix.cc" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>

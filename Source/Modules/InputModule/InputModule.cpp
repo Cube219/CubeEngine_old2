@@ -212,14 +212,14 @@ namespace cube
 		{
 		}
 
-		bool InputModule::IsActionPressed(StringRef name)
+		bool InputModule::IsActionPressed(StringView name)
 		{
-			return mActions[name.GetString()].isPressed;
+			return mActions[name.data()].isPressed;
 		}
 
-		float InputModule::GetAxisValue(StringRef name)
+		float InputModule::GetAxisValue(StringView name)
 		{
-			return mAxes[name.GetString()].currentValue;
+			return mAxes[name.data()].currentValue;
 		}
 
 		void InputModule::LockCursor()

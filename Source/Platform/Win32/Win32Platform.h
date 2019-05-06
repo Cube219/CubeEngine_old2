@@ -19,7 +19,7 @@ namespace cube
 
 			static void InitImpl();
 
-			static void InitWindowImpl(StringRef title, Uint32 width, Uint32 height);
+			static void InitWindowImpl(StringView title, Uint32 width, Uint32 height);
 			static void ShowWindowImpl();
 
 			static void* AllocateImpl(Uint64 size);
@@ -37,7 +37,7 @@ namespace cube
 			static void MoveCursorImpl(int x, int y);
 			static void GetCursorPosImpl(int& x, int& y);
 
-			static SPtr<DLib> LoadDLibImpl(StringRef path);
+			static SPtr<DLib> LoadDLibImpl(StringView path);
 
 			static HINSTANCE GetInstance();
 			static HWND GetWindow();

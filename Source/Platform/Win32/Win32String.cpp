@@ -10,7 +10,7 @@
 
 namespace cube
 {
-	PString ToPString(const U8Character* str)
+	PString ToPString(U8StringView str)
 	{
 		int strLength = strnlen_s(str, 1000);
 
@@ -25,23 +25,18 @@ namespace cube
 
 		return pStr;
 	}
-	PString ToPString(const U16Character* str)
+	PString ToPString(U16StringView str)
 	{
-		int strLength = 0;
-		while(str[strLength] != u'\0') {
-			++strLength;
-		}
-
 		PString pStr;
-		pStr.reserve(strLength);
+		pStr.reserve(str.size());
 
-		for(int i = 0; i < strLength; ++i) {
-			pStr.push_back((wchar_t)str[i]);
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
+			pStr.push_back((wchar_t)*iter);
 		}
 
 		return pStr;
 	}
-	PString ToPString(const U32Character* str)
+	PString ToPString(U32StringView str)
 	{
 		int strLength = 0;
 		while(str[strLength] != U'\0') {
@@ -49,8 +44,8 @@ namespace cube
 		}
 
 		int pStrLength = 0;
-		for(int i = 0; i < strLength; ++i) {
-			if((str[i] & 0xFFFF0000) == 0) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
+			if((*iter & 0xFFFF0000) == 0) {
 				pStrLength += 1;
 			} else {
 				pStrLength += 2;
@@ -60,9 +55,9 @@ namespace cube
 		PString pStr;
 		pStr.reserve(pStrLength);
 
-		for(int i = 0; i < strLength; ++i) {
-			if((str[i] & 0xFFFF0000) == 0) {
-				pStr.push_back((wchar_t)str[i]);
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
+			if((*iter & 0xFFFF0000) == 0) {
+				pStr.push_back((wchar_t)*iter);
 			} else {
 				char32_t high = 0xD800 + ((str[i] - 0x10000) >> 10);
 				char32_t low = 0xDC00 + ((str[i] - 0x10000) & 0b1111111111);
@@ -75,7 +70,7 @@ namespace cube
 		return pStr;
 	}
 
-	U8String ToU8String(const PString& str)
+	U8String ToU8String(PStringView str)
 	{
 		int u8StrLength = WideCharToMultiByte(CP_UTF8, 0, str.data(), (int)str.size(), nullptr, 0, NULL, NULL);
 		PLATFORM_CHECK(u8StrLength > 0, "Failed to convert WString to UTF8 (Error code: {0})", GetLastError());
@@ -88,21 +83,21 @@ namespace cube
 
 		return u8Str;
 	}
-	U16String ToU16String(const PString& str)
+	U16String ToU16String(PStringView str)
 	{
 		U16String u16Str;
 		u16Str.reserve(str.size());
 
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			u16Str.push_back(*iter);
 		}
 
 		return u16Str;
 	}
-	U32String ToU32String(const PString& str)
+	U32String ToU32String(PStringView str)
 	{
 		int u32StrLength = 0;
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			if((*iter & 0xFC00) == 0xD800) {
 				iter++;
 			}
@@ -112,7 +107,7 @@ namespace cube
 		U32String u32Str;
 		u32Str.reserve(u32StrLength);
 
-		for(auto iter = str.cbegin(); iter != str.cend(); iter++) {
+		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			if((*iter & 0xFC00) == 0xD800) {
 				wchar_t high = *iter;
 				iter++;

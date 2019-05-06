@@ -34,7 +34,7 @@ namespace cube
 		bool IsModelMatrixChanged() const { return mIsModelMatrixChanged; }
 		const Matrix& GetModelMatrix() const { return mModelMatrix; }
 
-		HComponent GetComponent(StringRef name);
+		HComponent GetComponent(StringView name);
 		template <typename T>
 		Handler<T> GetComponent()
 		{
@@ -42,7 +42,7 @@ namespace cube
 			return GetComponent(nameToGet);
 		}
 
-		HComponent AddComponent(StringRef name);
+		HComponent AddComponent(StringView name);
 		template <typename T>
 		Handler<T> AddComponent()
 		{

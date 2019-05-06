@@ -23,10 +23,10 @@ namespace cube
 
 		void RegisterImporter(UPtr<ResourceImporter> importer);
 
-		RPtr<Resource> LoadResource(StringRef path);
+		RPtr<Resource> LoadResource(StringView path);
 
 		template <typename T>
-		RPtr<T> LoadResource(StringRef path)
+		RPtr<T> LoadResource(StringView path)
 		{
 			return LoadResource(path).Cast<T>();
 		}

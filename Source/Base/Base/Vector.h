@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "String.h"
-#include "format.h"
+#include "fmt/format.h"
 
 #define SIMD_SSE
 
@@ -34,27 +34,6 @@ namespace cube
 		float x;
 		float y;
 	};
-	// Float2 formatting
-	inline void format_arg(fmt::BasicFormatter<char>& f, const char*& format_str, const Float2& f2)
-	{
-		f.writer().write("({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<wchar_t>& f, const wchar_t*& format_str, const Float2& f2)
-	{
-		f.writer().write(L"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<unsigned short>& f, const unsigned short*& format_str, const Float2& f2)
-	{
-		f.writer().write((const unsigned short*)u"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t*& format_str, const Float2& f2)
-	{
-		f.writer().write(u"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t*& format_str, const Float2& f2)
-	{
-		f.writer().write(U"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
 
 	struct Float3
 	{
@@ -62,27 +41,6 @@ namespace cube
 		float y;
 		float z;
 	};
-	// Float3 formatting
-	inline void format_arg(fmt::BasicFormatter<char>& f, const char*& format_str, const Float3& f3)
-	{
-		f.writer().write("({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<wchar_t>& f, const wchar_t*& format_str, const Float3& f3)
-	{
-		f.writer().write(L"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<unsigned short>& f, const unsigned short*& format_str, const Float3& f3)
-	{
-		f.writer().write((const unsigned short*)u"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t*& format_str, const Float3& f3)
-	{
-		f.writer().write(u"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t*& format_str, const Float3& f3)
-	{
-		f.writer().write(U"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
 
 	struct Float4
 	{
@@ -91,27 +49,6 @@ namespace cube
 		float z;
 		float w;
 	};
-	// Float4 formatting
-	inline void format_arg(fmt::BasicFormatter<char>& f, const char*& format_str, const Float4& f4)
-	{
-		f.writer().write("({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<wchar_t>& f, const wchar_t*& format_str, const Float4& f4)
-	{
-		f.writer().write(L"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<unsigned short>& f, const unsigned short*& format_str, const Float4& f4)
-	{
-		f.writer().write((const unsigned short*)u"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t*& format_str, const Float4& f4)
-	{
-		f.writer().write(u"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t*& format_str, const Float4& f4)
-	{
-		f.writer().write(U"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
 
 	// Forward declarations
 	class VectorBase;
@@ -205,33 +142,6 @@ namespace cube
 		Vector2(const VectorData vData);
 	};
 
-	// Vector2 formatting
-	inline void format_arg(fmt::BasicFormatter<char>& f, const char*& format_str, const Vector2& vec2)
-	{
-		Float2 f2 = vec2.GetFloat2();
-		f.writer().write("({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<wchar_t>& f, const wchar_t*& format_str, const Vector2& vec2)
-	{
-		Float2 f2 = vec2.GetFloat2();
-		f.writer().write(L"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<unsigned short>& f, const unsigned short*& format_str, const Vector2& vec2)
-	{
-		Float2 f2 = vec2.GetFloat2();
-		f.writer().write((const unsigned short*)u"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t*& format_str, const Vector2& vec2)
-	{
-		Float2 f2 = vec2.GetFloat2();
-		f.writer().write(u"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-	inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t*& format_str, const Vector2& vec2)
-	{
-		Float2 f2 = vec2.GetFloat2();
-		f.writer().write(U"({:.3f}, {:.3f})", f2.x, f2.y);
-	}
-
 	class Vector3 : public VectorBase
 	{
 	public:
@@ -264,33 +174,6 @@ namespace cube
 		Vector3(const VectorData vData);
 	};
 
-	// Vector3 formatting
-	inline void format_arg(fmt::BasicFormatter<char>& f, const char*& format_str, const Vector3& vec3)
-	{
-		Float3 f3 = vec3.GetFloat3();
-		f.writer().write("({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<wchar_t>& f, const wchar_t*& format_str, const Vector3& vec3)
-	{
-		Float3 f3 = vec3.GetFloat3();
-		f.writer().write(L"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<unsigned short>& f, const unsigned short*& format_str, const Vector3& vec3)
-	{
-		Float3 f3 = vec3.GetFloat3();
-		f.writer().write((const unsigned short*)u"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t*& format_str, const Vector3& vec3)
-	{
-		Float3 f3 = vec3.GetFloat3();
-		f.writer().write(u"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-	inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t*& format_str, const Vector3& vec3)
-	{
-		Float3 f3 = vec3.GetFloat3();
-		f.writer().write(U"({:.3f}, {:.3f}, {:.3f})", f3.x, f3.y, f3.z);
-	}
-
 	class Vector4 : public VectorBase
 	{
 	public:
@@ -322,34 +205,93 @@ namespace cube
 		friend class Vector3;
 		Vector4(const VectorData vData);
 	};
-
-	// Vector4 formatting
-	inline void format_arg(fmt::BasicFormatter<char>& f, const char*& format_str, const Vector4& vec4)
-	{
-		Float4 f4 = vec4.GetFloat4();
-		f.writer().write("({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<wchar_t>& f, const wchar_t*& format_str, const Vector4& vec4)
-	{
-		Float4 f4 = vec4.GetFloat4();
-		f.writer().write(L"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<unsigned short>& f, const unsigned short*& format_str, const Vector4& vec4)
-	{
-		Float4 f4 = vec4.GetFloat4();
-		f.writer().write((const unsigned short*)u"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<char16_t>& f, const char16_t*& format_str, const Vector4& vec4)
-	{
-		Float4 f4 = vec4.GetFloat4();
-		f.writer().write(u"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
-	inline void format_arg(fmt::BasicFormatter<char32_t>& f, const char32_t*& format_str, const Vector4& vec4)
-	{
-		Float4 f4 = vec4.GetFloat4();
-		f.writer().write(U"({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
-	}
 } // namespace cube
+
+namespace fmt
+{
+	// Float formatting
+	template <>
+	struct formatter<cube::Float2>
+	{
+		template <typename ParseContext>
+		constexpr auto parse(ParseContext& ctx) { return ctx.begin(); }
+
+		template <typename FormatContext>
+		auto format(const cube::Float2& f2, FormatContext& ctx)
+		{
+			return format_to(ctx.begin(), "({:.3f}, {:.3f})", f2.x, f2.y);
+		}
+	};
+
+	template <>
+	struct formatter<cube::Float3>
+	{
+		template <typename ParseContext>
+		constexpr auto parse(ParseContext& ctx) { return ctx.begin(); }
+
+		template <typename FormatContext>
+		auto format(const cube::Float3& f3, FormatContext& ctx)
+		{
+			return format_to(ctx.begin(), "({:.3f}, {:.3f}, {:3.f})", f3.x, f3.y, f3.z);
+		}
+	};
+
+	template <>
+	struct formatter<cube::Float4>
+	{
+		template <typename ParseContext>
+		constexpr auto parse(ParseContext& ctx) { return ctx.begin(); }
+
+		template <typename FormatContext>
+		auto format(const cube::Float4& f4, FormatContext& ctx)
+		{
+			return format_to(ctx.begin(), "({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
+		}
+	};
+
+	// Vector formatting
+	template <>
+	struct formatter<cube::Vector2>
+	{
+		template <typename ParseContext>
+		constexpr auto parse(ParseContext& ctx) { return ctx.begin(); }
+
+		template <typename FormatContext>
+		auto format(const cube::Vector2& v2, FormatContext& ctx)
+		{
+			cube::Float2 f2 = v2.GetFloat2();
+			return format_to(ctx.begin(), "({:.3f}, {:.3f})", f2.x, f2.y);
+		}
+	};
+
+	template <>
+	struct formatter<cube::Vector3>
+	{
+		template <typename ParseContext>
+		constexpr auto parse(ParseContext& ctx) { return ctx.begin(); }
+
+		template <typename FormatContext>
+		auto format(const cube::Vector3& v3, FormatContext& ctx)
+		{
+			cube::Float3 f3 = v3.GetFloat3();
+			return format_to(ctx.begin(), "({:.3f}, {:.3f}, {:3.f})", f3.x, f3.y, f3.z);
+		}
+	};
+
+	template <>
+	struct formatter<cube::Vector4>
+	{
+		template <typename ParseContext>
+		constexpr auto parse(ParseContext& ctx) { return ctx.begin(); }
+
+		template <typename FormatContext>
+		auto format(const cube::Vector4& v4, FormatContext& ctx)
+		{
+			cube::Float4 f4 = v4.GetFloat4();
+			return format_to(ctx.begin(), "({:.3f}, {:.3f}, {:.3f}, {:.3f})", f4.x, f4.y, f4.z, f4.w);
+		}
+	};
+} // namespace fmt
 
 // Include inline function definition
 

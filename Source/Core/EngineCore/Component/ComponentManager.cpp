@@ -24,19 +24,19 @@ namespace cube
 		mComponents.clear();
 	}
 
-	HComponent ComponentManager::CreateComponent(FrameCStringRef name)
+	HComponent ComponentManager::CreateComponent(StringView name)
 	{
-		auto findIter = mComponentCreators.find_as(name.c_str());
-		//CHECK(findIter != mComponentCreators.end(), "Failed to create component '{0}'. It hasn't been registered", name.c_str());
+		auto findIter = mComponentCreators.find_as(name.data());
+		CHECK(findIter != mComponentCreators.end(), "Failed to create component '{0}'. It hasn't been registered", name);
 
 		return findIter->second();
 	}
 
-	void ComponentManager::CheckIfComponentExisted(StringRef name)
+	void ComponentManager::CheckIfComponentExisted(StringView name)
 	{
-		auto findIter = mComponentCreators.find(name.GetString());
+		auto findIter = mComponentCreators.find(name.data());
 		if(findIter != mComponentCreators.end()) {
-			CUBE_LOG(LogType::Error, "Component '{0}' is already registered", name.GetString());
+			CUBE_LOG(LogType::Error, "Component '{0}' is already registered", name);
 			return;
 		}
 	}

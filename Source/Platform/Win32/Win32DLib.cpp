@@ -11,12 +11,12 @@ namespace cube
 {
 	namespace platform
 	{
-		Win32DLib::Win32DLib(StringRef path)
+		Win32DLib::Win32DLib(StringView path)
 		{
-			PString pathWithExtension = ToPString(path.GetString()) + L".dll";
+			PString pathWithExtension = ToPString(path) + L".dll";
 
 			mDLib = LoadLibrary(pathWithExtension.c_str());
-			PLATFORM_CHECK(mDLib, "Failed to load a DLib. ({0}.dll) (ErrorCode: {1})", path.GetString(), GetLastError());
+			PLATFORM_CHECK(mDLib, "Failed to load a DLib. ({0}.dll) (ErrorCode: {1})", path, GetLastError());
 		}
 
 		Win32DLib::~Win32DLib()
@@ -27,14 +27,14 @@ namespace cube
 			}
 		}
 
-		void* Win32DLib::GetFunctionImpl(StringRef name)
+		void* Win32DLib::GetFunctionImpl(StringView name)
 		{
 			if(!mDLib)
 				return nullptr;
 
-			eastl::string aName = ToASCIIString(name.GetString());
+			U8String aName = ToU8String(name);
 			auto pFunction = GetProcAddress(mDLib, aName.c_str());
-			PLATFORM_CHECK(pFunction, "Failed to get the function({0}). (ErrorCode: {1})", name.GetString(), GetLastError());
+			PLATFORM_CHECK(pFunction, "Failed to get the function({0}). (ErrorCode: {1})", name, GetLastError());
 
 			return RCast(void*)(pFunction);
 		}

@@ -35,10 +35,10 @@ namespace cube
 			};
 		}
 
-		HComponent CreateComponent(FrameCStringRef name);
+		HComponent CreateComponent(StringView name);
 
 	private:
-		void CheckIfComponentExisted(StringRef name);
+		void CheckIfComponentExisted(StringView name);
 
 		HashMap<String, std::function<HComponent()>> mComponentCreators;
 		HandlerTable mComponentTable;

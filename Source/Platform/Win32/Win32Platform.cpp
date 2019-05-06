@@ -43,7 +43,7 @@ namespace cube
 		{
 		}
 
-		void Win32Platform::InitWindowImpl(StringRef title, Uint32 width, Uint32 height)
+		void Win32Platform::InitWindowImpl(StringView title, Uint32 width, Uint32 height)
 		{
 			// Show console if it is debug mode
 #ifdef _DEBUG
@@ -63,7 +63,7 @@ namespace cube
 			}
 #endif // _DEBUG
 
-			Platform::title = ToPString(title.GetString());
+			Platform::title = ToPString(title);
 			Platform::width = width;
 			Platform::height = height;
 
@@ -184,7 +184,7 @@ namespace cube
 			y = p.y;
 		}
 
-		SPtr<DLib> Win32Platform::LoadDLibImpl(StringRef path)
+		SPtr<DLib> Win32Platform::LoadDLibImpl(StringView path)
 		{
 			return std::make_shared<Win32DLib>(path);
 		}

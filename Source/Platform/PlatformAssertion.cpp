@@ -24,7 +24,7 @@ namespace cube
 		{
 			const char* prefix = "PLOG [";
 
-			String res = fmt::format(CUBE_T("{0} / {1}:{2}] : {3}"), prefix, SplitFileName(fileName), lineNum, msg);
+			String res = Format(CUBE_T("{0} / {1}:{2}] : {3}"), prefix, SplitFileName(fileName), lineNum, msg);
 			platform::PlatformDebugUtility::PrintToConsole(res);
 		}
 	} // namespace platform

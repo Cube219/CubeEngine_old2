@@ -14,9 +14,9 @@ namespace cube
 		class PLATFORM_EXPORT Win32DebugUtility : public PlatformDebugUtility
 		{
 		public:
-			static void AssertionFailedImpl(StringRef msg, const char* funcName, const char* fileName, int lineNum);
+			static void AssertionFailedImpl(StringView msg, const char* funcName, const char* fileName, int lineNum);
 
-			static void PrintToConsoleImpl(StringRef str);
+			static void PrintToConsoleImpl(StringView str);
 
 		private:
 			static const char* GetBaseName(const char* absolutePath);

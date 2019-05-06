@@ -12,7 +12,7 @@ namespace cube
 	class ENGINE_CORE_EXPORT Shader : public Resource
 	{
 	public:
-		static RPtr<Shader> Load(StringRef path);
+		static RPtr<Shader> Load(StringView path);
 
 	public:
 		Shader() { }
