@@ -12,15 +12,13 @@ namespace cube
 {
 	PString ToPString(U8StringView str)
 	{
-		int strLength = strnlen_s(str, 1000);
-
-		int pStrLength = MultiByteToWideChar(CP_UTF8, 0, str, strLength, nullptr, 0);
+		int pStrLength = MultiByteToWideChar(CP_UTF8, 0, str.data(), str.size(), nullptr, 0);
 		PLATFORM_CHECK(pStrLength > 0, "Failed to convert UTF8 to WString (Error code: {0})", GetLastError());
 
 		PString pStr;
 		pStr.resize(pStrLength);
 
-		int res = MultiByteToWideChar(CP_UTF8, 0, str, strLength, &pStr[0], pStrLength);
+		int res = MultiByteToWideChar(CP_UTF8, 0, str.data(), str.size(), &pStr[0], pStrLength);
 		PLATFORM_CHECK(res != 0, "Failed to convert UTF8 to WString (Error code: {0})", GetLastError());
 
 		return pStr;
@@ -38,11 +36,6 @@ namespace cube
 	}
 	PString ToPString(U32StringView str)
 	{
-		int strLength = 0;
-		while(str[strLength] != U'\0') {
-			++strLength;
-		}
-
 		int pStrLength = 0;
 		for(auto iter = str.begin(); iter != str.end(); iter++) {
 			if((*iter & 0xFFFF0000) == 0) {
@@ -59,8 +52,8 @@ namespace cube
 			if((*iter & 0xFFFF0000) == 0) {
 				pStr.push_back((wchar_t)*iter);
 			} else {
-				char32_t high = 0xD800 + ((str[i] - 0x10000) >> 10);
-				char32_t low = 0xDC00 + ((str[i] - 0x10000) & 0b1111111111);
+				char32_t high = 0xD800 + ((*iter - 0x10000) >> 10);
+				char32_t low = 0xDC00 + ((*iter - 0x10000) & 0b1111111111);
 
 				pStr.push_back((wchar_t)high);
 				pStr.push_back((wchar_t)low);

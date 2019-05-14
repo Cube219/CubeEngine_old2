@@ -207,28 +207,22 @@ namespace cube
 
 	// Define strings with frame allocator
 	using FrameU8String = eastl::basic_string<U8Character, FrameAllocator::EASTLAllocator>;
-	using FrameU8CStringRef = BaseCStringRef<U8Character, FrameU8String>;
 	using FrameU8StringRef = BaseStringRef<U8Character, FrameU8String>;
 
 	using FrameU16String = eastl::basic_string<U16Character, FrameAllocator::EASTLAllocator>;
-	using FrameU16CStringRef = BaseCStringRef<U16Character, FrameU16String>;
 	using FrameU16StringRef = BaseStringRef<U16Character, FrameU16String>;
 
 	using FrameU32String = eastl::basic_string<U32Character, FrameAllocator::EASTLAllocator>;
-	using FrameU32CStringRef = BaseCStringRef<U32Character, FrameU32String>;
 	using FrameU32StringRef = BaseStringRef<U32Character, FrameU32String>;
 
 #if defined (STR_UTF8)
 	using FrameString = FrameU8String;
-	using FrameCStringRef = FrameU8CStringRef;
 	using FrameStringRef = FrameU8StringRef;
 #elif defined (STR_UTF16)
 	using FrameString = FrameU16String;
-	using FrameCStringRef = FrameU16CStringRef;
 	using FrameStringRef = FrameU16StringRef;
 #elif defined (STR_UTF32)
 	using FrameString = FrameU32String;
-	using FrameCStringRef = FrameU32CStringRef;
 	using FrameStringRef = FrameU32StringRef;
 #endif
 

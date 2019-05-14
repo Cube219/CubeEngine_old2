@@ -70,17 +70,17 @@ namespace cube
 	};
 
 	template <>
-	struct GetStringType<std::basic_string<char>>
+	struct GetStringType<eastl::basic_string<char>>
 	{
 		using type = char;
 	};
 	template <>
-	struct GetStringType<std::basic_string<char16_t>>
+	struct GetStringType<eastl::basic_string<char16_t>>
 	{
 		using type = char16_t;
 	};
 	template <>
-	struct GetStringType<std::basic_string<char32_t>>
+	struct GetStringType<eastl::basic_string<char32_t>>
 	{
 		using type = char32_t;
 	};
@@ -117,7 +117,7 @@ namespace cube
 	}
 
 	template <typename S, typename ...Args>
-	inline std::basic_string<typename fmt::v5::char_t<S>::type> Format(const S& format_str, const Args& ...args)
+	inline eastl::basic_string<typename fmt::v5::char_t<S>::type> Format(const S& format_str, const Args& ...args)
 	{
 		return fmt::format(format_str, convert_string<typename fmt::v5::char_t<S>::type>(args)...);
 	}
