@@ -59,13 +59,14 @@ namespace cube
 		free(metaString);
 			
 		U8String importerNameU8 = metaJson["importer_name"].GetString();
-		String importerName = ToString(importerNameU8);
+		String importerName;
+		String_ConvertAndAppend(importerName, importerNameU8);
 
 		Resource* loadedRes = nullptr;
 		// Find importer to import the resource
 		bool isFindImporter = false;
 		for(auto& importer : mImporters) {
-			if(importer->GetName() == importerName) {
+			if(importer->GetName() == StringView(importerName)) {
 				SPtr<File> resFile = platform::FileSystem::OpenFile(path, FileAccessModeFlag::Read);
 				const FrameJsonValue& info = metaJson["info"];
 

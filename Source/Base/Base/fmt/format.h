@@ -406,7 +406,7 @@ void basic_buffer<T>::append(const U *begin, const U *end) {
 // A UTF-8 code unit type.
 enum char8_t: unsigned char {};
 #endif
-
+/*
 // A UTF-8 string view.
 class u8string_view : public basic_string_view<char8_t> {
  public:
@@ -425,7 +425,7 @@ inline u8string_view operator"" _u(const char *s, std::size_t n) {
 }
 }
 #endif
-
+*/
 // The number of characters to store in the basic_memory_buffer object itself
 // to avoid dynamic memory allocation.
 enum { inline_buffer_size = 500 };

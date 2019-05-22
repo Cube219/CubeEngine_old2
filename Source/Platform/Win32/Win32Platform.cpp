@@ -63,7 +63,7 @@ namespace cube
 			}
 #endif // _DEBUG
 
-			Platform::title = ToPString(title);
+			String_ConvertAndAppend(Platform::title, title);
 			Platform::width = width;
 			Platform::height = height;
 

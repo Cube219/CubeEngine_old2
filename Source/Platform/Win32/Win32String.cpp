@@ -2,118 +2,93 @@
 
 #include "../PlatformString.h"
 
-#include <Windows.h>
 #include <iostream>
-#include <mutex>
 
 #include "../PlatformAssertion.h"
 
 namespace cube
 {
-	PString ToPString(U8StringView str)
+	namespace internal
 	{
-		int pStrLength = MultiByteToWideChar(CP_UTF8, 0, str.data(), str.size(), nullptr, 0);
-		PLATFORM_CHECK(pStrLength > 0, "Failed to convert UTF8 to WString (Error code: {0})", GetLastError());
+		char32_t DecodeAndMoveInPCharacter(const wchar_t*& pStr)
+		{
+			// Same as UTF16 in String.h
+			char32_t res = 0;
 
-		PString pStr;
-		pStr.resize(pStrLength);
+			wchar_t ch = *pStr;
 
-		int res = MultiByteToWideChar(CP_UTF8, 0, str.data(), str.size(), &pStr[0], pStrLength);
-		PLATFORM_CHECK(res != 0, "Failed to convert UTF8 to WString (Error code: {0})", GetLastError());
+			if((ch & 0xFC00) == 0xD800) { // Size: 2
+				wchar_t high = ch;
+				ch = *(++pStr);
+				wchar_t low = ch;
+				++pStr;
 
-		return pStr;
-	}
-	PString ToPString(U16StringView str)
-	{
-		PString pStr;
-		pStr.reserve(str.size());
-
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			pStr.push_back((wchar_t)*iter);
-		}
-
-		return pStr;
-	}
-	PString ToPString(U32StringView str)
-	{
-		int pStrLength = 0;
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			if((*iter & 0xFFFF0000) == 0) {
-				pStrLength += 1;
-			} else {
-				pStrLength += 2;
+				res = (((high & 0x3FF) << 10) | (low & 0x3FF)) + 0x10000;
+			} else if((ch & 0xFC00) == 0xD800) { // Invalid
+				std::wcout << L"String: Invalid UTF16 Character (" << ch << "). It is low surrogates." << std::endl;
+				return 0;
+			} else { // Size: 1
+				res = ch;
+				++pStr;
 			}
+
+			return res;
 		}
 
-		PString pStr;
-		pStr.reserve(pStrLength);
-
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			if((*iter & 0xFFFF0000) == 0) {
-				pStr.push_back((wchar_t)*iter);
-			} else {
-				char32_t high = 0xD800 + ((*iter - 0x10000) >> 10);
-				char32_t low = 0xDC00 + ((*iter - 0x10000) & 0b1111111111);
-
-				pStr.push_back((wchar_t)high);
-				pStr.push_back((wchar_t)low);
-			}
+		int EncodeInPCharacter(char32_t code, wchar_t* pStr)
+		{
+			return EncodeInUTF16(code, (char16_t*)pStr);
 		}
 
-		return pStr;
-	}
-
-	U8String ToU8String(PStringView str)
-	{
-		int u8StrLength = WideCharToMultiByte(CP_UTF8, 0, str.data(), (int)str.size(), nullptr, 0, NULL, NULL);
-		PLATFORM_CHECK(u8StrLength > 0, "Failed to convert WString to UTF8 (Error code: {0})", GetLastError());
-
-		U8String u8Str;
-		u8Str.resize(u8StrLength);
-
-		int res = WideCharToMultiByte(CP_UTF8, 0, str.data(), (int)str.size(), &u8Str[0], u8StrLength, NULL, NULL);
-		PLATFORM_CHECK(res != 0, "Failed to convert WString to UTF8 (Error code: {0})", GetLastError());
-
-		return u8Str;
-	}
-	U16String ToU16String(PStringView str)
-	{
-		U16String u16Str;
-		u16Str.reserve(str.size());
-
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			u16Str.push_back(*iter);
+		// -> PString(wchat_t)
+		template <>
+		int ConvertCodeAndMove(const char*& pSrc, wchar_t* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF8(pSrc);
+			return EncodeInPCharacter(code, pDst);
 		}
 
-		return u16Str;
-	}
-	U32String ToU32String(PStringView str)
-	{
-		int u32StrLength = 0;
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			if((*iter & 0xFC00) == 0xD800) {
-				iter++;
-			}
-			u32StrLength++;
+		template <>
+		int ConvertCodeAndMove(const char16_t*& pSrc, wchar_t* pDst)
+		{
+			// wchar is UTF-16LE in Windows. So, just copy.
+			*pDst = (wchar_t)*pSrc;
+			++pSrc;
+
+			return 1;
 		}
 
-		U32String u32Str;
-		u32Str.reserve(u32StrLength);
-
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			if((*iter & 0xFC00) == 0xD800) {
-				wchar_t high = *iter;
-				iter++;
-				wchar_t low = *iter;
-
-				char32_t res = ((high - 0xD800) << 10) + (low - 0xDC00) + 0x10000;
-				u32Str.push_back(res);
-			} else {
-				u32Str.push_back(*iter);
-			}
+		template <>
+		int ConvertCodeAndMove(const char32_t*& pSrc, wchar_t* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF32(pSrc);
+			return EncodeInPCharacter(code, pDst);
 		}
 
-		return u32Str;
+		// PString(wchar_t) ->
+		template <>
+		int ConvertCodeAndMove(const wchar_t*& pSrc, char* pDst)
+		{
+			char32_t code = DecodeAndMoveInPCharacter(pSrc);
+			return EncodeInUTF8(code, pDst);
+		}
+
+		template <>
+		int ConvertCodeAndMove(const wchar_t*& pSrc, char16_t* pDst)
+		{
+			// wchar is UTF-16LE in Windows. So, just copy.
+			*pDst = (char16_t)*pSrc;
+			++pSrc;
+
+			return 1;
+		}
+
+		template <>
+		int ConvertCodeAndMove(const wchar_t*& pSrc, char32_t* pDst)
+		{
+			char32_t code = DecodeAndMoveInPCharacter(pSrc);
+			return EncodeInUTF32(code, pDst);
+		}
 	}
 } // namespace cube
 

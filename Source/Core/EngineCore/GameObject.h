@@ -38,7 +38,7 @@ namespace cube
 		template <typename T>
 		Handler<T> GetComponent()
 		{
-			const String& nameToGet = T::GetName();
+			StringView nameToGet = T::GetName();
 			return GetComponent(nameToGet);
 		}
 
@@ -46,7 +46,7 @@ namespace cube
 		template <typename T>
 		Handler<T> AddComponent()
 		{
-			const String& nameToAdd = T::GetName();
+			StringView nameToAdd = T::GetName();
 			return AddComponent(nameToAdd);
 		}
 

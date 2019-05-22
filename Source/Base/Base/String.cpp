@@ -4,323 +4,203 @@
 
 namespace cube
 {
-	//////////////
-	// U8String //
-	//////////////
-	U8String ToU8String(U16StringView str)
-	{
-		int u8StrLength = 0;
-		for(auto iter = str.begin(); iter != str.end();) {
-			char32_t codePoint = internal::GetUTF16CharAndMove(iter);
-			u8StrLength += internal::GetUTF8RequiredCharSize(codePoint);
-		}
-
-		U8String u8Str;
-		u8Str.reserve(u8StrLength);
-		for(auto iter = str.begin(); iter != str.end();) {
-			char32_t codePoint = internal::GetUTF16CharAndMove(iter);
-			internal::InsertCharInUTF8(u8Str, codePoint);
-		}
-
-		return u8Str;
-	}
-	U8String ToU8String(U32StringView str)
-	{
-		int u8StrLength = 0;
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			char32_t ch = *iter;
-
-			u8StrLength += internal::GetUTF8RequiredCharSize(*iter);
-		}
-
-		U8String u8Str;
-		u8Str.reserve(u8StrLength);
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			internal::InsertCharInUTF8(u8Str, *iter);
-		}
-
-		return u8Str;
-	}
-
-	///////////////
-	// U16String //
-	///////////////
-	U16String ToU16String(U8StringView str)
-	{
-		int u16StrLength = 0;
-		for(auto iter = str.begin(); iter != str.end();) {
-			int chSize = internal::GetUTF8CharSize(iter);
-			iter += chSize;
-
-			if(chSize <= 3)
-				u16StrLength += 1;
-			else
-				u16StrLength += 2;
-		}
-
-		U16String u16Str;
-		u16Str.reserve(u16StrLength);
-		for(auto iter = str.begin(); iter != str.end();) {
-			char32_t ch = internal::GetUTF8CharAndMove(iter);
-
-			internal::InsertCharInUTF16(u16Str, ch);
-		}
-
-		return u16Str;
-	}
-	U16String ToU16String(U32StringView str)
-	{
-		int u16StrLength = 0;
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			u16StrLength += internal::GetUTF16RequiredCharSize(*iter);
-		}
-
-		U16String u16Str;
-		for(auto iter = str.begin(); iter != str.end(); iter++) {
-			internal::InsertCharInUTF16(u16Str, *iter);
-		}
-
-		return u16Str;
-	}
-
-	///////////////
-	// U32String //
-	///////////////
-	U32String ToU32String(U8StringView str)
-	{
-		int u32StrLength = 0;
-		for(auto iter = str.begin(); iter != str.end();) {
-			u32StrLength++;
-
-			int chSize = internal::GetUTF8CharSize(iter);
-			iter += chSize;
-		}
-
-		U32String u32Str;
-		for(auto iter = str.begin(); iter != str.end();) {
-			char32_t ch = internal::GetUTF8CharAndMove(iter);
-			u32Str.push_back(ch);
-		}
-
-		return u32Str;
-	}
-	U32String ToU32String(U16StringView str)
-	{
-		int u32StrLength = 0;
-		for(auto iter = str.begin(); iter != str.end();) {
-			u32StrLength++;
-
-			int chSize = internal::GetUTF16CharSize(iter);
-			iter += chSize;
-		}
-
-		U32String u32Str;
-		for(auto iter = str.begin(); iter != str.end();) {
-			char32_t ch = internal::GetUTF16CharAndMove(iter);
-			u32Str.push_back(ch);
-		}
-
-		return u32Str;
-	}
-
 	namespace internal
 	{
-		char32_t GetUTF8CharAndMove(U8StringView::iterator& iter)
+		char32_t DecodeAndMoveInUTF8(const char*& pStr)
 		{
 			char32_t res = 0;
 			char first, second, third, fourth;
 
-			int chSize = GetUTF8CharSize(iter);
-			char ch = *iter;
+			char ch = *pStr;
 
-			switch(chSize) {
-				case 1:
-					res = ch;
-					++iter;
-					break;
+			if((ch & 0x80) == 0) { // Size: 1
+				res = ch;
+				++pStr;
+			} else if((ch & 0xE0) == 0xC0) { // Size: 2
+				first = ch & 0x1F;
+				ch = *(++pStr);
+				second = ch & 0x3F;
+				++pStr;
 
-				case 2:
-					first = ch & 0x1F;
-					ch = *(++iter);
-					second = ch & 0x3F;
-					++iter;
+				res = (first << 6) | second;
+			} else if((ch & 0xF0) == 0xE0) { // Size: 3
+				first = ch & 0xF;
+				ch = *(++pStr);
+				second = ch & 0x3F;
+				ch = *(++pStr);
+				third = ch & 0x3F;
+				++pStr;
 
-					res = (first << 6) | second;
-					break;
+				res = (first << 12) | (second << 6) | third;
+			} else if((ch & 0xF8) == 0xF0) { // Size: 4
+				first = ch & 0x7;
+				ch = *(++pStr);
+				second = ch & 0x3F;
+				ch = *(++pStr);
+				third = ch & 0x3F;
+				ch = *(++pStr);
+				fourth = ch & 0x3F;
+				++pStr;
 
-				case 3:
-					first = ch & 0xF;
-					ch = *(++iter);
-					second = ch & 0x3F;
-					ch = *(++iter);
-					third = ch & 0x3F;
-					++iter;
-
-					res = (first << 12) | (second << 6) | third;
-					break;
-
-				case 4:
-					first = ch & 0x7;
-					ch = *(++iter);
-					second = ch & 0x3F;
-					ch = *(++iter);
-					third = ch & 0x3F;
-					ch = *(++iter);
-					fourth = ch & 0x3F;
-					++iter;
-
-					res = (first << 18) | (second << 12) | (third << 6) | fourth;
-					break;
-			}
-
-			return res;
-		}
-		int GetUTF8CharSize(U8StringView::iterator iter)
-		{
-			char ch = *iter;
-
-			if((ch & 0x80) == 0) {
-				return 1;
-			} else if((ch & 0xE0) == 0xC0) {
-				return 2;
-			} else if((ch & 0xF0) == 0xE0) {
-				return 3;
-			} else if((ch & 0xF8) == 0xF0) {
-				return 4;
+				res = (first << 18) | (second << 12) | (third << 6) | fourth;
 			} else {
 				std::wcout << L"String: Invalid UTF8 Character (" << (int)ch << ")." << std::endl;
-				return 1;
-			}
-		}
-
-		int GetUTF8RequiredCharSize(char32_t ch)
-		{
-			if((ch & 0xFFFFFF80) == 0) {
-				return 1;
-			} else if((ch & 0xFFFFF800) == 0) {
-				return 2;
-			} else if((ch & 0xFFFF0000) == 0) {
-				return 3;
-			} else if((ch & 0xFFE00000) == 0) {
-				return 4;
-			} else {
-				std::wcout << L"String: Unsupported character in UTF8 (" << (int)ch << ")." << std::endl;
-				return 1;
-			}
-		}
-
-		void InsertCharInUTF8(U8String& str, char32_t ch)
-		{
-			int chSize = GetUTF8RequiredCharSize(ch);
-			char first, second, third, fourth;
-
-			switch(chSize) {
-				case 1:
-					str.push_back((char)ch);
-					break;
-
-				case 2:
-					second = 0x80 | (ch & 0x3F);
-					ch >>= 6;
-					first = 0xC0 | (char)ch;
-
-					str.push_back(first);
-					str.push_back(second);
-					break;
-
-				case 3:
-					third = 0x80 | (ch & 0x3F);
-					ch >>= 6;
-					second = 0x80 | (ch & 0x3F);
-					ch >>= 6;
-					first = 0xE0 | (char)ch;
-
-					str.push_back(first);
-					str.push_back(second);
-					str.push_back(third);
-					break;
-
-				case 4:
-					fourth = 0x80 | (ch & 0x3F);
-					ch >>= 6;
-					third = 0x80 | (ch & 0x3F);
-					ch >>= 6;
-					second = 0x80 | (ch & 0x3F);
-					ch >>= 6;
-					first = 0xF0 | (char)ch;
-
-					str.push_back(first);
-					str.push_back(second);
-					str.push_back(third);
-					str.push_back(fourth);
-					break;
-			}
-		}
-
-		char32_t GetUTF16CharAndMove(U16StringView::iterator& iter)
-		{
-			char32_t res = 0;
-
-			char16_t ch = *iter;
-			int chSize = GetUTF16CharSize(iter);
-
-			switch(chSize) {
-				case 1:
-					res = ch;
-					++iter;
-					break;
-
-				case 2:
-					char16_t high = ch;
-					ch = *(++iter);
-					char16_t low = ch;
-					++iter;
-
-					res = (((high & 0x3FF) << 10) | (low & 0x3FF)) + 0x10000;
-					break;
+				return 0;
 			}
 
 			return res;
 		}
-		int GetUTF16CharSize(U16StringView::iterator iter)
-		{
-			char16_t ch = *iter;
 
-			if((ch & 0xFC00) == 0xD800) {
-				return 2;
-			} else if((ch & 0xFC00) == 0xD800) {
+		char32_t DecodeAndMoveInUTF16(const char16_t*& pStr)
+		{
+			char32_t res = 0;
+
+			char16_t ch = *pStr;
+
+			if((ch & 0xFC00) == 0xD800) { // Size: 2
+				char16_t high = ch;
+				ch = *(++pStr);
+				char16_t low = ch;
+				++pStr;
+
+				res = (((high & 0x3FF) << 10) | (low & 0x3FF)) + 0x10000;
+			} else if((ch & 0xFC00) == 0xD800) { // Invalid
 				std::wcout << L"String: Invalid UTF16 Character (" << ch << "). It is low surrogates." << std::endl;
+				return 0;
+			} else { // Size: 1
+				res = ch;
+				++pStr;
+			}
+
+			return res;
+		}
+
+		char32_t DecodeAndMoveInUTF32(const char32_t*& pStr)
+		{
+			char32_t code = *pStr;
+			++pStr;
+
+			return code;
+		}
+
+		int EncodeInUTF8(char32_t code, char* pStr)
+		{
+			char first, second, third, fourth;
+
+			if((code & 0xFFFFFF80) == 0) { // Size: 1
+				*pStr = (char)code;
+
 				return 1;
+			} else if((code & 0xFFFFF800) == 0) { // Size: 2
+				second = 0x80 | (code & 0x3F);
+				code >>= 6;
+				first = 0xC0 | (char)code;
+
+				*pStr = (char)first; ++pStr;
+				*pStr = (char)second;
+
+				return 2;
+			} else if((code & 0xFFFF0000) == 0) { // Size: 3
+				third = 0x80 | (code & 0x3F);
+				code >>= 6;
+				second = 0x80 | (code & 0x3F);
+				code >>= 6;
+				first = 0xE0 | (char)code;
+
+				*pStr = (char)first;  ++pStr;
+				*pStr = (char)second; ++pStr;
+				*pStr = (char)third;
+
+				return 3;
+			} else if((code & 0xFFE00000) == 0) { // Size: 4
+				fourth = 0x80 | (code & 0x3F);
+				code >>= 6;
+				third = 0x80 | (code & 0x3F);
+				code >>= 6;
+				second = 0x80 | (code & 0x3F);
+				code >>= 6;
+				first = 0xF0 | (char)code;
+
+				*pStr = (char)first;  ++pStr;
+				*pStr = (char)second; ++pStr;
+				*pStr = (char)third;  ++pStr;
+				*pStr = (char)fourth;
+
+				return 4;
 			} else {
-				return 1;
+				std::wcout << L"String: Unsupported character in UTF8 (" << (int)code << ")." << std::endl;
+				return 0;
 			}
 		}
-		int GetUTF16RequiredCharSize(char32_t ch)
+
+		int EncodeInUTF16(char32_t code, char16_t* pStr)
 		{
-			if((ch & 0xFFFF0000) == 0) {
+			if((code & 0xFFFF0000) == 0) { // Size: 1
+				*pStr = (char16_t)code;
+
 				return 1;
-			} else {
+			} else { // Size: 2
+				code -= 0x10000;
+				char16_t high = 0xD800 | (char16_t)(code >> 10);
+				char16_t low = 0xDC00 | (code & 0x3FF);
+
+				*pStr = high; ++pStr;
+				*pStr = low;
+
 				return 2;
 			}
 		}
-		void InsertCharInUTF16(U16String& str, char32_t ch)
+
+		int EncodeInUTF32(char32_t code, char32_t* pStr)
 		{
-			int chSize = GetUTF16RequiredCharSize(ch);
+			*pStr = code;
 
-			switch(chSize) {
-				case 1:
-					str.push_back((char16_t)ch);
-					break;
+			return 1;
+		}
 
-				case 2:
-					ch -= 0x10000;
-					char16_t high = 0xD800 | (char16_t)(ch >> 10);
-					char16_t low = 0xDC00 | (ch & 0x3FF);
+		// -> UTF8
+		template <>
+		int ConvertCodeAndMove(const char16_t*& pSrc, char* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF16(pSrc);
+			return EncodeInUTF8(code, pDst);
+		}
 
-					str.push_back(high);
-					str.push_back(low);
-					break;
-			}
+		template <>
+		int ConvertCodeAndMove(const char32_t*& pSrc, char* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF32(pSrc);
+			return EncodeInUTF8(code, pDst);
+		}
+
+		// -> UTF16
+		template <>
+		int ConvertCodeAndMove(const char*& pSrc, char16_t* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF8(pSrc);
+			return EncodeInUTF16(code, pDst);
+		}
+
+		template <>
+		int ConvertCodeAndMove(const char32_t*& pSrc, char16_t* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF32(pSrc);
+			return EncodeInUTF16(code, pDst);
+		}
+
+		// -> UTF32
+		template <>
+		int ConvertCodeAndMove(const char*& pSrc, char32_t* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF8(pSrc);
+			return EncodeInUTF32(code, pDst);
+		}
+
+		template <>
+		int ConvertCodeAndMove(const char16_t*& pSrc, char32_t* pDst)
+		{
+			char32_t code = DecodeAndMoveInUTF16(pSrc);
+			return EncodeInUTF32(code, pDst);
 		}
 	} // namespace internal
 } // namespace cube

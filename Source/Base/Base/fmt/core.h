@@ -14,6 +14,7 @@
 #include <iterator>
 //#include <string>
 #include <EASTL/string.h>
+#include <EASTL/string_view.h>
 #include <type_traits>
 
 // The fmt library version in the form major * 10000 + minor * 100 + patch.
@@ -347,6 +348,7 @@ struct is_constructible : std::is_constructible<T...> {};
   compiled with a different ``-std`` option than the client code (which is not
   recommended).
  */
+/*
 template <typename Char>
 class basic_string_view {
  private:
@@ -359,20 +361,19 @@ class basic_string_view {
 
   FMT_CONSTEXPR basic_string_view() FMT_NOEXCEPT : data_(FMT_NULL), size_(0) {}
 
-  /** Constructs a string reference object from a C string and a size. */
+  // Constructs a string reference object from a C string and a size.
   FMT_CONSTEXPR basic_string_view(const Char *s, size_t count) FMT_NOEXCEPT
     : data_(s), size_(count) {}
 
-  /**
-    \rst
-    Constructs a string reference object from a C string computing
-    the size with ``std::char_traits<Char>::length``.
-    \endrst
-   */
+  
+  //  \rst
+  //  Constructs a string reference object from a C string computing
+  //  the size with ``std::char_traits<Char>::length``.
+  //  \endrst
   basic_string_view(const Char *s)
     : data_(s), size_(std::char_traits<Char>::length(s)) {}
 
-  /** Constructs a string reference from a ``std::basic_string`` object. */
+  // Constructs a string reference from a ``std::basic_string`` object.
   template <typename Alloc>
   FMT_CONSTEXPR basic_string_view(
       const eastl::basic_string<Char, Alloc> &s) FMT_NOEXCEPT
@@ -383,10 +384,10 @@ class basic_string_view {
   : data_(s.data()), size_(s.size()) {}
 #endif
 
-  /** Returns a pointer to the string data. */
+  // Returns a pointer to the string data.
   FMT_CONSTEXPR const Char *data() const { return data_; }
 
-  /** Returns the string size. */
+  // Returns the string size.
   FMT_CONSTEXPR size_t size() const { return size_; }
 
   FMT_CONSTEXPR iterator begin() const { return data_; }
@@ -425,6 +426,10 @@ class basic_string_view {
     return lhs.compare(rhs) >= 0;
   }
 };
+*/
+
+template <typename C>
+using basic_string_view = eastl::basic_string_view<C>;
 
 typedef basic_string_view<char> string_view;
 typedef basic_string_view<wchar_t> wstring_view;
@@ -507,7 +512,7 @@ struct convert_to_int: std::integral_constant<
 
 namespace internal {
 
-struct dummy_string_view { typedef void char_type; };
+struct dummy_string_view { typedef void value_type; };
 dummy_string_view to_string_view(...);
 using fmt::v5::to_string_view;
 
@@ -519,7 +524,7 @@ struct is_string : std::integral_constant<bool, !std::is_same<
 template <typename S>
 struct char_t {
   typedef decltype(to_string_view(declval<S>())) result;
-  typedef typename result::char_type type;
+  typedef typename result::value_type type;
 };
 
 template <typename Char>
@@ -883,7 +888,7 @@ class basic_parse_context : private ErrorHandler {
 
  public:
   typedef Char char_type;
-  typedef typename basic_string_view<Char>::iterator iterator;
+  typedef typename basic_string_view<Char>::const_iterator iterator;
 
   explicit FMT_CONSTEXPR basic_parse_context(
       basic_string_view<Char> format_str, ErrorHandler eh = ErrorHandler())

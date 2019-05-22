@@ -1,74 +1,13 @@
 ﻿#pragma once
 
 #include <EASTL/string.h>
-#include "fmt/core.h"
+#include <EASTL/string_view.h>
+#include "fmt/format.h"
 
 #define STR_UTF16
 
 namespace cube
 {
-	template <typename C>
-	class BaseStringView
-	{
-	public:
-		using iterator = const C*;
-
-	public:
-		BaseStringView(const C* cStr) :
-			mStr(cStr), mSize(std::char_traits<C>::length(cStr))
-		{}
-
-		template <typename Allocator>
-		BaseStringView(const eastl::basic_string<C, Allocator>& cppStr) :
-			mStr(cppStr.c_str()), mSize(cppStr.size())
-		{}
-
-		operator fmt::v5::basic_string_view<C>() const { return fmt::v5::basic_string_view<C>(mStr, mSize); }
-
-		const C* data() const { return mStr; }
-		size_t size() const { return mSize; }
-		iterator begin() const { return mStr; }
-		iterator end() const { return mStr + mSize; }
-
-		int compare(BaseStringView other) const
-		{
-			size_t compareSize = mSize < other.mSize ? mSize : other.mSize;
-			int res = std::char_traits<C>::compare(mStr, other.mStr, compareSize);
-
-			if(res == 0) {
-				if(mSize < other.mSize)
-					res = -1;
-				else if(mSize > other.mSize)
-					res = 1;
-			}
-
-			return res;
-		}
-
-		friend bool operator==(BaseStringView lhs, BaseStringView rhs) {
-			return lhs.compare(rhs) == 0;
-		}
-		friend bool operator!=(BaseStringView lhs, BaseStringView rhs) {
-			return lhs.compare(rhs) != 0;
-		}
-		friend bool operator<(BaseStringView lhs, BaseStringView rhs) {
-			return lhs.compare(rhs) < 0;
-		}
-		friend bool operator<=(BaseStringView lhs, BaseStringView rhs) {
-			return lhs.compare(rhs) <= 0;
-		}
-		friend bool operator>(BaseStringView lhs, BaseStringView rhs) {
-			return lhs.compare(rhs) > 0;
-		}
-		friend bool operator>=(BaseStringView lhs, BaseStringView rhs) {
-			return lhs.compare(rhs) >= 0;
-		}
-
-	private:
-		const C* mStr;
-		size_t mSize;
-	};
-
 	// Helper class to reference both c-style string and cpp string
 	// for using cpp string finally
 	// Reference BasicStringRef in fmt library (made by Victor Zverovich)
@@ -77,7 +16,7 @@ namespace cube
 	class BaseStringRef
 	{
 	public:
-		BaseStringRef(const C* cStr) : 
+		BaseStringRef(const C* cStr) :
 			mStr(cStr), mStrPtr(&mStr)
 		{}
 		BaseStringRef(const Str& cppStr) :
@@ -92,21 +31,52 @@ namespace cube
 		const Str mStr; // Use when using constructor of C-style string
 	};
 
+	namespace internal
+	{
+		char32_t DecodeAndMoveInUTF8(const char*& pStr);
+		char32_t DecodeAndMoveInUTF16(const char16_t*& pStr);
+		char32_t DecodeAndMoveInUTF32(const char32_t*& pStr);
+
+		int EncodeInUTF8(char32_t code, char* pStr);
+		int EncodeInUTF16(char32_t code, char16_t* pStr);
+		int EncodeInUTF32(char32_t code, char32_t* pStr);
+
+		template <typename SrcChar, typename DstChar>
+		int ConvertCodeAndMove(const SrcChar*& pSrc, DstChar* pDst);
+	} // namespace internal
+
+	template <typename SrcStrView, typename DstStr>
+	void String_ConvertAndAppend(DstStr& dst, const SrcStrView& src)
+	{
+		using SrcChar = typename SrcStrView::value_type;
+		using DstChar = typename DstStr::value_type;
+
+		DstChar tempBuffer[8];
+		const SrcChar* srcCurrent = src.data();
+		const SrcChar* srcEnd = srcCurrent + src.length();
+
+		while(srcCurrent != srcEnd) {
+			int size = internal::ConvertCodeAndMove(srcCurrent, tempBuffer);
+			dst.append(tempBuffer, size);
+		}
+	}
+
 	using U8Character = char;
 	using U8String = eastl::basic_string<U8Character>;
-	using U8StringView = BaseStringView<U8Character>;
+	using U8StringView = eastl::basic_string_view<U8Character>;
 	using U8StringRef = BaseStringRef<U8Character, U8String>;
 
 	using U16Character = char16_t;
 	using U16String = eastl::basic_string<U16Character>;
-	using U16StringView = BaseStringView<U16Character>;
+	using U16StringView = eastl::basic_string_view<U16Character>;
 	using U16StringRef = BaseStringRef<U16Character, U16String>;
 
 	using U32Character = char32_t;
 	using U32String = eastl::basic_string<U32Character>;
-	using U32StringView= BaseStringView<U32Character>;
+	using U32StringView = eastl::basic_string_view<U32Character>;
 	using U32StringRef = BaseStringRef<U32Character, U32String>;
 
+	/*
 	inline void StringMoveNext(U8String::iterator& iter, size_t offset)
 	{
 		while(offset > 0) {
@@ -173,34 +143,7 @@ namespace cube
 	inline void StringMovePrev(U32String::iterator& iter, size_t offset)
 	{
 		iter -= offset;
-	}
-
-	// TODO: 모든 Custom Allocator에 대해서 변환 가능하게 만들기(typename 2개 이용)
-	inline U8String ToU8String(U8StringRef str) { return str.GetString(); }
-	U8String ToU8String(U16StringView str);
-	U8String ToU8String(U32StringView str);
-
-	U16String ToU16String(U8StringView str);
-	inline U16String ToU16String(U16StringRef str) { return str.GetString(); }
-	U16String ToU16String(U32StringView str);
-
-	U32String ToU32String(U8StringView str);
-	U32String ToU32String(U16StringView str);
-	inline U32String ToU32String(U32StringRef str) { return str.GetString(); }
-
-	namespace internal
-	{
-		// Helper functions
-		char32_t GetUTF8CharAndMove(U8StringView::iterator& iter);
-		int GetUTF8CharSize(U8StringView::iterator iter);
-		int GetUTF8RequiredCharSize(char32_t ch);
-		void InsertCharInUTF8(U8String& str, char32_t ch);
-
-		char32_t GetUTF16CharAndMove(U16StringView::iterator& iter);
-		int GetUTF16CharSize(U16StringView::iterator iter);
-		int GetUTF16RequiredCharSize(char32_t ch);
-		void InsertCharInUTF16(U16String& str, char32_t ch);
-	} // namespace internal
+	}*/
 
 #if defined (STR_UTF8)
 
@@ -209,9 +152,6 @@ namespace cube
 	using StringView = U8StringView;
 	using StringRef = U8StringRef;
 	#define CUBE_T(text) u8 ## text
-	inline String ToString(U8StringRef str) { return str.GetString(); }
-	inline String ToString(U16StringView str) { return ToU8String(str); }
-	inline String ToString(U32StringView str) { return ToU8String(str); }
 
 #elif defined (STR_UTF16)
 
@@ -220,9 +160,6 @@ namespace cube
 	using StringView = U16StringView;
 	using StringRef = U16StringRef;
 	#define CUBE_T(text) u ## text
-	inline String ToString(U8StringView str) { return ToU16String(str); }
-	inline String ToString(U16StringRef str) { return str.GetString(); }
-	inline String ToString(U32StringView str) { return ToU16String(str); }
 
 #elif defined (STR_UTF32)
 
@@ -231,11 +168,10 @@ namespace cube
 	using StringView = U32StringView;
 	using StringRef = U32StringRef;
 	#define CUBE_T(text) U ## text
-	inline String ToString(U8StringView str) { return ToU32String(str); }
-	inline String ToString(U16StringView str) { return ToU32String(str); }
-	inline String ToString(U32StringRef str) { return str.GetString; }
 
 #else
+
 	#error You must define one of string type
+
 #endif
 } // namespace cube

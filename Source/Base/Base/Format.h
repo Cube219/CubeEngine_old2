@@ -17,7 +17,7 @@ namespace cube
 		static int tempU8StringIndex = 0;
 
 		tempU8StringIndex %= 10;
-		tempU8String[tempU8StringIndex++] = ToU8String(value);
+		String_ConvertAndAppend(tempU8String[tempU8StringIndex++], fmt::to_string_view(value));
 
 		return tempU8String[tempU8StringIndex-1];
 	}
@@ -30,7 +30,7 @@ namespace cube
 		static int tempU16StringIndex = 0;
 
 		tempU16StringIndex %= 10;
-		tempU16String[tempU16StringIndex++] = ToU16String(value);
+		String_ConvertAndAppend(tempU16String[tempU16StringIndex++], fmt::to_string_view(value));
 
 		return tempU16String[tempU16StringIndex - 1];
 	}
@@ -43,49 +43,12 @@ namespace cube
 		static int tempU32StringIndex = 0;
 
 		tempU32StringIndex %= 10;
-		tempU32String[tempU32StringIndex++] = ToU32String(value);
+		String_ConvertAndAppend(tempU32String[tempU32StringIndex++], fmt::to_string_view(value));
 
 		return tempU32String[tempU32StringIndex - 1];
 	}
 
-	template <typename Char>
-	struct GetStringType
-	{
-	};
-
-	template <>
-	struct GetStringType<const char*>
-	{
-		using type = char;
-	};
-	template <>
-	struct GetStringType<const char16_t*>
-	{
-		using type = char16_t;
-	};
-	template <>
-	struct GetStringType<const char32_t*>
-	{
-		using type = char32_t;
-	};
-
-	template <>
-	struct GetStringType<eastl::basic_string<char>>
-	{
-		using type = char;
-	};
-	template <>
-	struct GetStringType<eastl::basic_string<char16_t>>
-	{
-		using type = char16_t;
-	};
-	template <>
-	struct GetStringType<eastl::basic_string<char32_t>>
-	{
-		using type = char32_t;
-	};
-
-#define IS_SAME_STR_TYPE(S, T) (std::is_same<S, typename GetStringType<T>::type>::value)
+#define IS_SAME_STR_TYPE(S, T) (std::is_same<S, typename decltype(fmt::v5::to_string_view(fmt::v5::internal::declval<T>()))::value_type>::value)
 
 	// Not a string
 	template <typename S, typename T>
@@ -108,7 +71,7 @@ namespace cube
 	// Different string type
 	template <typename S, typename T>
 	inline typename std::enable_if<
-		fmt::v5::internal::is_string<T>::value&&
+		fmt::v5::internal::is_string<T>::value &&
 		!IS_SAME_STR_TYPE(S, T), fmt::v5::basic_string_view<S>>::type
 		convert_string(const T& value)
 	{

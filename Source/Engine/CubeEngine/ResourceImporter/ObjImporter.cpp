@@ -47,7 +47,7 @@ namespace cube
 			aiMesh* aiMesh = scene->mMeshes[i];
 
 			SubMesh subMesh;
-			subMesh.name = ToString(aiMesh->mName.C_Str());
+			String_ConvertAndAppend(subMesh.name, U8StringView(aiMesh->mName.C_Str()));
 			subMesh.vertexOffset = vertices.size();
 			subMesh.indexOffset = indices.size();
 			subMesh.indexCount = aiMesh->mNumFaces * aiMesh->mFaces[0].mNumIndices;

@@ -16,7 +16,7 @@ namespace cube
 
 		virtual Resource* Import(SPtr<platform::File>& file, const FrameJsonValue& info) = 0;
 
-		const String& GetName() const { return mName; }
+		StringView GetName() const { return mName; }
 
 	protected:
 		String mName;

@@ -71,7 +71,8 @@ namespace cube
 		SPtr<File> Win32FileSystem::OpenFileImpl(StringView path, FileAccessModeFlags accessModeFlags, bool createIfNotExist)
 		{
 			DWORD desiredAccess = GetDwDesiredAccess(accessModeFlags);
-			PString pPath = ToPString(path);
+			PString pPath;
+			String_ConvertAndAppend(pPath, path);
 
 			HANDLE file = CreateFile(pPath.c_str(), desiredAccess, 0, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
 
