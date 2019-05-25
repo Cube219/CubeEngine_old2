@@ -58,7 +58,7 @@ namespace cube
 
 	void MaterialInstance::SetParamData(StringView name, void* pData, Uint64 dataSize)
 	{
-		auto res = mParameterIndexLookupMap.find(name.data());
+		auto res = mParameterIndexLookupMap.find_as(name.data());
 		CHECK(res != mParameterIndexLookupMap.end(), "Cannot find parameter name '{0}'.", name);
 
 		Uint64 paramIndex = res->second;
@@ -78,7 +78,7 @@ namespace cube
 	template<>
 	void MaterialInstance::SetParameterData(StringView name, RPtr<Texture>& texture)
 	{
-		auto res = mParameterIndexLookupMap.find(name.data());
+		auto res = mParameterIndexLookupMap.find_as(name.data());
 		CHECK(res != mParameterIndexLookupMap.end(), "Cannot find parameter name '{0}'.", name);
 
 		Uint64 paramIndex = res->second;

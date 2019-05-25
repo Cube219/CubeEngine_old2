@@ -35,7 +35,7 @@ namespace cube
 		{
 			Lock lock(mLoadedResourcesMutex);
 
-			auto findIter = mLoadedResources.find(path.data()); // TODO: UUID로 바꾸기
+			auto findIter = mLoadedResources.find_as(path.data()); // TODO: UUID로 바꾸기
 			if(findIter != mLoadedResources.end()) {
 				RPtr<Resource> resPtr(findIter->second);
 				return resPtr;

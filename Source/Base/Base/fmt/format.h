@@ -280,11 +280,11 @@ inline dummy_int _isnan(...) { return dummy_int(); }
 
 template <typename Allocator>
 typename Allocator::value_type *allocate(Allocator& alloc, std::size_t n) {
-#if __cplusplus >= 201103L || FMT_MSC_VER >= 1700
-  return std::allocator_traits<Allocator>::allocate(alloc, n);
-#else
+#// if __cplusplus >= 201103L || FMT_MSC_VER >= 1700
+//   return std::allocator_traits<Allocator>::allocate(alloc, n);
+// #else
   return alloc.allocate(n);
-#endif
+// #endif
 }
 
 // A helper function to suppress bogus "conditional expression is constant"

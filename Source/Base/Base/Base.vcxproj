@@ -156,6 +156,7 @@
     <ClCompile Include="EASTLOverloadOperator.cpp" />
     <ClCompile Include="fmt\format.cc" />
     <ClCompile Include="fmt\posix.cc" />
+    <ClCompile Include="CubeFormat.cpp" />
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="String.cpp" />
   </ItemGroup>

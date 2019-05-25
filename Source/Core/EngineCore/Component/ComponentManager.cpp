@@ -34,7 +34,7 @@ namespace cube
 
 	void ComponentManager::CheckIfComponentExisted(StringView name)
 	{
-		auto findIter = mComponentCreators.find(name.data());
+		auto findIter = mComponentCreators.find_as(name.data());
 		if(findIter != mComponentCreators.end()) {
 			CUBE_LOG(LogType::Error, "Component '{0}' is already registered", name);
 			return;
