@@ -8,6 +8,7 @@
 
 #include "Base/BaseTypes.h"
 #include "Base/Format.h"
+#include "Allocator/FrameAllocator.h"
 
 namespace cube
 {
@@ -23,7 +24,8 @@ namespace cube
 		template <typename ...Args>
 		static void WriteLog(LogType type, const char* fileName, int lineNum, StringView msg, Args&&... args)
 		{
-			WriteLogImpl(type, fileName, lineNum, Format(msg.data(), std::forward<Args>(args)...));
+			FrameString str = FrameFormat(msg.data(), std::forward<Args>(args)...);
+			WriteLogImpl(type, fileName, lineNum, str);
 		}
 
 	private:

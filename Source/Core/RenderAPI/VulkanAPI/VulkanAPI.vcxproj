@@ -71,12 +71,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Dependencies\Vulkan\include;$(SolutionDir)Dependencies\glslang\include;$(SolutionDir)Dependencies\EASTL\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\Vulkan\include;$(SolutionDir)Dependencies\glslang\include;$(SolutionDir)Dependencies\EASTL\include;$(SolutionDir)Dependencies\rapidjson\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\Vulkan\lib;$(SolutionDir)Dependencies\glslang\lib;$(SolutionDir)Dependencies\EASTL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)bin\$(Platform)\$(Configuration)\</OutDir>
-    <IncludePath>$(SolutionDir)Dependencies\Vulkan\include;$(SolutionDir)Dependencies\glslang\include;$(SolutionDir)Dependencies\EASTL\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Dependencies\Vulkan\include;$(SolutionDir)Dependencies\glslang\include;$(SolutionDir)Dependencies\EASTL\include;$(SolutionDir)Dependencies\rapidjson\include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Dependencies\Vulkan\lib;$(SolutionDir)Dependencies\glslang\lib;$(SolutionDir)Dependencies\EASTL\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

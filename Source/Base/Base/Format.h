@@ -103,34 +103,48 @@ namespace cube
 	template <typename Char>
 	using custom_memory_buffer = fmt::basic_memory_buffer<Char, fmt::inline_buffer_size, FormatAllocator<Char>>;
 
-	template <typename Char>
-	inline eastl::basic_string<Char> vformat_custom(
+	template <typename Char, typename StringAllocator>
+	inline eastl::basic_string<Char, StringAllocator> vformat_custom(
 		fmt::basic_string_view<Char> format_str,
 		fmt::basic_format_args<typename fmt::buffer_context<Char>::type> args) {
 
 		custom_memory_buffer<Char> buffer;
 		fmt::internal::vformat_to(buffer, format_str, args);
 
-		eastl::basic_string<Char> res(buffer.data(), buffer.size());
+		eastl::basic_string<Char, StringAllocator> res(buffer.data(), buffer.size());
 
 		format::internal::DiscardAllocations();
 
 		return res;
 	}
 
-	template <typename S, typename ...Args>
-	inline eastl::basic_string<typename fmt::v5::char_t<S>::type> cube_format(const S& format_str, const Args& ...args)
+	template <typename S, typename StringAllocator, typename ...Args>
+	inline eastl::basic_string<typename fmt::v5::char_t<S>::type, StringAllocator> cube_format(const S& format_str, const Args& ...args)
 	{
-		return vformat_custom(
+		using Char = typename fmt::v5::char_t<S>::type;
+
+		return vformat_custom<Char, StringAllocator>(
 			fmt::to_string_view(format_str),
 			*fmt::internal::checked_args<S, Args...>(format_str, args...));
 	}
 
+	// Formats arguments and returns a basic string
 	template <typename S, typename ...Args>
 	inline eastl::basic_string<typename fmt::v5::char_t<S>::type> Format(const S& format_str, const Args& ...args)
 	{
 		using Char = typename fmt::v5::char_t<S>::type;
 
-		return cube_format(format_str, convert_string<Char>(args)...);
+		return cube_format<S, EASTLAllocatorType>(format_str, convert_string<Char>(args)...);
+	}
+
+	// Formats arguments and returns a custom allocator string
+	// ex)
+	//     Format_CustomString<CustomAllocator>("Test {0}", 123);
+	template <typename StringAllocator, typename S, typename ...Args>
+	inline eastl::basic_string<typename fmt::v5::char_t<S>::type, StringAllocator> Format_CustomString(const S& format_str, const Args& ...args)
+	{
+		using Char = typename fmt::v5::char_t<S>::type;
+
+		return cube_format<S, StringAllocator>(format_str, convert_string<Char>(args)...);
 	}
 } // namespace cube

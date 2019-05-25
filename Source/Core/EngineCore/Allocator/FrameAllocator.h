@@ -4,6 +4,7 @@
 
 #include "Base/Json.h"
 #include "Base/String.h"
+#include "Base/Format.h"
 
 namespace cube
 {
@@ -242,4 +243,12 @@ namespace cube
 	// Define Json with frame allocator
 	using FrameJson = rapidjson::GenericDocument<rapidjson::UTF8<>, FrameAllocator::RapidJsonAllocator>;
 	using FrameJsonValue = rapidjson::GenericValue<rapidjson::UTF8<>, FrameAllocator::RapidJsonAllocator>;
+
+	// Define formatting functions with frame allocator
+	template <typename S, typename ...Args>
+	inline eastl::basic_string<typename fmt::v5::char_t<S>::type, FrameAllocator::EASTLAllocator>
+		FrameFormat(const S& format_str, const Args& ...args)
+	{
+		return Format_CustomString<FrameAllocator::EASTLAllocator>(format_str, args...);
+	}
 } // namespace cube
