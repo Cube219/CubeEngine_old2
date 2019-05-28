@@ -63,7 +63,7 @@ namespace cube
 			}
 #endif // _DEBUG
 
-			Platform::title = ToPString(title);
+			String_ConvertAndAppend(Platform::title, title);
 			Platform::width = width;
 			Platform::height = height;
 
@@ -98,6 +98,26 @@ namespace cube
 				nullptr, nullptr, instance, nullptr);
 
 			PLATFORM_CHECK(window, "Failed to create a window");
+		}
+
+		void* Win32Platform::AllocateImpl(Uint64 size)
+		{
+			return malloc(size);
+		}
+
+		void Win32Platform::FreeImpl(void* ptr)
+		{
+			free(ptr);
+		}
+
+		void* Win32Platform::AllocateAlignedImpl(Uint64 size, Uint64 alignment)
+		{
+			return _aligned_malloc(size, alignment);
+		}
+
+		void Win32Platform::FreeAlignedImpl(void* ptr)
+		{
+			_aligned_free(ptr);
 		}
 
 		void Win32Platform::StartLoopImpl()

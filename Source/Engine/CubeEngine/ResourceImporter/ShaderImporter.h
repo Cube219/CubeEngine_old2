@@ -2,7 +2,8 @@
 
 #include "../CubeEngineHeader.h"
 
-#include "EngineCore/Resource/BaseResource.h"
+#include "EngineCore/Resource/Resource.h"
+#include "EngineCore/Resource/ResourceImporter.h"
 #include "RenderAPI/Interface/Device.h"
 
 namespace cube
@@ -23,10 +24,10 @@ namespace cube
 			mName = CUBE_T("ShaderImporter");
 		}
 
-		Resource* Import(SPtr<platform::File>& file, Json info) final override;
+		Resource* Import(SPtr<platform::File>& file, const FrameJsonValue& info) final override;
 
 	private:
-		ShaderCompileDesc GetCompileDesc(Json& info);
+		ShaderCompileDesc GetCompileDesc(const FrameJsonValue& info);
 
 		SPtr<render::Device> mDevice;
 	};

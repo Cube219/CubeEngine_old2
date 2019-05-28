@@ -57,24 +57,25 @@ enum class MouseButtonType
 
 #include "String.h"
 
-#include <vector>
+// If you add more STL container, you also have to add the container each custom allocators (FrameAllocator)
+#include <EASTL/vector.h>
 template <typename T>
-using Vector = std::vector<T>;
+using Vector = eastl::vector<T>;
 
-#include <array>
+#include <EASTL/array.h>
 template <typename Type, size_t Size>
-using Array = std::array<Type, Size>;
+using Array = eastl::array<Type, Size>;
 
-#include <map>
+#include <EASTL/map.h>
 template <typename Key, typename Value>
-using Map = std::map<Key, Value>;
+using Map = eastl::map<Key, Value>;
 
 template <typename Key, typename Value>
-using MultiMap = std::multimap<Key, Value>;
+using MultiMap = eastl::multimap<Key, Value>;
 
-#include <unordered_map>
+#include <EASTL/hash_map.h>
 template <typename Key, typename Value>
-using HashMap = std::unordered_map<Key, Value>;
+using HashMap = eastl::hash_map<Key, Value>;
 
 // Deprecated. Use Flags class in Flags.h
 #define SET_ENUM_AS_FLAGS(type) \

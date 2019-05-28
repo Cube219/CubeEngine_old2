@@ -1,4 +1,4 @@
-﻿#include "BaseResource.h"
+﻿#include "Resource.h"
 
 namespace cube
 {

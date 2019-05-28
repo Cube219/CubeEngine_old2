@@ -3,13 +3,14 @@
 #include "LogWriter.h"
 #include "PlatformDebugUtility.h"
 #include "Base/Format.h"
+#include "Allocator/FrameAllocator.h"
 
 namespace cube
 {
 	template <typename ...Args>
 	void AssertionFailed(const char* fileName, int lineNum, StringView msg, Args&&... args)
 	{
-		String str = Format(msg.data(), std::forward<Args>(args)...);
+		FrameString str = FrameFormat(msg.data(), std::forward<Args>(args)...);
 		LogWriter::WriteLogImpl(LogType::Error, fileName, lineNum, str);
 		platform::PlatformDebugUtility::AssertionFailed(str, nullptr, fileName, lineNum);
 	}

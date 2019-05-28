@@ -69,9 +69,6 @@
     <ClInclude Include="Renderer\Light\SpotLight.h">
       <Filter>Renderer\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Resource\BaseResource.h">
-      <Filter>Resource</Filter>
-    </ClInclude>
     <ClInclude Include="Resource\ResourceManager.h">
       <Filter>Resource</Filter>
     </ClInclude>
@@ -117,6 +114,18 @@
       <Filter>Renderer</Filter>
     </ClInclude>
     <ClInclude Include="Handler.h" />
+    <ClInclude Include="Resource\ResourceImporter.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource\Resource.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator\FrameAllocator.h">
+      <Filter>Allocator</Filter>
+    </ClInclude>
+    <ClInclude Include="Allocator\AllocatorUtility.h">
+      <Filter>Allocator</Filter>
+    </ClInclude>
     <ClInclude Include="Renderer\Skybox\SkyboxSystem.h">
       <Filter>Renderer\Skybox</Filter>
     </ClInclude>
@@ -185,9 +194,6 @@
     <ClCompile Include="Renderer\Light\SpotLight.cpp">
       <Filter>Renderer\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Resource\BaseResource.cpp">
-      <Filter>Resource</Filter>
-    </ClCompile>
     <ClCompile Include="Resource\ResourceManager.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
@@ -226,6 +232,12 @@
     <ClCompile Include="Renderer\TextureData.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Resource\Resource.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Allocator\FrameAllocator.cpp">
+      <Filter>Allocator</Filter>
+    </ClCompile>
     <ClCompile Include="Renderer\Skybox\SkyboxSystem.cpp">
       <Filter>Renderer\Skybox</Filter>
     </ClCompile>
@@ -252,17 +264,20 @@
     <Filter Include="Renderer\Light">
       <UniqueIdentifier>{97762731-cfe1-4935-9c3c-4e3f3823a867}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource">
-      <UniqueIdentifier>{205412c7-7a29-4d60-b436-609eac0e786d}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Component">
       <UniqueIdentifier>{cd517b62-17a3-465a-9ba5-f3d52f34b794}</UniqueIdentifier>
     </Filter>
     <Filter Include="Module">
       <UniqueIdentifier>{6222080d-35f1-4a24-86c1-2f7c2fac36cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Allocator">
+      <UniqueIdentifier>{5283367d-ac60-481c-87f4-8349eb6d7c27}</UniqueIdentifier>
+    </Filter>
     <Filter Include="Renderer\Skybox">
       <UniqueIdentifier>{077f7db9-070e-433c-9406-199f98374c84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{205412c7-7a29-4d60-b436-609eac0e786d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

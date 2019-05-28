@@ -12,7 +12,7 @@ namespace cube
 
 	RPtr<Mesh> BaseMeshGenerator::GetBoxMesh()
 	{
-		Vector<Vertex> vertices;
+		FrameVector<Vertex> vertices;
 		Vertex v;
 		v.pos = {-0.5f, -0.5f, -0.5f, 1};
 		v.color = {1, 0, 0, 1};
@@ -47,7 +47,7 @@ namespace cube
 		v.texCoord = {1, 1};
 		vertices.push_back(v);
 
-		Vector<Index> indices = {
+		FrameVector<Index> indices = {
 			0,1,2,  2,1,3 ,  2,3,4,  4,3,5,  4,5,6,  6,5,7,  6,7,0,  0,7,1,  6,0,2,  2,4,6,  3,1,5,  5,1,7
 		};
 
@@ -73,7 +73,7 @@ namespace cube
 	{
 		constexpr int sliceCount = 20;
 
-		Vector<Vertex> vertices;
+		FrameVector<Vertex> vertices;
 		vertices.resize(sliceCount * 2);
 
 		// Side
@@ -90,7 +90,7 @@ namespace cube
 			vertices[i * 2 + 1].texCoord = {0.0f, 0.0f};
 		}
 
-		Vector<Index> indices;
+		FrameVector<Index> indices;
 		indices.resize(sliceCount * 6);
 
 		for(int i = 0; i < sliceCount - 1; i++) {
@@ -175,7 +175,7 @@ namespace cube
 		constexpr float x = 0.525731f;
 		constexpr float z = 0.850651f;
 
-		Vector<Vertex> vertices;
+		FrameVector<Vertex> vertices;
 		Vertex v;
 		v.color = {1.0f, 1.0f, 1.0f, 1.0f};
 		v.texCoord = {0.0f, 0.0f};
@@ -205,7 +205,7 @@ namespace cube
 		v.pos = {-z, -x, 0.0f, 1.0f};
 		vertices.push_back(v);
 
-		Vector<Index> indices = {
+		FrameVector<Index> indices = {
 			1,4,0,  4,9,0,  4,5,9,  8,5,4,  1,8,4,
 			1,10,8, 10,3,8, 8,3,5,  3,2,5,  3,7,2,
 			3,10,7, 10,6,7, 6,11,7, 6,0,11, 6,1,0,
@@ -251,7 +251,7 @@ namespace cube
 
 	RPtr<Mesh> BaseMeshGenerator::GetPlaneMesh()
 	{
-		Vector<Vertex> vertices;
+		FrameVector<Vertex> vertices;
 		Vertex v;
 		v.color = {1.0f, 1.0f, 1.0f, 1.0f};
 		v.texCoord = {0.0f, 0.0f};
@@ -265,7 +265,7 @@ namespace cube
 		v.pos = {5.0f, 0.0f, -5.0f, 1.0f};
 		vertices.push_back(v);
 
-		Vector<Index> indices = {
+		FrameVector<Index> indices = {
 			0,1,2,  0,2,3
 		};
 
@@ -287,12 +287,12 @@ namespace cube
 		return RegisterToResourceManager(meshPtr);
 	}
 
-	void BaseMeshGenerator::SubDivide(Vector<Vertex>& vertices, Vector<Index>& indices)
+	void BaseMeshGenerator::SubDivide(FrameVector<Vertex>& vertices, FrameVector<Index>& indices)
 	{
-		Vector<Vertex>& oldVertices = vertices;
-		Vector<Index>& oldIndices = indices;
-		Vector<Vertex> newVertices;
-		Vector<Index> newIndices;
+		FrameVector<Vertex>& oldVertices = vertices;
+		FrameVector<Index>& oldIndices = indices;
+		FrameVector<Vertex> newVertices;
+		FrameVector<Index> newIndices;
 
 		//       v1
 		//       *
@@ -345,7 +345,7 @@ namespace cube
 		indices = newIndices;
 	}
 
-	void BaseMeshGenerator::SetNormalVector(Vector<Vertex>& vertices, Vector<Index>& indices)
+	void BaseMeshGenerator::SetNormalVector(FrameVector<Vertex>& vertices, FrameVector<Index>& indices)
 	{
 		for(auto& v : vertices) {
 			v.normal = {0.0f, 0.0f, 0.0f};

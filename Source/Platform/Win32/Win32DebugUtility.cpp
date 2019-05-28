@@ -17,7 +17,8 @@ namespace cube
 		{
 			String str = Format(CUBE_T("Assertion failed!\n\n[{0}:{1}] : {2}\n\n(Press Retry to debug the application)"),
 				GetBaseName(fileName), line, msg);
-			PString pMsg = ToPString(str);
+			PString pMsg;
+			String_ConvertAndAppend(pMsg, str);
 
 			int nCode = MessageBox(NULL, pMsg.c_str(), L"Assertion failed",
 				MB_TASKMODAL | MB_ICONHAND | MB_ABORTRETRYIGNORE | MB_SETFOREGROUND);
@@ -40,10 +41,11 @@ namespace cube
 
 		void Win32DebugUtility::PrintToConsoleImpl(StringView str)
 		{
-			PString pStr = ToPString(str);
+			PString pStr;
+			String_ConvertAndAppend(pStr, str);
 
 			std::unique_lock<std::mutex> lock(printMutex);
-			std::wcout << pStr << std::endl;
+			std::wcout << pStr.c_str() << std::endl;
 		}
 
 		const char* Win32DebugUtility::GetBaseName(const char* absolutePath)

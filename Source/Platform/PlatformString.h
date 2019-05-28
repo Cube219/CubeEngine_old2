@@ -1,20 +1,21 @@
-#pragma once
+﻿#pragma once
 
 #include "PlatformHeader.h"
 
 namespace cube
 {
+	// TODO: PString 전용 Memory pool allocator 구현
+
 #ifdef _WIN32
+	#define PLATFORM_T(text) L ## text
 	using PCharacter = wchar_t;
-	using PString = std::wstring;
-	using PStringView = BaseStringView<wchar_t>;
-#endif
-
-	PLATFORM_EXPORT PString ToPString(U8StringView str);
-	PLATFORM_EXPORT PString ToPString(U16StringView str);
-	PLATFORM_EXPORT PString ToPString(U32StringView str);
-
-	PLATFORM_EXPORT U8String ToU8String(PStringView str);
-	PLATFORM_EXPORT U16String ToU16String(PStringView str);
-	PLATFORM_EXPORT U32String ToU32String(PStringView str);
+	using PString = eastl::basic_string<PCharacter>;
+	using PStringView = eastl::basic_string_view<wchar_t>;
+	
+	namespace internal
+	{
+		char32_t DecodeAndMoveInPCharacter(const wchar_t*& pStr);
+		int EncodeInPCharacter(char32_t code, wchar_t* pStr);
+	}
+#endif // _WIN32
 } // namespace cube

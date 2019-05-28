@@ -8,7 +8,7 @@ namespace cube
 	class ENGINE_CORE_EXPORT Component : public Handlable
 	{
 	public:
-		static const String& GetName() { return mName; }
+		static StringView GetName() { return mName; }
 
 	private:
 		static String mName;

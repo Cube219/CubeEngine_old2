@@ -280,11 +280,11 @@ inline dummy_int _isnan(...) { return dummy_int(); }
 
 template <typename Allocator>
 typename Allocator::value_type *allocate(Allocator& alloc, std::size_t n) {
-#if __cplusplus >= 201103L || FMT_MSC_VER >= 1700
-  return std::allocator_traits<Allocator>::allocate(alloc, n);
-#else
+#// if __cplusplus >= 201103L || FMT_MSC_VER >= 1700
+//   return std::allocator_traits<Allocator>::allocate(alloc, n);
+// #else
   return alloc.allocate(n);
-#endif
+// #endif
 }
 
 // A helper function to suppress bogus "conditional expression is constant"
@@ -367,8 +367,8 @@ class format_error : public std::runtime_error {
   explicit format_error(const char *message)
   : std::runtime_error(message) {}
 
-  explicit format_error(const std::string &message)
-  : std::runtime_error(message) {}
+  explicit format_error(const eastl::string &message)
+  : std::runtime_error(message.data()) {}
 };
 
 namespace internal {
@@ -406,7 +406,7 @@ void basic_buffer<T>::append(const U *begin, const U *end) {
 // A UTF-8 code unit type.
 enum char8_t: unsigned char {};
 #endif
-
+/*
 // A UTF-8 string view.
 class u8string_view : public basic_string_view<char8_t> {
  public:
@@ -425,7 +425,7 @@ inline u8string_view operator"" _u(const char *s, std::size_t n) {
 }
 }
 #endif
-
+*/
 // The number of characters to store in the basic_memory_buffer object itself
 // to avoid dynamic memory allocation.
 enum { inline_buffer_size = 500 };
@@ -456,7 +456,7 @@ enum { inline_buffer_size = 500 };
 
      The answer is 42.
 
-  The output can be converted to an ``std::string`` with ``to_string(out)``.
+  The output can be converted to an ``eastl::string`` with ``to_string(out)``.
   \endrst
  */
 template <typename T, std::size_t SIZE = inline_buffer_size,
@@ -1045,7 +1045,7 @@ class utf8_to_utf16 {
   operator wstring_view() const { return wstring_view(&buffer_[0], size()); }
   size_t size() const { return buffer_.size() - 1; }
   const wchar_t *c_str() const { return &buffer_[0]; }
-  std::wstring str() const { return std::wstring(&buffer_[0], size()); }
+  eastl::wstring str() const { return eastl::wstring(&buffer_[0], size()); }
 };
 
 // A converter from UTF-16 to UTF-8.
@@ -1060,7 +1060,7 @@ class utf16_to_utf8 {
   operator string_view() const { return string_view(&buffer_[0], size()); }
   size_t size() const { return buffer_.size() - 1; }
   const char *c_str() const { return &buffer_[0]; }
-  std::string str() const { return std::string(&buffer_[0], size()); }
+  eastl::string str() const { return eastl::string(&buffer_[0], size()); }
 
   // Performs conversion returning a system error code instead of
   // throwing exception on conversion error. This method may still throw
@@ -2880,10 +2880,10 @@ class format_int {
 
   /**
     \rst
-    Returns the content of the output buffer as an ``std::string``.
+    Returns the content of the output buffer as an ``eastl::string``.
     \endrst
    */
-  std::string str() const { return std::string(str_, size()); }
+  eastl::string str() const { return eastl::string(str_, size()); }
 };
 
 // DEPRECATED!
@@ -2993,7 +2993,7 @@ struct formatter<
 // A formatter for types known only at run time such as variant alternatives.
 //
 // Usage:
-//   typedef std::variant<int, std::string> variant;
+//   typedef std::variant<int, eastl::string> variant;
 //   template <>
 //   struct formatter<variant>: dynamic_formatter<> {
 //     void format(buffer &buf, const variant &v, context &ctx) {
@@ -3195,38 +3195,38 @@ auto join(const Range &range, wstring_view sep)
 
 /**
   \rst
-  Converts *value* to ``std::string`` using the default format for type *T*.
+  Converts *value* to ``eastl::string`` using the default format for type *T*.
   It doesn't support user-defined types with custom formatters.
 
   **Example**::
 
     #include <fmt/format.h>
 
-    std::string answer = fmt::to_string(42);
+    eastl::string answer = fmt::to_string(42);
   \endrst
  */
 template <typename T>
-std::string to_string(const T &value) {
-  std::string str;
-  internal::container_buffer<std::string> buf(str);
+eastl::string to_string(const T &value) {
+  eastl::string str;
+  internal::container_buffer<eastl::string> buf(str);
   writer(buf).write(value);
   return str;
 }
 
 /**
-  Converts *value* to ``std::wstring`` using the default format for type *T*.
+  Converts *value* to ``eastl::wstring`` using the default format for type *T*.
  */
 template <typename T>
-std::wstring to_wstring(const T &value) {
-  std::wstring str;
-  internal::container_buffer<std::wstring> buf(str);
+eastl::wstring to_wstring(const T &value) {
+  eastl::wstring str;
+  internal::container_buffer<eastl::wstring> buf(str);
   wwriter(buf).write(value);
   return str;
 }
 
 template <typename Char, std::size_t SIZE>
-std::basic_string<Char> to_string(const basic_memory_buffer<Char, SIZE> &buf) {
-  return std::basic_string<Char>(buf.data(), buf.size());
+eastl::basic_string<Char> to_string(const basic_memory_buffer<Char, SIZE> &buf) {
+  return eastl::basic_string<Char>(buf.data(), buf.size());
 }
 
 template <typename Char>
@@ -3407,7 +3407,7 @@ inline FMT_ENABLE_IF_T(
 }
 
 template <typename Char>
-inline std::basic_string<Char> internal::vformat(
+inline eastl::basic_string<Char> internal::vformat(
     basic_string_view<Char> format_str,
     basic_format_args<typename buffer_context<Char>::type> args) {
   basic_memory_buffer<Char> buffer;
@@ -3434,7 +3434,7 @@ template <typename Char, Char... CHARS>
 class udl_formatter {
  public:
   template <typename... Args>
-  std::basic_string<Char> operator()(const Args &... args) const {
+  eastl::basic_string<Char> operator()(const Args &... args) const {
     FMT_CONSTEXPR_DECL Char s[] = {CHARS..., '\0'};
     FMT_CONSTEXPR_DECL bool invalid_format =
         do_check_format_string<Char, error_handler, Args...>(
@@ -3483,7 +3483,7 @@ FMT_CONSTEXPR internal::udl_formatter<Char, CHARS...> operator""_format() {
   **Example**::
 
     using namespace fmt::literals;
-    std::string message = "The answer is {}"_format(42);
+    eastl::string message = "The answer is {}"_format(42);
   \endrst
  */
 inline internal::udl_formatter<char>
@@ -3534,7 +3534,7 @@ FMT_END_NAMESPACE
     #define FMT_STRING_ALIAS 1
     #include <fmt/format.h>
     // A compile-time error because 'd' is an invalid specifier for strings.
-    std::string s = format(fmt("{:d}"), "foo");
+    eastl::string s = format(fmt("{:d}"), "foo");
   \endrst
  */
 # define fmt(s) FMT_STRING(s)

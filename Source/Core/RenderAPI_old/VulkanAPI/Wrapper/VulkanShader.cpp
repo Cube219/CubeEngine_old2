@@ -1,5 +1,6 @@
 #include "VulkanShader.h"
 
+#include <vector>
 #include "EngineCore/Assertion.h"
 #include "VulkanDevice.h"
 
@@ -108,7 +109,13 @@ namespace cube
 			res = program.link(messages);
 			CHECK(res, "Failed to link the glsl to spir-v. ({0})", shader.getInfoLog());
 
-			glslang::GlslangToSpv(*program.getIntermediate(type), mSpvShader);
+			std::vector<Uint32> spirv_std;
+			glslang::GlslangToSpv(*program.getIntermediate(type), spirv_std);
+
+			mSpvShader.resize(spirv_std.size());
+			for(Uint64 i = 0; i < spirv_std.size(); i++) {
+				mSpvShader[i] = spirv_std[i];
+			}
 
 			glslang::FinalizeProcess();
 		}

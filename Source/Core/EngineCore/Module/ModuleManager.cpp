@@ -30,7 +30,7 @@ namespace cube
 
 	void ModuleManager::LoadModule(StringView moduleName)
 	{
-		auto temp = mModuleLookup.find(moduleName.data());
+		auto temp = mModuleLookup.find_as(moduleName.data());
 		if(temp != mModuleLookup.end()) {
 			CUBE_LOG(LogType::Error, "Already module name '{0}' loaded.", moduleName);
 			return;
@@ -58,7 +58,7 @@ namespace cube
 
 	SPtr<BaseModule> ModuleManager::GetModule(StringView name)
 	{
-		auto temp = mModuleLookup.find(name.data());
+		auto temp = mModuleLookup.find_as(name.data());
 		CHECK(temp != mModuleLookup.end(), "Failed to find module '{0}'.", name);
 
 		return temp->second;

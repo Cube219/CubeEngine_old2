@@ -46,7 +46,7 @@ namespace cube
 		{
 			VkResult res;
 
-			std::vector<VkSemaphore> wait;
+			Vector<VkSemaphore> wait;
 			wait.resize(waitSemaphoreNum);
 			for(uint32_t i = 0; i < waitSemaphoreNum; i++) {
 				wait[i] = DPCast(VulkanSemaphore)(waitSemaphores[i])->GetHandle();

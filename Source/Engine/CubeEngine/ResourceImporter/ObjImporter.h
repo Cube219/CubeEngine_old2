@@ -5,7 +5,8 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
-#include "EngineCore/Resource/BaseResource.h"
+#include "EngineCore/Resource/Resource.h"
+#include "EngineCore/Resource/ResourceImporter.h"
 #include "EngineCore/Renderer/Mesh.h"
 
 namespace cube
@@ -18,7 +19,7 @@ namespace cube
 			mName = CUBE_T("ObjImporter");
 		}
 
-		Resource* Import(SPtr<platform::File>& file, Json info) final override;
+		Resource* Import(SPtr<platform::File>& file, const FrameJsonValue& info) final override;
 
 	private:
 		SPtr<MeshData> GetMeshData(const aiScene* scene);

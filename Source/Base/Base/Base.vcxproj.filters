@@ -11,7 +11,6 @@
     <ClInclude Include="Vector\VectorArray.h">
       <Filter>Vector</Filter>
     </ClInclude>
-    <ClInclude Include="Json.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="Matrix.h" />
@@ -29,6 +28,7 @@
       <Filter>Matrix</Filter>
     </ClInclude>
     <ClInclude Include="Flags.h" />
+    <ClInclude Include="Json.h" />
     <ClInclude Include="fmt\chrono.h">
       <Filter>fmt</Filter>
     </ClInclude>
@@ -67,12 +67,14 @@
   <ItemGroup>
     <ClCompile Include="Math.cpp" />
     <ClCompile Include="String.cpp" />
+    <ClCompile Include="EASTLOverloadOperator.cpp" />
     <ClCompile Include="fmt\format.cc">
       <Filter>fmt</Filter>
     </ClCompile>
     <ClCompile Include="fmt\posix.cc">
       <Filter>fmt</Filter>
     </ClCompile>
+    <ClCompile Include="CubeFormat.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Vector">

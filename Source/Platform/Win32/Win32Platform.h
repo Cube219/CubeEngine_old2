@@ -22,6 +22,11 @@ namespace cube
 			static void InitWindowImpl(StringView title, Uint32 width, Uint32 height);
 			static void ShowWindowImpl();
 
+			static void* AllocateImpl(Uint64 size);
+			static void FreeImpl(void* ptr);
+			static void* AllocateAlignedImpl(Uint64 size, Uint64 alignment);
+			static void FreeAlignedImpl(void* ptr);
+
 			static void StartLoopImpl();
 			static void FinishLoopImpl();
 			static void SleepImpl(Uint32 time);

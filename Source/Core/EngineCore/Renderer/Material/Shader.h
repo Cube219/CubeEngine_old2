@@ -2,7 +2,7 @@
 
 #include "../../EngineCoreHeader.h"
 
-#include "../../Resource/BaseResource.h"
+#include "../../Resource/Resource.h"
 
 #include "RenderAPI/Interface/Device.h"
 #include "RenderAPI/Interface/Shader.h"

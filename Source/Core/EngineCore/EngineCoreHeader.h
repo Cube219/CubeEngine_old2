@@ -10,6 +10,8 @@ namespace cube
 	class ThreadManager;
 	class Thread;
 
+	class FrameAllocator;
+
 	class TimeManager;
 	class GameTime;
 

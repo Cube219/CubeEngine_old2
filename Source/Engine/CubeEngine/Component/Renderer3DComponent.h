@@ -9,7 +9,7 @@ namespace cube
 	class CUBE_ENGINE_EXPORT Renderer3DComponent : public Component
 	{
 	public:
-		static const String& GetName() { return mName; }
+		static StringView GetName() { return mName; }
 
 	private:
 		static String mName;

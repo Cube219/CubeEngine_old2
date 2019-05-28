@@ -1,6 +1,7 @@
 ﻿#include "GLSLTool.h"
 
 #include <SPIRV/GlslangToSpv.h>
+#include <vector>
 
 #include "EngineCore/Assertion.h"
 
@@ -45,9 +46,14 @@ namespace cube
 			res = program.link(messages);
 			CHECK(res, "Failed to link program. ({0} / {1})", shader.getInfoLog(), shader.getInfoDebugLog());
 
-			Vector<Uint32> spirv;
-			glslang::GlslangToSpv(*program.getIntermediate(shLang), spirv);
+			std::vector<Uint32> spirv_std;
+			glslang::GlslangToSpv(*program.getIntermediate(shLang), spirv_std);
 
+			Vector<Uint32> spirv(spirv_std.size());
+			for(Uint64 i = 0; i < spirv_std.size(); i++) {
+				spirv[i] = spirv_std[i];
+			}
+			
 			return spirv;
 		}
 

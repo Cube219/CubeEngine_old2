@@ -4,6 +4,7 @@
 
 #include <functional>
 #include "../Handler.h"
+#include "../Allocator/FrameAllocator.h"
 
 namespace cube
 {
@@ -24,11 +25,11 @@ namespace cube
 		template <typename T>
 		void RegisterComponent()
 		{
-			const String& name = T::GetName();
+			StringView name = T::GetName();
 
 			CheckIfComponentExisted(name);
 
-			mComponentCreators[name] = [this]() {
+			mComponentCreators[name.data()] = [this]() {
 				mComponents.push_back(std::make_unique<T>());
 				return mComponentTable.CreateNewHandler<T>(DCast(T*)(mComponents.back().get()));
 			};

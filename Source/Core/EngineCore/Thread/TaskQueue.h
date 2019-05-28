@@ -2,6 +2,8 @@
 
 #include "../EngineCoreHeader.h"
 
+#include <functional>
+
 namespace cube
 {
 	class TaskQueue

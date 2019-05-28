@@ -8,7 +8,7 @@
 
 namespace cube
 {
-	Resource* TextureImporter::Import(SPtr<platform::File>& file, Json info)
+	Resource* TextureImporter::Import(SPtr<platform::File>& file, const FrameJsonValue& info)
 	{
 		uint64_t size = file->GetFileSize();
 

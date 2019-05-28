@@ -1,8 +1,9 @@
 #include "ResourceManager.h"
 
 #include "../Assertion.h"
-#include "BaseResource.h"
+#include "Resource.h"
 #include "FileSystem.h"
+#include "../Allocator/FrameAllocator.h"
 
 namespace cube
 {
@@ -34,7 +35,7 @@ namespace cube
 		{
 			Lock lock(mLoadedResourcesMutex);
 
-			auto findIter = mLoadedResources.find(path.data()); // TODO: UUID로 바꾸기
+			auto findIter = mLoadedResources.find_as(path.data()); // TODO: UUID로 바꾸기
 			if(findIter != mLoadedResources.end()) {
 				RPtr<Resource> resPtr(findIter->second);
 				return resPtr;
@@ -53,19 +54,21 @@ namespace cube
 		metaFile->Read(metaString, size, readSize);
 		metaString[size] = '\0';
 
-		Json metaJson = Json::parse(metaString);
+		FrameJson metaJson;
+		metaJson.Parse(metaString);
 		free(metaString);
 			
-		U8String importerNameU8 = metaJson["importer_name"];
-		String importerName = ToString(importerNameU8);
+		U8String importerNameU8 = metaJson["importer_name"].GetString();
+		String importerName;
+		String_ConvertAndAppend(importerName, importerNameU8);
 
 		Resource* loadedRes = nullptr;
 		// Find importer to import the resource
 		bool isFindImporter = false;
 		for(auto& importer : mImporters) {
-			if(importer->GetName() == importerName) {
+			if(importer->GetName() == StringView(importerName)) {
 				SPtr<File> resFile = platform::FileSystem::OpenFile(path, FileAccessModeFlag::Read);
-				Json info = metaJson["info"];
+				const FrameJsonValue& info = metaJson["info"];
 
 				loadedRes = importer->Import(resFile, info);
 				isFindImporter = true;

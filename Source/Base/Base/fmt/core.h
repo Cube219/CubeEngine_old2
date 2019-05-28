@@ -12,7 +12,9 @@
 #include <cstdio>  // std::FILE
 #include <cstring>
 #include <iterator>
-#include <string>
+//#include <string>
+#include <EASTL/string.h>
+#include <EASTL/string_view.h>
 #include <type_traits>
 
 // The fmt library version in the form major * 10000 + minor * 100 + patch.
@@ -346,6 +348,7 @@ struct is_constructible : std::is_constructible<T...> {};
   compiled with a different ``-std`` option than the client code (which is not
   recommended).
  */
+/*
 template <typename Char>
 class basic_string_view {
  private:
@@ -358,23 +361,22 @@ class basic_string_view {
 
   FMT_CONSTEXPR basic_string_view() FMT_NOEXCEPT : data_(FMT_NULL), size_(0) {}
 
-  /** Constructs a string reference object from a C string and a size. */
+  // Constructs a string reference object from a C string and a size.
   FMT_CONSTEXPR basic_string_view(const Char *s, size_t count) FMT_NOEXCEPT
     : data_(s), size_(count) {}
 
-  /**
-    \rst
-    Constructs a string reference object from a C string computing
-    the size with ``std::char_traits<Char>::length``.
-    \endrst
-   */
+  
+  //  \rst
+  //  Constructs a string reference object from a C string computing
+  //  the size with ``std::char_traits<Char>::length``.
+  //  \endrst
   basic_string_view(const Char *s)
     : data_(s), size_(std::char_traits<Char>::length(s)) {}
 
-  /** Constructs a string reference from a ``std::basic_string`` object. */
+  // Constructs a string reference from a ``std::basic_string`` object.
   template <typename Alloc>
   FMT_CONSTEXPR basic_string_view(
-      const std::basic_string<Char, Alloc> &s) FMT_NOEXCEPT
+      const eastl::basic_string<Char, Alloc> &s) FMT_NOEXCEPT
   : data_(s.data()), size_(s.size()) {}
 
 #ifdef FMT_STRING_VIEW
@@ -382,10 +384,10 @@ class basic_string_view {
   : data_(s.data()), size_(s.size()) {}
 #endif
 
-  /** Returns a pointer to the string data. */
+  // Returns a pointer to the string data.
   FMT_CONSTEXPR const Char *data() const { return data_; }
 
-  /** Returns the string size. */
+  // Returns the string size.
   FMT_CONSTEXPR size_t size() const { return size_; }
 
   FMT_CONSTEXPR iterator begin() const { return data_; }
@@ -424,6 +426,10 @@ class basic_string_view {
     return lhs.compare(rhs) >= 0;
   }
 };
+*/
+
+template <typename C>
+using basic_string_view = eastl::basic_string_view<C>;
 
 typedef basic_string_view<char> string_view;
 typedef basic_string_view<wchar_t> wstring_view;
@@ -456,7 +462,7 @@ inline basic_string_view<Char>
 
 template <typename Char>
 inline basic_string_view<Char>
-  to_string_view(const std::basic_string<Char> &s) { return s; }
+  to_string_view(const eastl::basic_string<Char> &s) { return s; }
 
 template <typename Char>
 inline basic_string_view<Char> to_string_view(const Char *s) { return s; }
@@ -506,7 +512,7 @@ struct convert_to_int: std::integral_constant<
 
 namespace internal {
 
-struct dummy_string_view { typedef void char_type; };
+struct dummy_string_view { typedef void value_type; };
 dummy_string_view to_string_view(...);
 using fmt::v5::to_string_view;
 
@@ -518,7 +524,7 @@ struct is_string : std::integral_constant<bool, !std::is_same<
 template <typename S>
 struct char_t {
   typedef decltype(to_string_view(declval<S>())) result;
-  typedef typename result::char_type type;
+  typedef typename result::value_type type;
 };
 
 template <typename Char>
@@ -702,7 +708,7 @@ FMT_MAKE_VALUE_SAME(string_type, basic_string_view<typename C::char_type>)
 FMT_MAKE_VALUE(string_type,
                typename basic_string_view<typename C::char_type>::type,
                basic_string_view<typename C::char_type>)
-FMT_MAKE_VALUE(string_type, const std::basic_string<typename C::char_type>&,
+FMT_MAKE_VALUE(string_type, const eastl::basic_string<typename C::char_type>&,
                basic_string_view<typename C::char_type>)
 FMT_MAKE_VALUE(pointer_type, void*, const void*)
 FMT_MAKE_VALUE_SAME(pointer_type, const void*)
@@ -882,7 +888,7 @@ class basic_parse_context : private ErrorHandler {
 
  public:
   typedef Char char_type;
-  typedef typename basic_string_view<Char>::iterator iterator;
+  typedef typename basic_string_view<Char>::const_iterator iterator;
 
   explicit FMT_CONSTEXPR basic_parse_context(
       basic_string_view<Char> format_str, ErrorHandler eh = ErrorHandler())
@@ -1368,7 +1374,7 @@ struct checked_args : format_arg_store<
 };
 
 template <typename Char>
-std::basic_string<Char> vformat(
+eastl::basic_string<Char> vformat(
   basic_string_view<Char> format_str,
   basic_format_args<typename buffer_context<Char>::type> args);
 
@@ -1405,7 +1411,7 @@ template <typename Container>
 struct is_contiguous: std::false_type {};
 
 template <typename Char>
-struct is_contiguous<std::basic_string<Char> >: std::true_type {};
+struct is_contiguous<eastl::basic_string<Char> >: std::true_type {};
 
 template <typename Char>
 struct is_contiguous<internal::basic_buffer<Char> >: std::true_type {};
@@ -1434,7 +1440,7 @@ inline typename std::enable_if<
 }
 
 template <typename S, typename Char = FMT_CHAR(S)>
-inline std::basic_string<Char> vformat(
+inline eastl::basic_string<Char> vformat(
     const S &format_str,
     basic_format_args<typename buffer_context<Char>::type> args) {
   return internal::vformat(to_string_view(format_str), args);
@@ -1451,7 +1457,7 @@ inline std::basic_string<Char> vformat(
   \endrst
 */
 template <typename S, typename... Args>
-inline std::basic_string<FMT_CHAR(S)> format(
+inline eastl::basic_string<FMT_CHAR(S)> format(
     const S &format_str, const Args &... args) {
   return internal::vformat(
     to_string_view(format_str),

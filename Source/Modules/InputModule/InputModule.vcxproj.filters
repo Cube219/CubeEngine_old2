@@ -11,4 +11,7 @@
     <ClCompile Include="KeyboardMouseInput.cpp" />
     <ClCompile Include="XboxControllerInput.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <Natvis Include="EASTL.natvis" />
+  </ItemGroup>
 </Project>

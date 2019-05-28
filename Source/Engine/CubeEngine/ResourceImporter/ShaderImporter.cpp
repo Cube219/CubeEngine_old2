@@ -5,7 +5,7 @@
 
 namespace cube
 {
-	Resource* ShaderImporter::Import(SPtr<platform::File>& file, Json info)
+	Resource* ShaderImporter::Import(SPtr<platform::File>& file, const FrameJsonValue& info)
 	{
 		uint64_t size = file->GetFileSize();
 
@@ -30,15 +30,15 @@ namespace cube
 		return shader;
 	}
 
-	ShaderCompileDesc ShaderImporter::GetCompileDesc(Json& info)
+	ShaderCompileDesc ShaderImporter::GetCompileDesc(const FrameJsonValue& info)
 	{
 		using namespace render;
 
 		ShaderCompileDesc desc;
 
-		U8String language = info["language"];
-		U8String type = info["type"];
-		U8String entryPoint = info["entry_point"];
+		U8String language = info["language"].GetString();
+		U8String type = info["type"].GetString();
+		U8String entryPoint = info["entry_point"].GetString();
 
 		if(language == "glsl") {
 			desc.language = ShaderLanguage::GLSL;

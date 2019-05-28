@@ -4,6 +4,7 @@
 #include "../LogWriter.h"
 #include "Platform.h"
 #include "../GameThread.h"
+#include "../Allocator/FrameAllocator.h"
 
 namespace cube
 {
@@ -30,6 +31,8 @@ namespace cube
 
 	void RenderingThread::Prepare()
 	{
+		GetFrameAllocator().Initialize("Rendering Thread FrameAllocator", 10 * 1024 * 1024); // 10 MiB
+
 		mRendererManager->Initialize(RenderType::Vulkan);
 
 		mLoopEventFunc = platform::Platform::GetLoopEvent().AddListener(&RenderingThread::Loop);
@@ -58,6 +61,8 @@ namespace cube
 		mTaskQueue.Flush();
 
 		mRendererManager->ShutDown();
+
+		GetFrameAllocator().ShutDown();
 	}
 
 	void RenderingThread::Run(Async& gameThreadRunAsync)
@@ -66,6 +71,8 @@ namespace cube
 
 		// For fulshing initial resources
 		Sync();
+
+		GetFrameAllocator().DiscardAllocations();
 
 		mLastTaskQueue.ExecuteAll();
 		mLastTaskQueue.Flush();
@@ -86,6 +93,8 @@ namespace cube
 		Sync();
 
 		Async async = GameThread::ExecuteTaskQueueAndSimulateAsync();
+
+		GetFrameAllocator().DiscardAllocations();
 
 		mLastTaskQueue.ExecuteAll();
 		mLastTaskQueue.Flush();

@@ -1,91 +1,67 @@
 ﻿#pragma once
 
 #include "fmt/format.h"
+#include "BaseTypes.h"
 #include "String.h"
+
+#include <iostream>
 
 namespace cube
 {
-	// TODO: 임시로 저장하는 곳
-	//       차후 TempAllocator를 쓰면 String이 소멸자를 호출해도 DiscardAllocations()를 쓰기 전까지 살아있으므로
-	//       차후 지울 예정
-
-	template <typename Char, typename T>
-	inline typename std::enable_if<std::is_same<Char, char>::value, U8String&>::type
-		GetTempString(const T& value)
+	namespace format
 	{
-		static U8String tempU8String[10];
-		static int tempU8StringIndex = 0;
+		namespace internal
+		{
+			constexpr Uint64 blockSize = 256 * 1024; // 256KiB
+			struct FormatMemoryBlock
+			{
+				FormatMemoryBlock()
+				{
+					startPtr = block;
+					currentPtr = startPtr;
+				}
 
-		tempU8StringIndex %= 10;
-		tempU8String[tempU8StringIndex++] = ToU8String(value);
+				char block[blockSize];
+				void* startPtr;
+				void* currentPtr;
+			};
 
-		return tempU8String[tempU8StringIndex-1];
-	}
+			void* Allocate(size_t n);
+			void* Allocate(size_t n, size_t alignment);
 
-	template <typename Char, typename T>
-	inline typename std::enable_if<std::is_same<Char, char16_t>::value, U16String&>::type
-		GetTempString(const T& value)
+			void DiscardAllocations();
+		} // namespace internal
+	} // namespace format
+
+	template <typename T>
+	class FormatAllocator
 	{
-		static U16String tempU16String[10];
-		static int tempU16StringIndex = 0;
+	public:
+		using value_type = T;
 
-		tempU16StringIndex %= 10;
-		tempU16String[tempU16StringIndex++] = ToU16String(value);
+		FormatAllocator(const char* pName = nullptr) {}
+		~FormatAllocator() {}
 
-		return tempU16String[tempU16StringIndex - 1];
-	}
+		T* allocate(size_t n, int flags = 0)
+		{
+			return (T*)format::internal::Allocate(sizeof(T) * n);
+		}
 
-	template <typename Char, typename T>
-	inline typename std::enable_if<std::is_same<Char, char32_t>::value, U32String&>::type
-		GetTempString(const T& value)
-	{
-		static U32String tempU32String[10];
-		static int tempU32StringIndex = 0;
+		T* allocate(size_t n, size_t alignment, size_t offset, int flags = 0)
+		{
+			return (T*)format::internal::Allocate(sizeof(T) * n, alignment);
+		}
 
-		tempU32StringIndex %= 10;
-		tempU32String[tempU32StringIndex++] = ToU32String(value);
-
-		return tempU32String[tempU32StringIndex - 1];
-	}
-
-	template <typename Char>
-	struct GetStringType
-	{
+		void deallocate(void* p, size_t n)
+		{
+			// Do nothing
+		}
 	};
 
-	template <>
-	struct GetStringType<const char*>
-	{
-		using type = char;
-	};
-	template <>
-	struct GetStringType<const char16_t*>
-	{
-		using type = char16_t;
-	};
-	template <>
-	struct GetStringType<const char32_t*>
-	{
-		using type = char32_t;
-	};
+	template <typename T>
+	using FormatString = eastl::basic_string<T, FormatAllocator<char>>;
 
-	template <>
-	struct GetStringType<std::basic_string<char>>
-	{
-		using type = char;
-	};
-	template <>
-	struct GetStringType<std::basic_string<char16_t>>
-	{
-		using type = char16_t;
-	};
-	template <>
-	struct GetStringType<std::basic_string<char32_t>>
-	{
-		using type = char32_t;
-	};
-
-#define IS_SAME_STR_TYPE(S, T) (std::is_same<S, typename GetStringType<T>::type>::value)
+#define IS_SAME_STR_TYPE(S, T) (std::is_same<S, typename decltype(fmt::v5::to_string_view(fmt::v5::internal::declval<T>()))::value_type>::value)
 
 	// Not a string
 	template <typename S, typename T>
@@ -108,17 +84,67 @@ namespace cube
 	// Different string type
 	template <typename S, typename T>
 	inline typename std::enable_if<
-		fmt::v5::internal::is_string<T>::value&&
+		fmt::v5::internal::is_string<T>::value &&
 		!IS_SAME_STR_TYPE(S, T), fmt::v5::basic_string_view<S>>::type
 		convert_string(const T& value)
 	{
-		auto& tempStr = GetTempString<S>(value);
-		return tempStr;
+		// temp will be deallocated at the end of the function.
+		// But in FormatAllocator, its allocations still alive before
+		// calling DiscardAllocations function.
+		// So, its string view is validate out of this function.
+		FormatString<S> temp;
+		temp.set_capacity(16); // For disabling SSO(Short string optimization)
+		String_ConvertAndAppend(temp, fmt::to_string_view(value));
+
+		fmt::v5::basic_string_view<S> view(temp.data(), temp.size());
+		return view;
 	}
 
-	template <typename S, typename ...Args>
-	inline std::basic_string<typename fmt::v5::char_t<S>::type> Format(const S& format_str, const Args& ...args)
+	template <typename Char>
+	using custom_memory_buffer = fmt::basic_memory_buffer<Char, fmt::inline_buffer_size, FormatAllocator<Char>>;
+
+	template <typename Char, typename StringAllocator>
+	inline eastl::basic_string<Char, StringAllocator> vformat_custom(
+		fmt::basic_string_view<Char> format_str,
+		fmt::basic_format_args<typename fmt::buffer_context<Char>::type> args) {
+
+		custom_memory_buffer<Char> buffer;
+		fmt::internal::vformat_to(buffer, format_str, args);
+
+		eastl::basic_string<Char, StringAllocator> res(buffer.data(), buffer.size());
+
+		format::internal::DiscardAllocations();
+
+		return res;
+	}
+
+	template <typename S, typename StringAllocator, typename ...Args>
+	inline eastl::basic_string<typename fmt::v5::char_t<S>::type, StringAllocator> cube_format(const S& format_str, const Args& ...args)
 	{
-		return fmt::format(format_str, convert_string<typename fmt::v5::char_t<S>::type>(args)...);
+		using Char = typename fmt::v5::char_t<S>::type;
+
+		return vformat_custom<Char, StringAllocator>(
+			fmt::to_string_view(format_str),
+			*fmt::internal::checked_args<S, Args...>(format_str, args...));
+	}
+
+	// Formats arguments and returns a basic string
+	template <typename S, typename ...Args>
+	inline eastl::basic_string<typename fmt::v5::char_t<S>::type> Format(const S& format_str, const Args& ...args)
+	{
+		using Char = typename fmt::v5::char_t<S>::type;
+
+		return cube_format<S, EASTLAllocatorType>(format_str, convert_string<Char>(args)...);
+	}
+
+	// Formats arguments and returns a custom allocator string
+	// ex)
+	//     Format_CustomString<CustomAllocator>("Test {0}", 123);
+	template <typename StringAllocator, typename S, typename ...Args>
+	inline eastl::basic_string<typename fmt::v5::char_t<S>::type, StringAllocator> Format_CustomString(const S& format_str, const Args& ...args)
+	{
+		using Char = typename fmt::v5::char_t<S>::type;
+
+		return cube_format<S, StringAllocator>(format_str, convert_string<Char>(args)...);
 	}
 } // namespace cube
